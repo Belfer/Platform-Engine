@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-up" width="16" height="16" tilewidth="16" tileheight="16" nextobjectid="26">
+ <tileset firstgid="1" name="mininicular" tilewidth="16" tileheight="16" tilecount="64" columns="8">
+  <image source="mininicular.png" width="128" height="128"/>
+ </tileset>
+ <layer name="tiles" width="16" height="16">
+  <data encoding="base64" compression="zlib">
+   eJxjZGBgYAJiZiBmYSAdcAIxFxBzAzEPGfoFgVgIiIWBWIQM/ZJALEWGPhhQBGIlCvSPglEwlAEAN00A9Q==
+  </data>
+ </layer>
+ <objectgroup name="colliders">
+  <object id="2" x="0" y="0" width="16" height="16"/>
+  <object id="9" x="16" y="16">
+   <polygon points="0,0 -16,0 -16,10.5455 -9.81818,16.0909 0,16"/>
+  </object>
+  <object id="11" x="48" y="0.822134" width="16" height="15.1779"/>
+  <object id="12" x="32" y="0.818182" width="16" height="15.1818"/>
+  <object id="13" x="48" y="16">
+   <polygon points="0,0 0,16 16,16"/>
+  </object>
+  <object id="16" x="48" y="16">
+   <polygon points="0,0 -16,16 0,16"/>
+  </object>
+  <object id="17" x="48" y="32">
+   <polygon points="0,0 -16,0 0,16"/>
+  </object>
+  <object id="18" x="48" y="32">
+   <polygon points="0,0 0,16 16,0"/>
+  </object>
+  <object id="19" x="0.875" y="48" width="15.125" height="16"/>
+  <object id="20" x="0.875" y="64" width="15.125" height="16"/>
+  <object id="21" x="16" y="48" width="14.875" height="16"/>
+  <object id="22" x="16" y="64" width="14.875" height="16"/>
+  <object id="23" x="16" y="48" rotation="180">
+   <polygon points="0,0 -14.913,0 -14.913,10.5455 -9.15118,16.0909 0,16"/>
+  </object>
+  <object id="24" x="16" y="16">
+   <polygon points="0,0 16,0 16,10.7273 9.80682,15.8984 0,16"/>
+  </object>
+  <object id="25" x="16" y="48" rotation="180">
+   <polygon points="0,0 15.125,0 15.125,10.7273 9.27051,15.8984 0,16"/>
+  </object>
+ </objectgroup>
+</map>
