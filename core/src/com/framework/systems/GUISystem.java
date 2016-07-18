@@ -10,25 +10,29 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.framework.Mappers;
 import com.framework.Script;
 import com.framework.components.CGameObject;
+import com.framework.components.CMaterial;
+import com.framework.components.CSprite;
 import com.framework.components.CTransform;
 
 /**
- * Created by conor on 16/07/16.
+ * Created by conor on 17/07/16.
  */
-public class ScriptRenderSystem extends EntitySystem {
-    private ImmutableArray<Entity> entities;
+public class GUISystem extends EntitySystem {
+    ImmutableArray<Entity> entities;
+    ImmutableArray<Entity> gameObjectEntities;
 
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
+    OrthographicCamera camera;
+    SpriteBatch batch;
 
-    public ScriptRenderSystem(OrthographicCamera camera) {
+    public GUISystem (OrthographicCamera camera) {
         this.camera = camera;
-        batch = new SpriteBatch();
+        batch = new SpriteBatch ();
     }
 
     @Override
     public void addedToEngine (Engine engine) {
-        entities = engine.getEntitiesFor(Family.all(CGameObject.class, CTransform.class).get());
+        entities = engine.getEntitiesFor(Family.all(CTransform.class, CMaterial.class, CSprite.class).get());
+        gameObjectEntities = engine.getEntitiesFor(Family.all(CGameObject.class, CTransform.class).get());
     }
 
     @Override
@@ -38,14 +42,14 @@ public class ScriptRenderSystem extends EntitySystem {
     public void update (float deltaTime) {
         camera.update();
 
-        //batch.setProjectionMatrix(camera.combined);
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
-        for (Entity entity : entities) {
+        for (Entity entity : gameObjectEntities) {
             CGameObject gameObject = Mappers.GAMEOBJECT.get(entity);
 
             for (Script script : gameObject.scripts) {
-                script.render (batch);
+                script.drawGUI (batch);
             }
         }
 

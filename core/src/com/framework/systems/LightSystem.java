@@ -11,7 +11,7 @@ import javafx.fxml.Initializable;
 /**
  * Created by conor on 17/07/16.
  */
-public class LightRenderSystem extends EntitySystem implements Initializable {
+public class LightSystem extends EntitySystem implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

@@ -28,8 +28,20 @@ public class SceneManager extends ApplicationAdapter {
         }
     }
 
-    public void setScene (Scene scene) { currentScene = scene; }
-    public Scene getScene () { return currentScene; }
+    @Override
+    public void dispose () {
+        currentScene.dispose ();
+    }
 
+    public void setScene (Scene scene)
+    {
+        if (currentScene != null) {
+            currentScene.dispose ();
+        }
+        currentScene = scene;
+        currentScene.start ();
+    }
+
+    public Scene getScene () { return currentScene; }
     public AssetManager getAssetManager () { return assetManager; }
 }

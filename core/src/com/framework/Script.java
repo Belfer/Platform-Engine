@@ -29,9 +29,10 @@ public abstract class Script {
     }
 
     public abstract void start ();
-    public abstract void update ();
-    public abstract void render (SpriteBatch batch);
+    public abstract void update (float deltaTime);
+    public abstract void draw (SpriteBatch batch);
 
+    public void drawGUI (SpriteBatch batch) {}
     public void destroy () {}
 
     public SceneManager getSceneManager() { return sceneManager; }

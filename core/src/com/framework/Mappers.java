@@ -3,7 +3,7 @@ package com.framework;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.framework.components.CGameObject;
 import com.framework.components.CMaterial;
-import com.framework.components.CTexture;
+import com.framework.components.CSprite;
 import com.framework.components.CTransform;
 
 /**
@@ -20,6 +20,6 @@ public class Mappers {
     public static final ComponentMapper<CMaterial>
             MATERIAL = ComponentMapper.getFor(CMaterial.class);
 
-    public static final ComponentMapper<CTexture>
-            TEXTURE = ComponentMapper.getFor(CTexture.class);
+    public static final ComponentMapper<CSprite>
+            SPRITE = ComponentMapper.getFor(CSprite.class);
 }
