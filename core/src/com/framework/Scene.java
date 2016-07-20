@@ -21,6 +21,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Shape2D;
@@ -131,6 +132,9 @@ public class Scene implements EntityListener
         TiledMapTileLayer tilesLayer = (TiledMapTileLayer) mapLayers.get ("tiles");
 
         for (MapObject obj : colliderLayer.getObjects()) {
+            MapProperties properties = obj.getProperties();
+            float rotation = properties.get("rotation", 0f, Float.class);
+
             Vector2 position = new Vector2 ();
             Vector2 center = new Vector2 ();
             PolygonShape shape = null;
@@ -155,35 +159,39 @@ public class Scene implements EntityListener
 
             } else if (obj instanceof PolygonMapObject) {
                 Polygon polygon = ((PolygonMapObject) obj).getPolygon();
-                Rectangle bounds = polygon.getBoundingRectangle ();
-                bounds.getCenter (center);
+                polygon.setRotation (-rotation);
 
-                float[] vertices = polygon.getVertices ();
-                float ax = 0; float ay = 0;
-                for (int i=0; i<vertices.length;) {
-                    ax += vertices[i++];
-                    ay += vertices[i++];
+                float[] tmp = polygon.getTransformedVertices ();
+                Vector2[] vertices = new Vector2[tmp.length/2];
+                int v = 0;
+                for (int i=0; i<tmp.length; i+=2) {
+                    vertices[v] = new Vector2(tmp[i] - polygon.getX(), tmp[i+1] - polygon.getY());
+                    vertices[v].x = Math.round(vertices[v].x);
+                    vertices[v].y = Math.round(vertices[v].y);
+                    v++;
                 }
-                ax /= vertices.length/2;
-                ay /= vertices.length/2;
 
-                float w = tilesLayer.getTileWidth ()/2;
-                float h = tilesLayer.getTileHeight ()/2;
+                Vector2 average = new Vector2();
+                for (Vector2 i : vertices) average.add (i);
+                average.scl(1f/vertices.length);
 
-                position.x = w - (Math.copySign (w, ax) - ax);
-                position.y = h - (Math.copySign (h, ay) - ay);
-
-                // TODO apply transform to polygon and use that to get center
-                //center.x = bounds.getX() + position.x;
-                //center.y = bounds.getY() + position.y;
-                //center.x = polygon.ge;
-                //center.y = polygon.getY();
-                //System.out.println(center);
-
-                for (int i=0; i<vertices.length;) {
-                    vertices[i++] -= ax;
-                    vertices[i++] -= ay;
+                if (average.x<0 && average.y>0) {
+                    for (Vector2 i : vertices) i.x += tilesLayer.getTileWidth();
+                } else if (average.x>0 && average.y<0) {
+                    for (Vector2 i : vertices) i.y += tilesLayer.getTileHeight();
+                } else if (average.x<0 && average.y<0) {
+                    for (Vector2 i : vertices) {
+                        i.x += tilesLayer.getTileWidth();
+                        i.y += tilesLayer.getTileHeight();
+                    }
                 }
+
+                float w = tilesLayer.getTileWidth();
+                float h = tilesLayer.getTileHeight();
+                position.x = polygon.getX() - (int)(polygon.getX() / w) * w;
+                position.y = polygon.getY() - (int)(polygon.getY() / h) * h;
+                center.x = polygon.getX()+average.x;
+                center.y = polygon.getY()+average.y;
 
                 shape = new PolygonShape ();
                 shape.set (vertices);
@@ -191,8 +199,6 @@ public class Scene implements EntityListener
 
             int x = (int)(center.x / tilesLayer.getTileWidth ());
             int y = (int)(center.y / tilesLayer.getTileHeight ());
-            System.out.println(x+", "+y);
-            System.out.println(center);
 
             TiledMapTileLayer.Cell cell = tilesLayer.getCell (x, y);
 
