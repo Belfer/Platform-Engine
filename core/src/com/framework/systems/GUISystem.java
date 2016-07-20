@@ -18,7 +18,7 @@ import com.framework.components.CTransform;
  * Created by conor on 17/07/16.
  */
 public class GUISystem extends EntitySystem {
-    ImmutableArray<Entity> entities;
+    ImmutableArray<Entity> spriteEntities;
     ImmutableArray<Entity> gameObjectEntities;
 
     OrthographicCamera camera;
@@ -31,7 +31,7 @@ public class GUISystem extends EntitySystem {
 
     @Override
     public void addedToEngine (Engine engine) {
-        entities = engine.getEntitiesFor(Family.all(CTransform.class, CMaterial.class, CSprite.class).get());
+        spriteEntities = engine.getEntitiesFor(Family.all(CTransform.class, CSprite.class).get());
         gameObjectEntities = engine.getEntitiesFor(Family.all(CGameObject.class, CTransform.class).get());
     }
 
@@ -40,6 +40,13 @@ public class GUISystem extends EntitySystem {
 
     @Override
     public void update (float deltaTime) {
+        /*for (Entity entity : spriteEntities) {
+            CTransform transform = Mappers.TRANSFORM.get(entity);
+            CSprite sprite = Mappers.SPRITE.get(entity);
+            sprite.sprite.setX (transform.position.x);
+            sprite.sprite.setY (transform.position.y);
+        }*/
+
         camera.update();
 
         batch.setProjectionMatrix(camera.combined);

@@ -4,8 +4,9 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.framework.SceneManager;
 import com.framework.Script;
@@ -22,10 +23,14 @@ public class PlayerController extends Script {
     OrthographicCamera gameCamera;
     CSprite sprite;
 
+    Sprite idle;
+
     @Override
     public void start() {
         gameCamera = getSceneManager().getScene().getGameCamera();
         sprite = getEntity().getComponent (CSprite.class);
+
+        idle = new Sprite (new TextureRegion(sprite.sprite.getTexture(), 0, 0, 16, 16));
     }
 
     @Override
@@ -52,6 +57,8 @@ public class PlayerController extends Script {
 
     @Override
     public void draw(SpriteBatch batch) {
-        sprite.sprite.draw (batch);
+        idle.setX (getTransform().position.x);
+        idle.setY (getTransform().position.y);
+        idle.draw (batch);
     }
 }

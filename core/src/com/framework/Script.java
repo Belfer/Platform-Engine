@@ -8,7 +8,7 @@ import com.framework.components.CTransform;
 /**
  * Created by conor on 16/07/16.
  */
-public abstract class Script {
+public abstract class Script implements IScript {
 
     SceneManager sceneManager;
     Entity entity;
@@ -22,17 +22,26 @@ public abstract class Script {
         this.entity = entity;
     }
 
+    @Override
     public void create ()
     {
         gameObject = entity.getComponent (CGameObject.class);
         transform = entity.getComponent (CTransform.class);
     }
 
+    @Override
     public abstract void start ();
+
+    @Override
     public abstract void update (float deltaTime);
+
+    @Override
     public abstract void draw (SpriteBatch batch);
 
+    @Override
     public void drawGUI (SpriteBatch batch) {}
+
+    @Override
     public void destroy () {}
 
     public SceneManager getSceneManager() { return sceneManager; }

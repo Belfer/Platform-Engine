@@ -1,10 +1,7 @@
 package com.platut.scripts;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.framework.SceneManager;
 import com.framework.Script;
 import com.framework.components.CSprite;
@@ -25,6 +22,8 @@ public class HealthGUIController extends Script {
 
     @Override
     public void update (float deltaTime) {
+        sprite.sprite.setX (getTransform().position.x);
+        sprite.sprite.setY (getTransform().position.y);
     }
 
     @Override

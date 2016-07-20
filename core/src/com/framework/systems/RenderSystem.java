@@ -15,9 +15,11 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.framework.Mappers;
 import com.framework.Script;
 import com.framework.components.CGameObject;
+import com.framework.components.CSprite;
 import com.framework.components.CTransform;
 
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ public class RenderSystem extends EntitySystem {
     ImmutableArray<Entity> gameObjectEntities;
 
     OrthographicCamera camera;
+    World world;
     SpriteBatch batch;
 
     TiledMapRenderer mapRenderer;
@@ -37,12 +40,13 @@ public class RenderSystem extends EntitySystem {
     int[] bgLayers;
     int[] fgLayers;
 
-    public RenderSystem (OrthographicCamera camera, TiledMap map) {
+    public RenderSystem (OrthographicCamera camera, World world, TiledMap map) {
         this.camera = camera;
+        this.world = world;
         batch = new SpriteBatch();
 
         mapRenderer = new OrthogonalTiledMapRenderer (map, 1f);
-        box2DRenderer = new Box2DDebugRenderer (true, true, true, true, true, true);
+        box2DRenderer = new Box2DDebugRenderer (true, true, false, true, true, true);
 
         MapLayers layers = map.getLayers();
         int gameIndex = layers.getIndex ("gm");
@@ -79,12 +83,19 @@ public class RenderSystem extends EntitySystem {
 
     @Override
     public void update (float deltaTime) {
-        camera.update();
-        mapRenderer.setView (camera);
-        mapRenderer.render(bgLayers);
+        /*for (Entity entity : engine.getEntitiesFor(Family.all(CTransform.class, CSprite.class).get())) {
+            CTransform transform = Mappers.TRANSFORM.get(entity);
+            CSprite sprite = Mappers.SPRITE.get(entity);
+            sprite.sprite.setX (transform.position.x);
+            sprite.sprite.setY (transform.position.y);
+        }*/
 
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
+        camera.update ();
+        mapRenderer.setView (camera);
+        mapRenderer.render (bgLayers);
+
+        batch.setProjectionMatrix (camera.combined);
+        batch.begin ();
 
         for (Entity entity : gameObjectEntities) {
             CGameObject gameObject = Mappers.GAMEOBJECT.get(entity);
@@ -96,6 +107,8 @@ public class RenderSystem extends EntitySystem {
 
         batch.end();
 
-        mapRenderer.render(fgLayers);
+        mapRenderer.render (fgLayers);
+
+        box2DRenderer.render (world, camera.combined);
     }
 }

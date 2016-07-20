@@ -25,6 +25,15 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Shape2D;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -52,9 +61,10 @@ public class Scene implements EntityListener
     OrthographicCamera gameCamera;
     OrthographicCamera guiCamera;
     Engine engine;
+    World world;
     TiledMap map;
 
-    HashMap<Integer,Shape2D> colliders;
+    HashMap<Integer,Collider> colliders;
 
     boolean sceneLoaded = false;
 
@@ -69,9 +79,15 @@ public class Scene implements EntityListener
         map = new TmxMapLoader ().load (filepath);
 
         MapProperties properties = map.getProperties();
-        float viewportX = Float.parseFloat (properties.get ("viewportX", "800f", String.class));
-        float viewportY = Float.parseFloat (properties.get ("viewportY", "600f", String.class));
+        int width = Gdx.graphics.getWidth();
+        int height = Gdx.graphics.getHeight();
+        float viewportX = Float.parseFloat (properties.get ("viewportX", width+"", String.class));
+        float viewportY = Float.parseFloat (properties.get ("viewportY", height+"", String.class));
+        String[] gravity = properties.get ("gravity", "0 0", String.class).split("\\s");
+        float gravityX = Float.parseFloat (gravity[0]);
+        float gravityY = Float.parseFloat (gravity[1]);
 
+        world = new World (new Vector2 (gravityX, gravityY), true);
         gameCamera = new OrthographicCamera (viewportX, viewportY);
         guiCamera = new OrthographicCamera (Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         viewport = new FitViewport (viewportX, viewportY, gameCamera);
@@ -79,14 +95,14 @@ public class Scene implements EntityListener
         engine = new Engine ();
         engine.addEntityListener (this);
 
-        colliders = new HashMap<Integer, Shape2D> ();
+        colliders = new HashMap<Integer, Collider> ();
 
         sceneLoaded = false;
         build ();
-        engine.addSystem (new UpdateSystem(new Vector2 (0, 0)));
-        engine.addSystem (new RenderSystem(gameCamera, map));
-        engine.addSystem (new LightSystem());
-        engine.addSystem (new GUISystem(guiCamera));
+        engine.addSystem (new UpdateSystem (world));
+        engine.addSystem (new RenderSystem (gameCamera, world, map));
+        engine.addSystem (new LightSystem ());
+        engine.addSystem (new GUISystem (guiCamera));
 
         sceneManager.getAssetManager().finishLoading();
         sceneLoaded = true;
@@ -115,31 +131,75 @@ public class Scene implements EntityListener
         TiledMapTileLayer tilesLayer = (TiledMapTileLayer) mapLayers.get ("tiles");
 
         for (MapObject obj : colliderLayer.getObjects()) {
+            Vector2 position = new Vector2 ();
             Vector2 center = new Vector2 ();
-            Shape2D shape = null;
+            PolygonShape shape = null;
 
             if (obj instanceof CircleMapObject) {
                 Circle circle = ((CircleMapObject) obj).getCircle();
                 center.x = circle.x;
                 center.y = circle.y;
-                shape = circle;
+                position = center;
+
+                shape = new PolygonShape ();
+                shape.setRadius (circle.radius);
 
             } else if (obj instanceof RectangleMapObject) {
                 Rectangle rectangle = ((RectangleMapObject) obj).getRectangle();
                 rectangle.getCenter (center);
-                shape = rectangle;
+                position.x = rectangle.getWidth () / 2;
+                position.y = rectangle.getHeight() / 2;
+
+                shape = new PolygonShape ();
+                shape.setAsBox (rectangle.getWidth()/2, rectangle.getHeight()/2);
 
             } else if (obj instanceof PolygonMapObject) {
                 Polygon polygon = ((PolygonMapObject) obj).getPolygon();
-                polygon.getBoundingRectangle().getCenter (center);
-                shape = polygon;
+                Rectangle bounds = polygon.getBoundingRectangle ();
+                bounds.getCenter (center);
+
+                float[] vertices = polygon.getVertices ();
+                float ax = 0; float ay = 0;
+                for (int i=0; i<vertices.length;) {
+                    ax += vertices[i++];
+                    ay += vertices[i++];
+                }
+                ax /= vertices.length/2;
+                ay /= vertices.length/2;
+
+                float w = tilesLayer.getTileWidth ()/2;
+                float h = tilesLayer.getTileHeight ()/2;
+
+                position.x = w - (Math.copySign (w, ax) - ax);
+                position.y = h - (Math.copySign (h, ay) - ay);
+
+                // TODO apply transform to polygon and use that to get center
+                //center.x = bounds.getX() + position.x;
+                //center.y = bounds.getY() + position.y;
+                //center.x = polygon.ge;
+                //center.y = polygon.getY();
+                //System.out.println(center);
+
+                for (int i=0; i<vertices.length;) {
+                    vertices[i++] -= ax;
+                    vertices[i++] -= ay;
+                }
+
+                shape = new PolygonShape ();
+                shape.set (vertices);
             }
 
             int x = (int)(center.x / tilesLayer.getTileWidth ());
             int y = (int)(center.y / tilesLayer.getTileHeight ());
+            System.out.println(x+", "+y);
+            System.out.println(center);
 
             TiledMapTileLayer.Cell cell = tilesLayer.getCell (x, y);
-            colliders.put(cell.getTile().getId(), shape);
+
+            Collider collider = new Collider ();
+            collider.position = position;
+            collider.shape = shape;
+            colliders.put(cell.getTile().getId(), collider);
         }
     }
 
@@ -156,18 +216,18 @@ public class Scene implements EntityListener
                 Rectangle rectangle = ((RectangleMapObject) obj).getRectangle ();
                 MapProperties properties = obj.getProperties();
                 String name = obj.getName ();
-                String type = (String) properties.get ("type");
+                String type = properties.get ("type", "", String.class);
 
                 int hashedType = type.hashCode();
-                String image = (String) properties.get ("image");
-                String script = (String) properties.get ("script");
+                String imageSrc = properties.get ("image", "", String.class);
+                String scriptSrc = properties.get ("script", "", String.class);
 
-                addGameObject (entity, name, type, script);
+                addGameObject (entity, name, type, scriptSrc);
                 addTransform (entity, rectangle);
 
                 // TODO load ui widgets
                 if (hashedType == TYPE_SPRITE) {
-                    addSprite (entity, image);
+                    addSprite (entity, imageSrc);
                 }
                 else if (hashedType == TYPE_BUTTON) {
 
@@ -186,8 +246,52 @@ public class Scene implements EntityListener
     protected void loadMap ()
     {
         for (MapLayer mapLayer : map.getLayers()) {
-            if (mapLayer instanceof TiledMapTileLayer || mapLayer instanceof TiledMapImageLayer) {
+            if (mapLayer instanceof TiledMapTileLayer) {
                 // TODO add tile colliders
+                TiledMapTileLayer tileLayer = (TiledMapTileLayer) mapLayer;
+                for (int i=0; i<tileLayer.getWidth(); i++) {
+                    for (int j=0; j<tileLayer.getHeight(); j++) {
+                        TiledMapTileLayer.Cell cell = tileLayer.getCell(i, j);
+                        if (cell != null) {
+                            Collider collider = colliders.get(cell.getTile().getId());
+                            if (collider != null) {
+                                // Create and add body to world
+                                // Now create a BodyDefinition.  This defines the physics objects type and position in the simulation
+                                BodyDef bodyDef = new BodyDef ();
+                                bodyDef.type = BodyDef.BodyType.StaticBody;
+                                // We are going to use 1 to 1 dimensions.  Meaning 1 in physics engine is 1 pixel
+                                // Set our body to the same position as our sprite
+                                bodyDef.position.set (collider.position.x+i*16, collider.position.y+j*16);
+
+                                // Create a body in the world using our definition
+                                Body body = world.createBody (bodyDef);
+
+                                // Now define the dimensions of the physics shape
+                                //PolygonShape shape = new PolygonShape();
+                                // We are a box, so this makes sense, no?
+                                // Basically set the physics polygon to a box with the same dimensions as our sprite
+                                //shape.setAsBox(sprite.getWidth()/2, sprite.getHeight()/2);
+
+                                // FixtureDef is a confusing expression for physical properties
+                                // Basically this is where you, in addition to defining the shape of the body
+                                // you also define it's properties like density, restitution and others we will see shortly
+                                // If you are wondering, density and area are used to calculate over all mass
+                                FixtureDef fixtureDef = new FixtureDef ();
+                                fixtureDef.shape = collider.shape;
+                                fixtureDef.density = 1f;
+
+                                Fixture fixture = body.createFixture (fixtureDef);
+
+                                // Shape is the only disposable of the lot, so get rid of it
+                                //shape.dispose();
+                            }
+                        }
+                    }
+                }
+
+            } else if (mapLayer instanceof TiledMapImageLayer) {
+                // TODO add image colliders?
+
             } else {
                 for (MapObject obj : mapLayer.getObjects()) {
                     // TODO add entity objects
@@ -218,42 +322,42 @@ public class Scene implements EntityListener
         gameObject.name = name;
         gameObject.tag = tag;
 
-        String[] scripts = new String[0];
-        if (scriptSrc != null) {
-            scripts = scriptSrc.split("\\s");
-        }
-
-        for (String scr : scripts) {
-            try {
-                Class scrClass = ClassReflection.forName(scr);
-                Constructor constructor = null;
+        if (!scriptSrc.isEmpty ()) {
+            String[] scripts = scriptSrc.split("\\s");
+            for (String scr : scripts) {
                 try {
-                    constructor = scrClass.getConstructor(SceneManager.class, Entity.class);
-                } catch (NoSuchMethodException e) {
+                    Class scrClass = ClassReflection.forName(scr);
+                    Constructor constructor = null;
+                    try {
+                        constructor = scrClass.getConstructor(SceneManager.class, Entity.class);
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    }
+
+                    assert (constructor != null);
+
+                    Object object = null;
+                    try {
+                        object = constructor.newInstance(sceneManager, entity);
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+
+                    assert (object != null);
+                    assert (object instanceof Script);
+
+                    Script script = (Script) object;
+                    gameObject.scripts.add(script);
+
+                } catch (ReflectionException e) {
+                    String script = scr.isEmpty() ? "<empty>" : scr;
+                    System.err.println("Failed to load [" + name + "] script: " + script);
                     e.printStackTrace();
                 }
-
-                assert (constructor != null);
-
-                Object object = null;
-                try {
-                    object = constructor.newInstance (sceneManager, entity);
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-
-                assert (object != null);
-                assert (object instanceof Script);
-
-                Script script = (Script) object;
-                gameObject.scripts.add (script);
-
-            } catch (ReflectionException e) {
-                e.printStackTrace();
             }
         }
 
@@ -274,11 +378,7 @@ public class Scene implements EntityListener
     {
         CMaterial material = new CMaterial();
 
-        String[] images = new String[0];
-        if (imageSrc != null) {
-            images = imageSrc.split("\\s");
-        }
-
+        String[] images = imageSrc.split("\\s");
         for (String img : images) {
             sceneManager.getAssetManager().load (img, Texture.class);
             material.images.add (img);
@@ -314,7 +414,6 @@ public class Scene implements EntityListener
     public void update ()
     {
         engine.update (Gdx.graphics.getDeltaTime ());
-        //debugRenderer.render(world, viewport.getCamera ().combined);
     }
 
     public void dispose ()

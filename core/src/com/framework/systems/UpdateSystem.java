@@ -21,9 +21,9 @@ public class UpdateSystem extends EntitySystem {
 
     World world;
 
-    public UpdateSystem (Vector2 gravity)
+    public UpdateSystem (World world)
     {
-        world = new World(gravity, true);
+        this.world = world;
     }
 
     public void addedToEngine(Engine engine) {
