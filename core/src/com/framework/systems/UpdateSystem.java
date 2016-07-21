@@ -37,5 +37,7 @@ public class UpdateSystem extends EntitySystem {
                 script.update (Gdx.graphics.getDeltaTime ());
             }
         }
+
+        world.step(deltaTime, 10, 10);
     }
 }

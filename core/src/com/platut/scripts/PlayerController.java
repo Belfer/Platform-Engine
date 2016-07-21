@@ -7,9 +7,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.framework.SceneManager;
 import com.framework.Script;
+import com.framework.components.CCollider;
 import com.framework.components.CSprite;
 
 /**
@@ -22,6 +24,7 @@ public class PlayerController extends Script {
 
     OrthographicCamera gameCamera;
     CSprite sprite;
+    CCollider collider;
 
     Sprite idle;
 
@@ -31,12 +34,14 @@ public class PlayerController extends Script {
         gameCamera.position.set (getTransform().position);
 
         sprite = getEntity().getComponent (CSprite.class);
+        collider = getEntity().getComponent (CCollider.class);
+
         idle = new Sprite (new TextureRegion(sprite.sprite.getTexture(), 0, 0, 16, 16));
     }
 
     @Override
     public void update(float deltaTime) {
-        Vector3 move = new Vector3 ();
+        Vector2 move = new Vector2 ();
 
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             move.y = 1;
@@ -51,7 +56,12 @@ public class PlayerController extends Script {
         }
 
         move = move.nor().scl (100 * deltaTime);
-        getTransform().position.add (move);
+        collider.body.setLinearVelocity(collider.body.getLinearVelocity().add(move));
+
+        //collider.body.applyForce (move, collider.body.getLocalCenter(), true);
+
+        getTransform().position.x = collider.body.getPosition().x-8;
+        getTransform().position.y = collider.body.getPosition().y-8;
 
         gameCamera.position.lerp (getTransform().position, 0.1f);
     }
