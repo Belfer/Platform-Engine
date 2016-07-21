@@ -39,6 +39,7 @@ public class SceneManager extends ApplicationAdapter {
             currentScene.dispose ();
         }
         currentScene = scene;
+        currentScene.build ();
         currentScene.start ();
     }
 

@@ -19,7 +19,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.framework.Mappers;
 import com.framework.Script;
 import com.framework.components.CGameObject;
-import com.framework.components.CSprite;
 import com.framework.components.CTransform;
 
 import java.util.ArrayList;

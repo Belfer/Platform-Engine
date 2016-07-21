@@ -8,7 +8,6 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObject;
@@ -21,24 +20,21 @@ import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Shape2D;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Logger;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.framework.components.CButton;
 import com.framework.components.CGameObject;
 import com.framework.components.CMaterial;
 import com.framework.components.CSprite;
@@ -63,6 +59,7 @@ public class Scene implements EntityListener
     OrthographicCamera guiCamera;
     Engine engine;
     World world;
+    Stage stage;
     TiledMap map;
 
     HashMap<Integer,Collider> colliders;
@@ -93,26 +90,19 @@ public class Scene implements EntityListener
         guiCamera = new OrthographicCamera (Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         viewport = new FitViewport (viewportX, viewportY, gameCamera);
 
+        stage = new Stage ();
+        Gdx.input.setInputProcessor (stage);
+
         engine = new Engine ();
         engine.addEntityListener (this);
 
         colliders = new HashMap<Integer, Collider> ();
-
-        sceneLoaded = false;
-        build ();
-        engine.addSystem (new UpdateSystem (world));
-        engine.addSystem (new RenderSystem (gameCamera, world, map));
-        engine.addSystem (new LightSystem ());
-        engine.addSystem (new GUISystem (guiCamera));
-
-        sceneManager.getAssetManager().finishLoading();
-        sceneLoaded = true;
-
-        onPostLoad();
     }
 
     public void build ()
     {
+        sceneLoaded = false;
+
         MapProperties properties = map.getProperties();
         String collider = properties.get ("collider", "", String.class);
         String ui = properties.get ("ui", "", String.class);
@@ -120,131 +110,147 @@ public class Scene implements EntityListener
         loadColliders (collider);
         loadUI (ui);
         loadMap ();
+        loadSystems ();
+
+        sceneManager.getAssetManager().finishLoading();
+        sceneLoaded = true;
+
+        onPostLoad ();
+    }
+
+    protected void loadSystems ()
+    {
+        engine.addSystem (new UpdateSystem (world));
+        engine.addSystem (new RenderSystem (gameCamera, world, map));
+        engine.addSystem (new LightSystem ());
+        engine.addSystem (new GUISystem (guiCamera, stage));
     }
 
     protected void loadColliders (String filename)
     {
-        TiledMap colliderMap = new TmxMapLoader ().load (filename);
-        //TiledMapTileSets tileSets = tiledMap.getTileSets();
-        MapLayers mapLayers = colliderMap.getLayers();
+        if (!filename.isEmpty()) {
+            TiledMap colliderMap = new TmxMapLoader().load(filename);
+            //TiledMapTileSets tileSets = tiledMap.getTileSets();
+            MapLayers mapLayers = colliderMap.getLayers();
 
-        MapLayer colliderLayer = mapLayers.get ("colliders");
-        TiledMapTileLayer tilesLayer = (TiledMapTileLayer) mapLayers.get ("tiles");
+            MapLayer colliderLayer = mapLayers.get("colliders");
+            TiledMapTileLayer tilesLayer = (TiledMapTileLayer) mapLayers.get("tiles");
 
-        for (MapObject obj : colliderLayer.getObjects()) {
-            MapProperties properties = obj.getProperties();
-            float rotation = properties.get("rotation", 0f, Float.class);
+            for (MapObject obj : colliderLayer.getObjects()) {
+                MapProperties properties = obj.getProperties();
+                float rotation = properties.get("rotation", 0f, Float.class);
 
-            Vector2 position = new Vector2 ();
-            Vector2 center = new Vector2 ();
-            PolygonShape shape = null;
+                Vector2 position = new Vector2();
+                Vector2 center = new Vector2();
+                PolygonShape shape = null;
 
-            if (obj instanceof CircleMapObject) {
-                Circle circle = ((CircleMapObject) obj).getCircle();
-                center.x = circle.x;
-                center.y = circle.y;
-                position = center;
+                if (obj instanceof CircleMapObject) {
+                    Circle circle = ((CircleMapObject) obj).getCircle();
+                    center.x = circle.x;
+                    center.y = circle.y;
+                    position = center;
 
-                shape = new PolygonShape ();
-                shape.setRadius (circle.radius);
+                    shape = new PolygonShape();
+                    shape.setRadius(circle.radius);
 
-            } else if (obj instanceof RectangleMapObject) {
-                Rectangle rectangle = ((RectangleMapObject) obj).getRectangle();
-                rectangle.getCenter (center);
-                position.x = rectangle.getWidth () / 2;
-                position.y = rectangle.getHeight() / 2;
+                } else if (obj instanceof RectangleMapObject) {
+                    Rectangle rectangle = ((RectangleMapObject) obj).getRectangle();
+                    rectangle.getCenter(center);
+                    position.x = rectangle.getWidth() / 2;
+                    position.y = rectangle.getHeight() / 2;
 
-                shape = new PolygonShape ();
-                shape.setAsBox (rectangle.getWidth()/2, rectangle.getHeight()/2);
+                    shape = new PolygonShape();
+                    shape.setAsBox(rectangle.getWidth() / 2, rectangle.getHeight() / 2);
 
-            } else if (obj instanceof PolygonMapObject) {
-                Polygon polygon = ((PolygonMapObject) obj).getPolygon();
-                polygon.setRotation (-rotation);
+                } else if (obj instanceof PolygonMapObject) {
+                    Polygon polygon = ((PolygonMapObject) obj).getPolygon();
+                    polygon.setRotation(-rotation);
 
-                float[] tmp = polygon.getTransformedVertices ();
-                Vector2[] vertices = new Vector2[tmp.length/2];
-                int v = 0;
-                for (int i=0; i<tmp.length; i+=2) {
-                    vertices[v] = new Vector2(tmp[i] - polygon.getX(), tmp[i+1] - polygon.getY());
-                    vertices[v].x = Math.round(vertices[v].x);
-                    vertices[v].y = Math.round(vertices[v].y);
-                    v++;
-                }
-
-                Vector2 average = new Vector2();
-                for (Vector2 i : vertices) average.add (i);
-                average.scl(1f/vertices.length);
-
-                if (average.x<0 && average.y>0) {
-                    for (Vector2 i : vertices) i.x += tilesLayer.getTileWidth();
-                } else if (average.x>0 && average.y<0) {
-                    for (Vector2 i : vertices) i.y += tilesLayer.getTileHeight();
-                } else if (average.x<0 && average.y<0) {
-                    for (Vector2 i : vertices) {
-                        i.x += tilesLayer.getTileWidth();
-                        i.y += tilesLayer.getTileHeight();
+                    float[] tmp = polygon.getTransformedVertices();
+                    Vector2[] vertices = new Vector2[tmp.length / 2];
+                    int v = 0;
+                    for (int i = 0; i < tmp.length; i += 2) {
+                        vertices[v] = new Vector2(tmp[i] - polygon.getX(), tmp[i + 1] - polygon.getY());
+                        vertices[v].x = Math.round(vertices[v].x);
+                        vertices[v].y = Math.round(vertices[v].y);
+                        v++;
                     }
+
+                    Vector2 average = new Vector2();
+                    for (Vector2 i : vertices) average.add(i);
+                    average.scl(1f / vertices.length);
+
+                    if (average.x < 0 && average.y > 0) {
+                        for (Vector2 i : vertices) i.x += tilesLayer.getTileWidth();
+                    } else if (average.x > 0 && average.y < 0) {
+                        for (Vector2 i : vertices) i.y += tilesLayer.getTileHeight();
+                    } else if (average.x < 0 && average.y < 0) {
+                        for (Vector2 i : vertices) {
+                            i.x += tilesLayer.getTileWidth();
+                            i.y += tilesLayer.getTileHeight();
+                        }
+                    }
+
+                    float w = tilesLayer.getTileWidth();
+                    float h = tilesLayer.getTileHeight();
+                    position.x = polygon.getX() - (int) (polygon.getX() / w) * w;
+                    position.y = polygon.getY() - (int) (polygon.getY() / h) * h;
+                    center.x = polygon.getX() + average.x;
+                    center.y = polygon.getY() + average.y;
+
+                    shape = new PolygonShape();
+                    shape.set(vertices);
                 }
 
-                float w = tilesLayer.getTileWidth();
-                float h = tilesLayer.getTileHeight();
-                position.x = polygon.getX() - (int)(polygon.getX() / w) * w;
-                position.y = polygon.getY() - (int)(polygon.getY() / h) * h;
-                center.x = polygon.getX()+average.x;
-                center.y = polygon.getY()+average.y;
+                int x = (int) (center.x / tilesLayer.getTileWidth());
+                int y = (int) (center.y / tilesLayer.getTileHeight());
 
-                shape = new PolygonShape ();
-                shape.set (vertices);
+                TiledMapTileLayer.Cell cell = tilesLayer.getCell(x, y);
+
+                Collider collider = new Collider();
+                collider.position = position;
+                collider.shape = shape;
+                colliders.put(cell.getTile().getId(), collider);
             }
-
-            int x = (int)(center.x / tilesLayer.getTileWidth ());
-            int y = (int)(center.y / tilesLayer.getTileHeight ());
-
-            TiledMapTileLayer.Cell cell = tilesLayer.getCell (x, y);
-
-            Collider collider = new Collider ();
-            collider.position = position;
-            collider.shape = shape;
-            colliders.put(cell.getTile().getId(), collider);
         }
     }
 
     protected void loadUI (String filename)
     {
-        TiledMap uiMap = new TmxMapLoader ().load (filename);
-        MapLayers mapLayers = uiMap.getLayers();
-        MapLayer uiLayer = mapLayers.get ("ui");
+        if (!filename.isEmpty()) {
+            TiledMap uiMap = new TmxMapLoader().load(filename);
+            MapLayers mapLayers = uiMap.getLayers();
+            MapLayer uiLayer = mapLayers.get("ui");
 
-        for (MapObject obj : uiLayer.getObjects()) {
-            if (obj instanceof RectangleMapObject) {
-                Entity entity = new Entity ();
+            for (MapObject obj : uiLayer.getObjects()) {
+                if (obj instanceof RectangleMapObject) {
+                    Entity entity = new Entity();
 
-                Rectangle rectangle = ((RectangleMapObject) obj).getRectangle ();
-                MapProperties properties = obj.getProperties();
-                String name = obj.getName ();
-                String type = properties.get ("type", "", String.class);
+                    Rectangle rectangle = ((RectangleMapObject) obj).getRectangle();
+                    MapProperties properties = obj.getProperties();
+                    String name = obj.getName();
+                    String type = properties.get("type", "", String.class);
 
-                int hashedType = type.hashCode();
-                String imageSrc = properties.get ("image", "", String.class);
-                String scriptSrc = properties.get ("script", "", String.class);
+                    int hashedType = type.hashCode();
+                    String imageSrc = properties.get("image", "", String.class);
+                    String scriptSrc = properties.get("script", "", String.class);
 
-                addGameObject (entity, name, type, scriptSrc);
-                addTransform (entity, rectangle);
+                    addGameObject(entity, name, type, scriptSrc);
+                    addTransform(entity, rectangle);
 
-                // TODO load ui widgets
-                if (hashedType == TYPE_SPRITE) {
-                    addSprite (entity, imageSrc);
+                    // TODO load ui widgets
+                    if (hashedType == TYPE_SPRITE) {
+                        addSprite(entity, imageSrc);
+                    } else if (hashedType == TYPE_BUTTON) {
+                        addButton(entity, rectangle, imageSrc);
+                    } else if (hashedType == TYPE_TOGGLE) {
+                        String off = (String) properties.get("off");
+                        String on = (String) properties.get("on");
+                        //Boolean state = (Boolean) properties.get ("state");
+                    }
+
+                    engine.addEntity(entity);
                 }
-                else if (hashedType == TYPE_BUTTON) {
-
-                }
-                else if (hashedType == TYPE_TOGGLE) {
-                    String off = (String) properties.get ("off");
-                    String on = (String) properties.get ("on");
-                    //Boolean state = (Boolean) properties.get ("state");
-                }
-
-                engine.addEntity (entity);
             }
         }
     }
@@ -253,43 +259,24 @@ public class Scene implements EntityListener
     {
         for (MapLayer mapLayer : map.getLayers()) {
             if (mapLayer instanceof TiledMapTileLayer) {
-                // TODO add tile colliders
+                // Load tile collider from colliders map
                 TiledMapTileLayer tileLayer = (TiledMapTileLayer) mapLayer;
                 for (int i=0; i<tileLayer.getWidth(); i++) {
                     for (int j=0; j<tileLayer.getHeight(); j++) {
+
                         TiledMapTileLayer.Cell cell = tileLayer.getCell(i, j);
                         if (cell != null) {
                             Collider collider = colliders.get(cell.getTile().getId());
                             if (collider != null) {
-                                // Create and add body to world
-                                // Now create a BodyDefinition.  This defines the physics objects type and position in the simulation
                                 BodyDef bodyDef = new BodyDef ();
                                 bodyDef.type = BodyDef.BodyType.StaticBody;
-                                // We are going to use 1 to 1 dimensions.  Meaning 1 in physics engine is 1 pixel
-                                // Set our body to the same position as our sprite
                                 bodyDef.position.set (collider.position.x+i*16, collider.position.y+j*16);
-
-                                // Create a body in the world using our definition
                                 Body body = world.createBody (bodyDef);
 
-                                // Now define the dimensions of the physics shape
-                                //PolygonShape shape = new PolygonShape();
-                                // We are a box, so this makes sense, no?
-                                // Basically set the physics polygon to a box with the same dimensions as our sprite
-                                //shape.setAsBox(sprite.getWidth()/2, sprite.getHeight()/2);
-
-                                // FixtureDef is a confusing expression for physical properties
-                                // Basically this is where you, in addition to defining the shape of the body
-                                // you also define it's properties like density, restitution and others we will see shortly
-                                // If you are wondering, density and area are used to calculate over all mass
                                 FixtureDef fixtureDef = new FixtureDef ();
                                 fixtureDef.shape = collider.shape;
                                 fixtureDef.density = 1f;
-
-                                Fixture fixture = body.createFixture (fixtureDef);
-
-                                // Shape is the only disposable of the lot, so get rid of it
-                                //shape.dispose();
+                                body.createFixture (fixtureDef);
                             }
                         }
                     }
@@ -322,6 +309,7 @@ public class Scene implements EntityListener
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void addGameObject (Entity entity, String name, String tag, String scriptSrc)
     {
         CGameObject gameObject = new CGameObject();
@@ -382,7 +370,8 @@ public class Scene implements EntityListener
 
     private void addSprite (Entity entity, String imageSrc)
     {
-        CMaterial material = new CMaterial();
+        CMaterial material = new CMaterial ();
+        CSprite sprite = new CSprite ();
 
         String[] images = imageSrc.split("\\s");
         for (String img : images) {
@@ -390,9 +379,27 @@ public class Scene implements EntityListener
             material.images.add (img);
         }
 
+        entity.add (sprite);
         entity.add (material);
     }
 
+    private void addButton (Entity entity, Rectangle bounds, String imageSrc) {
+        CMaterial material = new CMaterial();
+        CButton button = new CButton();
+        button.button.setBounds (bounds.x, bounds.y, bounds.width, bounds.height);
+
+        String[] images = imageSrc.split("\\s");
+        for (String img : images) {
+            sceneManager.getAssetManager().load (img, Texture.class);
+            material.images.add (img);
+        }
+
+        //stage.addActor (button.button);
+        entity.add (button);
+        entity.add (material);
+    }
+
+    @SuppressWarnings("unchecked")
     private void onPostLoad ()
     {
         ImmutableArray<Entity> entities = engine.getEntitiesFor(Family.all(CMaterial.class).get());
@@ -400,9 +407,17 @@ public class Scene implements EntityListener
             CMaterial material = Mappers.MATERIAL.get(entity);
 
             for (String img : material.images) {
-                CSprite sprite = new CSprite();
-                sprite.sprite = new Sprite (sceneManager.getAssetManager().get(img, Texture.class));
-                entity.add (sprite);
+                Texture texture = sceneManager.getAssetManager().get(img, Texture.class);
+
+                CSprite sprite = entity.getComponent (CSprite.class);
+                if (sprite != null) {
+                    sprite.sprite.setTexture (texture);
+                }
+
+                CButton button = entity.getComponent (CButton.class);
+                if (button != null) {
+                    //button.button.setStyle();
+                }
             }
         }
     }

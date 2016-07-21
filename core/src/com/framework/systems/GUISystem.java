@@ -7,10 +7,11 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.framework.Mappers;
 import com.framework.Script;
 import com.framework.components.CGameObject;
-import com.framework.components.CMaterial;
 import com.framework.components.CSprite;
 import com.framework.components.CTransform;
 
@@ -24,9 +25,22 @@ public class GUISystem extends EntitySystem {
     OrthographicCamera camera;
     SpriteBatch batch;
 
-    public GUISystem (OrthographicCamera camera) {
+    Stage stage;
+    Table table;
+
+    public GUISystem (OrthographicCamera camera, Stage stage) {
         this.camera = camera;
+        this.stage = stage;
         batch = new SpriteBatch ();
+
+        //stage = new Stage();
+        //Gdx.input.setInputProcessor(stage);
+
+        table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
+
+        table.setDebug(true);
     }
 
     @Override
@@ -36,7 +50,9 @@ public class GUISystem extends EntitySystem {
     }
 
     @Override
-    public void removedFromEngine (Engine engine) { }
+    public void removedFromEngine (Engine engine) {
+        //stage.dispose();
+    }
 
     @Override
     public void update (float deltaTime) {
@@ -46,6 +62,8 @@ public class GUISystem extends EntitySystem {
             sprite.sprite.setX (transform.position.x);
             sprite.sprite.setY (transform.position.y);
         }*/
+        stage.act (deltaTime);
+        stage.draw ();
 
         camera.update();
 
