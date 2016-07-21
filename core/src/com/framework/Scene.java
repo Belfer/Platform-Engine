@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.CircleMapObject;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
@@ -25,9 +26,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
@@ -35,6 +36,7 @@ import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.framework.components.CButton;
+import com.framework.components.CCollider;
 import com.framework.components.CGameObject;
 import com.framework.components.CMaterial;
 import com.framework.components.CSprite;
@@ -46,7 +48,11 @@ import com.framework.systems.UpdateSystem;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.AbstractMap;
 import java.util.HashMap;
+import java.util.Map;
+
+import javafx.util.Pair;
 
 /**
  * Created by conor on 16/07/16.
@@ -62,7 +68,9 @@ public class Scene implements EntityListener
     Stage stage;
     TiledMap map;
 
-    HashMap<Integer,Collider> colliders;
+    IEntityFactory entityFactory;
+
+    HashMap<Integer,Map.Entry<Shape,Vector2>> colliders;
 
     boolean sceneLoaded = false;
 
@@ -96,7 +104,7 @@ public class Scene implements EntityListener
         engine = new Engine ();
         engine.addEntityListener (this);
 
-        colliders = new HashMap<Integer, Collider> ();
+        colliders = new HashMap<Integer,Map.Entry<Shape,Vector2>> ();
     }
 
     public void build ()
@@ -104,11 +112,11 @@ public class Scene implements EntityListener
         sceneLoaded = false;
 
         MapProperties properties = map.getProperties();
-        String collider = properties.get ("collider", "", String.class);
-        String ui = properties.get ("ui", "", String.class);
+        String colliderMap = properties.get ("collider", "", String.class);
+        String uiMap = properties.get ("ui", "", String.class);
 
-        loadColliders (collider);
-        loadUI (ui);
+        loadColliders (colliderMap);
+        loadUI (uiMap);
         loadMap ();
         loadSystems ();
 
@@ -129,18 +137,20 @@ public class Scene implements EntityListener
     protected void loadColliders (String filename)
     {
         if (!filename.isEmpty()) {
-            TiledMap colliderMap = new TmxMapLoader().load(filename);
-            //TiledMapTileSets tileSets = tiledMap.getTileSets();
+            TiledMap colliderMap = new SceneMapLoader().load(filename);
+            MapProperties mapProperties = colliderMap.getProperties();
             MapLayers mapLayers = colliderMap.getLayers();
 
+            int tilewidth = mapProperties.get("tilewidth", 0, Integer.class);
+            int tileheight = mapProperties.get("tileheight", 0, Integer.class);
+
             MapLayer colliderLayer = mapLayers.get("colliders");
-            TiledMapTileLayer tilesLayer = (TiledMapTileLayer) mapLayers.get("tiles");
 
             for (MapObject obj : colliderLayer.getObjects()) {
                 MapProperties properties = obj.getProperties();
                 float rotation = properties.get("rotation", 0f, Float.class);
 
-                Vector2 position = new Vector2();
+                Vector2 offset = new Vector2();
                 Vector2 center = new Vector2();
                 PolygonShape shape = null;
 
@@ -148,7 +158,7 @@ public class Scene implements EntityListener
                     Circle circle = ((CircleMapObject) obj).getCircle();
                     center.x = circle.x;
                     center.y = circle.y;
-                    position = center;
+                    offset = center;
 
                     shape = new PolygonShape();
                     shape.setRadius(circle.radius);
@@ -156,8 +166,8 @@ public class Scene implements EntityListener
                 } else if (obj instanceof RectangleMapObject) {
                     Rectangle rectangle = ((RectangleMapObject) obj).getRectangle();
                     rectangle.getCenter(center);
-                    position.x = rectangle.getWidth() / 2;
-                    position.y = rectangle.getHeight() / 2;
+                    offset.x = rectangle.getWidth() / 2;
+                    offset.y = rectangle.getHeight() / 2;
 
                     shape = new PolygonShape();
                     shape.setAsBox(rectangle.getWidth() / 2, rectangle.getHeight() / 2);
@@ -170,10 +180,7 @@ public class Scene implements EntityListener
                     Vector2[] vertices = new Vector2[tmp.length / 2];
                     int v = 0;
                     for (int i = 0; i < tmp.length; i += 2) {
-                        vertices[v] = new Vector2(tmp[i] - polygon.getX(), tmp[i + 1] - polygon.getY());
-                        vertices[v].x = Math.round(vertices[v].x);
-                        vertices[v].y = Math.round(vertices[v].y);
-                        v++;
+                        vertices[v++] = new Vector2(tmp[i] - polygon.getX(), tmp[i + 1] - polygon.getY());
                     }
 
                     Vector2 average = new Vector2();
@@ -181,20 +188,18 @@ public class Scene implements EntityListener
                     average.scl(1f / vertices.length);
 
                     if (average.x < 0 && average.y > 0) {
-                        for (Vector2 i : vertices) i.x += tilesLayer.getTileWidth();
+                        for (Vector2 i : vertices) i.x += tilewidth;
                     } else if (average.x > 0 && average.y < 0) {
-                        for (Vector2 i : vertices) i.y += tilesLayer.getTileHeight();
+                        for (Vector2 i : vertices) i.y += tileheight;
                     } else if (average.x < 0 && average.y < 0) {
                         for (Vector2 i : vertices) {
-                            i.x += tilesLayer.getTileWidth();
-                            i.y += tilesLayer.getTileHeight();
+                            i.x += tilewidth;
+                            i.y += tileheight;
                         }
                     }
 
-                    float w = tilesLayer.getTileWidth();
-                    float h = tilesLayer.getTileHeight();
-                    position.x = polygon.getX() - (int) (polygon.getX() / w) * w;
-                    position.y = polygon.getY() - (int) (polygon.getY() / h) * h;
+                    offset.x = polygon.getX() - (int) (polygon.getX() / tilewidth) * tilewidth;
+                    offset.y = polygon.getY() - (int) (polygon.getY() / tileheight) * tileheight;
                     center.x = polygon.getX() + average.x;
                     center.y = polygon.getY() + average.y;
 
@@ -202,15 +207,8 @@ public class Scene implements EntityListener
                     shape.set(vertices);
                 }
 
-                int x = (int) (center.x / tilesLayer.getTileWidth());
-                int y = (int) (center.y / tilesLayer.getTileHeight());
-
-                TiledMapTileLayer.Cell cell = tilesLayer.getCell(x, y);
-
-                Collider collider = new Collider();
-                collider.position = position;
-                collider.shape = shape;
-                colliders.put(cell.getTile().getId(), collider);
+                int tileId = obj.getProperties().get ("tileId", 0, Integer.class);
+                colliders.put (tileId, new AbstractMap.SimpleImmutableEntry<Shape,Vector2>(shape, offset));
             }
         }
     }
@@ -259,6 +257,7 @@ public class Scene implements EntityListener
     {
         for (MapLayer mapLayer : map.getLayers()) {
             if (mapLayer instanceof TiledMapTileLayer) {
+
                 // Load tile collider from colliders map
                 TiledMapTileLayer tileLayer = (TiledMapTileLayer) mapLayer;
                 for (int i=0; i<tileLayer.getWidth(); i++) {
@@ -266,17 +265,22 @@ public class Scene implements EntityListener
 
                         TiledMapTileLayer.Cell cell = tileLayer.getCell(i, j);
                         if (cell != null) {
-                            Collider collider = colliders.get(cell.getTile().getId());
-                            if (collider != null) {
-                                BodyDef bodyDef = new BodyDef ();
-                                bodyDef.type = BodyDef.BodyType.StaticBody;
-                                bodyDef.position.set (collider.position.x+i*16, collider.position.y+j*16);
-                                Body body = world.createBody (bodyDef);
+                            Map.Entry entry = (Map.Entry) colliders.get(cell.getTile().getId());
 
-                                FixtureDef fixtureDef = new FixtureDef ();
-                                fixtureDef.shape = collider.shape;
-                                fixtureDef.density = 1f;
-                                body.createFixture (fixtureDef);
+                            if (entry != null) {
+                                Shape shape = (Shape) entry.getKey();
+                                Vector2 offset = (Vector2) entry.getValue();
+                                if (shape != null) {
+                                    BodyDef bodyDef = new BodyDef();
+                                    bodyDef.type = BodyDef.BodyType.StaticBody;
+                                    bodyDef.position.set(offset.x + i * 16, offset.y + j * 16);
+                                    Body body = world.createBody(bodyDef);
+
+                                    FixtureDef fixtureDef = new FixtureDef();
+                                    fixtureDef.shape = shape;
+                                    fixtureDef.density = 1f;
+                                    body.createFixture(fixtureDef);
+                                }
                             }
                         }
                     }
@@ -287,25 +291,53 @@ public class Scene implements EntityListener
 
             } else {
                 for (MapObject obj : mapLayer.getObjects()) {
-                    // TODO add entity objects
                     Entity entity = new Entity ();
 
-                    Rectangle rectangle = ((RectangleMapObject) obj).getRectangle ();
+                    Rectangle bounds = ((RectangleMapObject) obj).getRectangle ();
                     MapProperties properties = obj.getProperties();
                     String name = obj.getName ();
                     String type = (String) properties.get ("type");
+                    boolean autoLoad = false;
 
-                    int hashedType = type.hashCode();
-                    String image = (String) properties.get ("image");
-                    String script = (String) properties.get ("script");
+                    if (entityFactory != null) {
+                        if (!entityFactory.buildEntity (entity, name, type, bounds, properties)) {
+                            autoLoad = true;
+                        }
+                    } else {
+                        autoLoad = true;
+                    }
 
-                    addGameObject (entity, name, type, script);
-                    addTransform (entity, rectangle);
-                    addSprite (entity, image);
+                    if (autoLoad) {
+                        buildEntity(entity, name, type, bounds, properties);
+                    }
 
                     engine.addEntity (entity);
                 }
             }
+        }
+    }
+
+    protected void buildEntity (Entity entity, String name, String type, Rectangle bounds, MapProperties properties)
+    {
+        String prefab = (String) properties.get("prefab");
+        if (prefab != null) {
+            TiledMap prefabMap = new TmxMapLoader().load (prefab);
+            MapProperties prefabProperties = prefabMap.getProperties ();
+
+            String image = (String) prefabProperties.get("image");
+            String script = (String) prefabProperties.get("script");
+
+            addGameObject(entity, name, type, script);
+            addTransform(entity, bounds);
+            addSprite(entity, image);
+
+        } else {
+            String image = (String) properties.get("image");
+            String script = (String) properties.get("script");
+
+            addGameObject(entity, name, type, script);
+            addTransform(entity, bounds);
+            addSprite(entity, image);
         }
     }
 
@@ -366,6 +398,12 @@ public class Scene implements EntityListener
         transform.position.y = bounds.y;
         transform.position.z = 0;
         entity.add (transform);
+    }
+
+    private void addCollider (Entity entity, MapObjects objects)
+    {
+        CCollider collider = new CCollider();
+        entity.add (collider);
     }
 
     private void addSprite (Entity entity, String imageSrc)
@@ -463,6 +501,8 @@ public class Scene implements EntityListener
             script.destroy ();
         }
     }
+
+    public void setEntityFactory (IEntityFactory entityFactory) { this.entityFactory = entityFactory; }
 
     public OrthographicCamera getGameCamera () { return gameCamera; }
     public OrthographicCamera getGUICamera () { return guiCamera; }

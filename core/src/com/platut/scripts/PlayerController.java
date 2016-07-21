@@ -28,8 +28,9 @@ public class PlayerController extends Script {
     @Override
     public void start() {
         gameCamera = getSceneManager().getScene().getGameCamera();
-        sprite = getEntity().getComponent (CSprite.class);
+        gameCamera.position.set (getTransform().position);
 
+        sprite = getEntity().getComponent (CSprite.class);
         idle = new Sprite (new TextureRegion(sprite.sprite.getTexture(), 0, 0, 16, 16));
     }
 
@@ -52,7 +53,7 @@ public class PlayerController extends Script {
         move = move.nor().scl (100 * deltaTime);
         getTransform().position.add (move);
 
-        gameCamera.position.set (getTransform().position);
+        gameCamera.position.lerp (getTransform().position, 0.1f);
     }
 
     @Override

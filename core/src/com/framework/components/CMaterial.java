@@ -10,5 +10,4 @@ import java.util.ArrayList;
  */
 public class CMaterial implements Component {
     public ArrayList<String> images = new ArrayList<String>();
-    public Color color = Color.WHITE;
 }

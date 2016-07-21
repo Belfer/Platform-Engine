@@ -1,6 +1,8 @@
 package com.framework;
 
 import com.badlogic.ashley.core.ComponentMapper;
+import com.framework.components.CButton;
+import com.framework.components.CCollider;
 import com.framework.components.CGameObject;
 import com.framework.components.CMaterial;
 import com.framework.components.CSprite;
@@ -22,4 +24,10 @@ public class Mappers {
 
     public static final ComponentMapper<CSprite>
             SPRITE = ComponentMapper.getFor(CSprite.class);
+
+    public static final ComponentMapper<CCollider>
+            COLLIDER = ComponentMapper.getFor(CCollider.class);
+
+    public static final ComponentMapper<CButton>
+            BUTTON = ComponentMapper.getFor(CButton.class);
 }
