@@ -184,8 +184,8 @@ public class Scene implements EntityListener
             Vector2 center = new Vector2();
             center.x = ellipse.x + ellipse.width/2 - tilewidth/2;
             center.y = ellipse.y + ellipse.height/2 - tileheight/2;
-            offset.x = tilewidth/2;//rectangle.x + rectangle.getWidth()/2 - tilewidth/2;
-            offset.y = tileheight/2;//rectangle.y + rectangle.getHeight()/2 - tileheight/2;
+            offset.x = tilewidth/2;
+            offset.y = tileheight/2;
 
             shape = new ChainShape ();
             Vector2[] vertices = new Vector2[32];
@@ -199,16 +199,13 @@ public class Scene implements EntityListener
             }
             ((ChainShape)shape).createChain(vertices);
 
-            //shape = new PolygonShape ();
-            //((PolygonShape)shape).setAsBox(ellipse.width/2, ellipse.height/2, center, -rotation);
-
         } else if (obj instanceof RectangleMapObject) {
             Rectangle rectangle = ((RectangleMapObject) obj).getRectangle();
             Vector2 center = new Vector2();
             center.x = rectangle.x + rectangle.getWidth()/2 - tilewidth/2;
             center.y = rectangle.y + rectangle.getHeight()/2 - tileheight/2;
-            offset.x = tilewidth/2;//rectangle.x + rectangle.getWidth()/2 - tilewidth/2;
-            offset.y = tileheight/2;//rectangle.y + rectangle.getHeight()/2 - tileheight/2;
+            offset.x = tilewidth/2;
+            offset.y = tileheight/2;
 
             shape = new PolygonShape();
             ((PolygonShape)shape).setAsBox(rectangle.getWidth()/2, rectangle.getHeight()/2, center, -rotation);
@@ -239,10 +236,8 @@ public class Scene implements EntityListener
                 }
             }
 
-            offset.x = 0;//tilewidth/2;
-            offset.y = 0;//tileheight/2;
-            //offset.x = polygon.getX() - (int) (polygon.getX() / tilewidth) * tilewidth;
-            //offset.y = polygon.getY() - (int) (polygon.getY() / tileheight) * tileheight;
+            offset.x = polygon.getX() - (int) (polygon.getX() / tilewidth) * tilewidth;
+            offset.y = polygon.getY() - (int) (polygon.getY() / tileheight) * tileheight;
 
             shape = new PolygonShape();
             ((PolygonShape)shape).set(vertices);
@@ -311,12 +306,7 @@ public class Scene implements EntityListener
                                 if (shape != null) {
                                     BodyDef bodyDef = new BodyDef();
                                     bodyDef.type = BodyDef.BodyType.StaticBody;
-
-                                    float tilewidth = ((TiledMapTileLayer) mapLayer).getTileWidth();
-                                    float tileheight = ((TiledMapTileLayer) mapLayer).getTileHeight();
                                     bodyDef.position.set((i * 16)+offset.x, (j * 16)+offset.y);
-                                    //bodyDef.position.set((i * 16)+tilewidth/2, (j * 16)+tileheight/2);
-                                    //bodyDef.position.set(i * 16, j * 16);
 
                                     Body body = world.createBody(bodyDef);
 
@@ -462,21 +452,21 @@ public class Scene implements EntityListener
         bodyDef.fixedRotation = true;
         bodyDef.position.set(bounds.x, bounds.y);
         Body body = world.createBody(bodyDef);
+        body.setUserData (entity);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = 1f;
         fixtureDef.friction = 0.5f;
         fixtureDef.restitution = 0.1f;
 
-        System.out.println ("addCollider");
         for (MapObject obj : colliders) {
             MapProperties properties = obj.getProperties();
-            int tileId = obj.getProperties().get ("tileId", 0, Integer.class);
+            //int tileId = obj.getProperties().get ("tileId", 0, Integer.class);
             float rotation = properties.get("rotation", 0f, Float.class);
 
             Map.Entry entry = correctShape (obj, tilewidth, tileheight, rotation);
             Shape shape = (Shape) entry.getKey();
-            Vector2 offset = (Vector2) entry.getValue();
+            //Vector2 offset = (Vector2) entry.getValue();
             if (shape != null) {
                 fixtureDef.shape = shape;
                 body.createFixture (fixtureDef);

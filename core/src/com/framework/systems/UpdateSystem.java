@@ -6,6 +6,11 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.framework.Mappers;
 import com.framework.Script;
@@ -23,6 +28,7 @@ public class UpdateSystem extends EntitySystem {
     public UpdateSystem (World world)
     {
         this.world = world;
+        world.setContactListener (new EntityContactListener());
     }
 
     public void addedToEngine(Engine engine) {
@@ -39,5 +45,96 @@ public class UpdateSystem extends EntitySystem {
         }
 
         world.step (1/120f, 10, 10);
+    }
+
+    private class EntityContactListener implements ContactListener
+    {
+        @Override
+        public void beginContact(Contact contact) {
+            Fixture fixtureA = contact.getFixtureA ();
+            Fixture fixtureB = contact.getFixtureB ();
+            Entity entityA = (Entity) fixtureA.getBody().getUserData();
+            Entity entityB = (Entity) fixtureB.getBody().getUserData();
+
+            if (entityA != null) {
+                CGameObject gameObjectA = Mappers.GAMEOBJECT.get(entityA);
+                for (Script script : gameObjectA.scripts) {
+                    script.beginContact (contact, entityB);
+                }
+            }
+
+            if (entityB != null) {
+                CGameObject gameObjectB = Mappers.GAMEOBJECT.get(entityB);
+                for (Script script : gameObjectB.scripts) {
+                    script.beginContact (contact, entityA);
+                }
+            }
+        }
+
+        @Override
+        public void endContact(Contact contact) {
+            Fixture fixtureA = contact.getFixtureA ();
+            Fixture fixtureB = contact.getFixtureB ();
+            Entity entityA = (Entity) fixtureA.getBody().getUserData();
+            Entity entityB = (Entity) fixtureB.getBody().getUserData();
+
+            if (entityA != null) {
+                CGameObject gameObjectA = Mappers.GAMEOBJECT.get(entityA);
+                for (Script script : gameObjectA.scripts) {
+                    script.endContact (contact, entityB);
+                }
+            }
+
+            if (entityB != null) {
+                CGameObject gameObjectB = Mappers.GAMEOBJECT.get(entityB);
+                for (Script script : gameObjectB.scripts) {
+                    script.endContact (contact, entityA);
+                }
+            }
+        }
+
+        @Override
+        public void preSolve(Contact contact, Manifold oldManifold) {
+            Fixture fixtureA = contact.getFixtureA ();
+            Fixture fixtureB = contact.getFixtureB ();
+            Entity entityA = (Entity) fixtureA.getBody().getUserData();
+            Entity entityB = (Entity) fixtureB.getBody().getUserData();
+
+            if (entityA != null) {
+                CGameObject gameObjectA = Mappers.GAMEOBJECT.get(entityA);
+                for (Script script : gameObjectA.scripts) {
+                    script.preSolve (contact, oldManifold, entityB);
+                }
+            }
+
+            if (entityB != null) {
+                CGameObject gameObjectB = Mappers.GAMEOBJECT.get(entityB);
+                for (Script script : gameObjectB.scripts) {
+                    script.preSolve (contact, oldManifold, entityA);
+                }
+            }
+        }
+
+        @Override
+        public void postSolve(Contact contact, ContactImpulse impulse) {
+            Fixture fixtureA = contact.getFixtureA ();
+            Fixture fixtureB = contact.getFixtureB ();
+            Entity entityA = (Entity) fixtureA.getBody().getUserData();
+            Entity entityB = (Entity) fixtureB.getBody().getUserData();
+
+            if (entityA != null) {
+                CGameObject gameObjectA = Mappers.GAMEOBJECT.get(entityA);
+                for (Script script : gameObjectA.scripts) {
+                    script.postSolve (contact, impulse, entityB);
+                }
+            }
+
+            if (entityB != null) {
+                CGameObject gameObjectB = Mappers.GAMEOBJECT.get(entityB);
+                for (Script script : gameObjectB.scripts) {
+                    script.postSolve (contact, impulse, entityA);
+                }
+            }
+        }
     }
 }

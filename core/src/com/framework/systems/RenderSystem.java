@@ -108,6 +108,6 @@ public class RenderSystem extends EntitySystem {
 
         mapRenderer.render (fgLayers);
 
-        box2DRenderer.render (world, camera.combined);
+        //box2DRenderer.render (world, camera.combined);
     }
 }

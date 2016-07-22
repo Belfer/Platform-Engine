@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Contact;
 import com.framework.SceneManager;
 import com.framework.Script;
 import com.framework.components.CCollider;
@@ -70,5 +71,15 @@ public class PlayerController extends Script {
         idle.setX (getTransform().position.x);
         idle.setY (getTransform().position.y);
         idle.draw (batch);
+    }
+
+    @Override
+    public void beginContact (Contact contact, Entity other) {
+        System.out.println ("Player beginContact");
+    }
+
+    @Override
+    public void endContact (Contact contact, Entity other) {
+        System.out.println ("Player endContact");
     }
 }

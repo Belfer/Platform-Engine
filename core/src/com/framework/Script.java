@@ -4,6 +4,9 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.framework.components.CGameObject;
 import com.framework.components.CTransform;
 
@@ -47,6 +50,14 @@ public abstract class Script implements InputProcessor {
     public void drawGUI (SpriteBatch batch) {}
 
     public void destroy () {}
+
+    public void beginContact (Contact contact, Entity other) { }
+
+    public void endContact (Contact contact, Entity other) { }
+
+    public void preSolve (Contact contact, Manifold oldManifold, Entity other) { }
+
+    public void postSolve (Contact contact, ContactImpulse impulse, Entity other) { }
 
     @Override
     public boolean keyDown (int keycode) { return false; }
