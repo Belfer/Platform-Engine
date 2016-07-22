@@ -82,14 +82,8 @@ public class RenderSystem extends EntitySystem {
 
     @Override
     public void update (float deltaTime) {
-        /*for (Entity entity : engine.getEntitiesFor(Family.all(CTransform.class, CSprite.class).get())) {
-            CTransform transform = Mappers.TRANSFORM.get(entity);
-            CSprite sprite = Mappers.SPRITE.get(entity);
-            sprite.sprite.setX (transform.position.x);
-            sprite.sprite.setY (transform.position.y);
-        }*/
-
         camera.update ();
+
         mapRenderer.setView (camera);
         mapRenderer.render (bgLayers);
 
@@ -108,6 +102,6 @@ public class RenderSystem extends EntitySystem {
 
         mapRenderer.render (fgLayers);
 
-        //box2DRenderer.render (world, camera.combined);
+        box2DRenderer.render (world, camera.combined);
     }
 }

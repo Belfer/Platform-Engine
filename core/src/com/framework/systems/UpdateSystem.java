@@ -23,6 +23,9 @@ import com.framework.components.CTransform;
 public class UpdateSystem extends EntitySystem {
     private ImmutableArray<Entity> gameObjectEntities;
 
+    static final float WORLD_STEP = 1f/120f;
+    static final int POS_IT = 10;
+    static final int VEL_IT = 10;
     World world;
 
     public UpdateSystem (World world)
@@ -44,7 +47,7 @@ public class UpdateSystem extends EntitySystem {
             }
         }
 
-        world.step (1/120f, 10, 10);
+        world.step (WORLD_STEP, POS_IT, VEL_IT);
     }
 
     private class EntityContactListener implements ContactListener

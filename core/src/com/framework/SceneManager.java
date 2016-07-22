@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.GL20;
 public class SceneManager extends ApplicationAdapter {
 
     AssetManager assetManager;
+    IEntityFactory entityFactory;
     Scene currentScene;
 
     public SceneManager()
@@ -33,12 +34,17 @@ public class SceneManager extends ApplicationAdapter {
         currentScene.dispose ();
     }
 
+    public void setEntityFactory (IEntityFactory entityFactory) {
+        this.entityFactory = entityFactory;
+    }
+
     public void setScene (Scene scene)
     {
         if (currentScene != null) {
             currentScene.dispose ();
         }
         currentScene = scene;
+        currentScene.setEntityFactory (entityFactory);
         currentScene.build ();
         currentScene.start ();
     }

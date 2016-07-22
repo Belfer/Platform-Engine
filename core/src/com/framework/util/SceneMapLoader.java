@@ -1,4 +1,4 @@
-package com.framework;
+package com.framework.util;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
