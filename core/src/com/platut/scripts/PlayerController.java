@@ -59,8 +59,8 @@ public class PlayerController extends Script {
 
         //collider.body.applyForce (move, collider.body.getLocalCenter(), true);
 
-        getTransform().position.x = collider.body.getPosition().x-8;//-sprite.getWidth()/4;
-        getTransform().position.y = collider.body.getPosition().y-6;//-sprite.getHeight()/4;
+        getTransform().position.x = collider.body.getPosition().x-8;//sprite.getWidth()/2;
+        getTransform().position.y = collider.body.getPosition().y-8;//sprite.getHeight()/2;
 
         gameCamera.position.lerp (getTransform().position, 0.1f);
     }

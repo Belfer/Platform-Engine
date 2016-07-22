@@ -15,6 +15,7 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.CircleMapObject;
+import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -22,11 +23,14 @@ import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Ellipse;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -175,13 +179,39 @@ public class Scene implements EntityListener
             shape = new CircleShape ();
             shape.setRadius(circle.radius);
 
+        } else if (obj instanceof EllipseMapObject) {
+            Ellipse ellipse = ((EllipseMapObject) obj).getEllipse();
+            Vector2 center = new Vector2();
+            center.x = ellipse.x + ellipse.width/2 - tilewidth/2;
+            center.y = ellipse.y + ellipse.height/2 - tileheight/2;
+            offset.x = tilewidth/2;//rectangle.x + rectangle.getWidth()/2 - tilewidth/2;
+            offset.y = tileheight/2;//rectangle.y + rectangle.getHeight()/2 - tileheight/2;
+
+            shape = new ChainShape ();
+            Vector2[] vertices = new Vector2[32];
+            for (int i=0; i<32; i++) {
+                float angle = ((MathUtils.PI2)/32)*i;
+                float x, y;
+
+                x = ellipse.width/2 * MathUtils.cos (angle)+center.x;
+                y = ellipse.height/2 * MathUtils.sin (angle)+center.y;
+                vertices[i] = new Vector2 (x, y);
+            }
+            ((ChainShape)shape).createChain(vertices);
+
+            //shape = new PolygonShape ();
+            //((PolygonShape)shape).setAsBox(ellipse.width/2, ellipse.height/2, center, -rotation);
+
         } else if (obj instanceof RectangleMapObject) {
             Rectangle rectangle = ((RectangleMapObject) obj).getRectangle();
-            offset.x = rectangle.getWidth() / 2;
-            offset.y = rectangle.getHeight() / 2;
+            Vector2 center = new Vector2();
+            center.x = rectangle.x + rectangle.getWidth()/2 - tilewidth/2;
+            center.y = rectangle.y + rectangle.getHeight()/2 - tileheight/2;
+            offset.x = tilewidth/2;//rectangle.x + rectangle.getWidth()/2 - tilewidth/2;
+            offset.y = tileheight/2;//rectangle.y + rectangle.getHeight()/2 - tileheight/2;
 
             shape = new PolygonShape();
-            ((PolygonShape)shape).setAsBox(rectangle.getWidth() / 2, rectangle.getHeight() / 2);
+            ((PolygonShape)shape).setAsBox(rectangle.getWidth()/2, rectangle.getHeight()/2, center, -rotation);
 
         } else if (obj instanceof PolygonMapObject) {
             Polygon polygon = ((PolygonMapObject) obj).getPolygon();
@@ -209,8 +239,10 @@ public class Scene implements EntityListener
                 }
             }
 
-            offset.x = polygon.getX() - (int) (polygon.getX() / tilewidth) * tilewidth;
-            offset.y = polygon.getY() - (int) (polygon.getY() / tileheight) * tileheight;
+            offset.x = 0;//tilewidth/2;
+            offset.y = 0;//tileheight/2;
+            //offset.x = polygon.getX() - (int) (polygon.getX() / tilewidth) * tilewidth;
+            //offset.y = polygon.getY() - (int) (polygon.getY() / tileheight) * tileheight;
 
             shape = new PolygonShape();
             ((PolygonShape)shape).set(vertices);
@@ -279,7 +311,13 @@ public class Scene implements EntityListener
                                 if (shape != null) {
                                     BodyDef bodyDef = new BodyDef();
                                     bodyDef.type = BodyDef.BodyType.StaticBody;
-                                    bodyDef.position.set(offset.x + i * 16, offset.y + j * 16);
+
+                                    float tilewidth = ((TiledMapTileLayer) mapLayer).getTileWidth();
+                                    float tileheight = ((TiledMapTileLayer) mapLayer).getTileHeight();
+                                    bodyDef.position.set((i * 16)+offset.x, (j * 16)+offset.y);
+                                    //bodyDef.position.set((i * 16)+tilewidth/2, (j * 16)+tileheight/2);
+                                    //bodyDef.position.set(i * 16, j * 16);
+
                                     Body body = world.createBody(bodyDef);
 
                                     FixtureDef fixtureDef = new FixtureDef();
@@ -430,6 +468,7 @@ public class Scene implements EntityListener
         fixtureDef.friction = 0.5f;
         fixtureDef.restitution = 0.1f;
 
+        System.out.println ("addCollider");
         for (MapObject obj : colliders) {
             MapProperties properties = obj.getProperties();
             int tileId = obj.getProperties().get ("tileId", 0, Integer.class);

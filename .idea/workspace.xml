@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fa4e37f9-3371-4812-8c98-1def988cfc66" name="Default" comment="">
+    <list default="true" id="fa4e37f9-3371-4812-8c98-1def988cfc66" name="Default" comment="added some more player control">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dictionaries/conor.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/framework/Scene.java" afterPath="$PROJECT_DIR$/core/src/com/framework/Scene.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/framework/Script.java" afterPath="$PROJECT_DIR$/core/src/com/framework/Script.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/framework/components/CSprite.java" afterPath="$PROJECT_DIR$/core/src/com/framework/components/CSprite.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/framework/systems/UpdateSystem.java" afterPath="$PROJECT_DIR$/core/src/com/framework/systems/UpdateSystem.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/platut/scripts/PlayerController.java" afterPath="$PROJECT_DIR$/core/src/com/platut/scripts/PlayerController.java" />
     </list>
     <ignored path="Platut.iws" />
@@ -62,29 +60,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Scene.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Scene.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/com/framework/Scene.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="272" column="0" selection-start-line="272" selection-start-column="0" selection-end-line="272" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.3120438">
+              <caret line="198" column="13" selection-start-line="198" selection-start-column="13" selection-end-line="198" selection-end-column="13" />
               <folding>
-                <element signature="e#14256#14286#0" expanded="true" />
-                <element signature="e#18716#18746#0" expanded="true" />
-                <element signature="e#19829#19830#0" expanded="true" />
-                <element signature="e#19889#19890#0" expanded="true" />
+                <element signature="e#16277#16307#0" expanded="true" />
+                <element signature="e#20781#20811#0" expanded="true" />
+                <element signature="e#21894#21895#0" expanded="true" />
+                <element signature="e#21954#21955#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RenderSystem.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/core/src/com/framework/systems/RenderSystem.java">
+      <file leaf-file-name="PlayerController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/platut/scripts/PlayerController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.81395346">
-              <caret line="110" column="8" selection-start-line="110" selection-start-column="8" selection-end-line="110" selection-end-column="8" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="61" column="90" selection-start-line="61" selection-start-column="90" selection-end-line="61" selection-end-column="90" />
               <folding>
-                <element signature="e#1784#1793#0" expanded="true" />
-                <element signature="e#1849#1858#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -875,7 +872,6 @@
         <option value="$PROJECT_DIR$/core/src/com/framework/systems/GUISystem.java" />
         <option value="$PROJECT_DIR$/core/src/com/framework/SceneManager.java" />
         <option value="$PROJECT_DIR$/core/src/com/framework/components/CButton.java" />
-        <option value="$PROJECT_DIR$/core/src/com/framework/SceneMapLoader.java" />
         <option value="$PROJECT_DIR$/core/src/com/framework/IScript.java" />
         <option value="$PROJECT_DIR$/core/src/com/framework/Mappers.java" />
         <option value="$PROJECT_DIR$/core/src/com/framework/IEntityFactory.java" />
@@ -884,10 +880,11 @@
         <option value="$PROJECT_DIR$/core/src/com/framework/components/CCollider.java" />
         <option value="$PROJECT_DIR$/core/src/com/framework/Script.java" />
         <option value="$PROJECT_DIR$/core/src/com/framework/components/CSprite.java" />
+        <option value="$PROJECT_DIR$/core/src/com/framework/systems/RenderSystem.java" />
         <option value="$PROJECT_DIR$/core/src/com/framework/systems/UpdateSystem.java" />
+        <option value="$PROJECT_DIR$/core/src/com/framework/SceneMapLoader.java" />
         <option value="$PROJECT_DIR$/core/src/com/platut/scripts/PlayerController.java" />
         <option value="$PROJECT_DIR$/core/src/com/framework/Scene.java" />
-        <option value="$PROJECT_DIR$/core/src/com/framework/systems/RenderSystem.java" />
       </list>
     </option>
   </component>
@@ -1434,7 +1431,13 @@
       <option name="project" value="LOCAL" />
       <updated>1469143989123</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="added some more player control">
+      <created>1469149708969</created>
+      <option name="number" value="00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1469149708969</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1447,7 +1450,7 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298611" sideWeight="0.5060423" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28" sideWeight="0.4939577" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28" sideWeight="0.4939577" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -1485,28 +1488,15 @@
     <MESSAGE value="small updates" />
     <MESSAGE value="enhanced tile colliders" />
     <MESSAGE value="prefab loading, added some control over player" />
-    <option name="LAST_COMMIT_MESSAGE" value="prefab loading, added some control over player" />
+    <MESSAGE value="added some more player control" />
+    <option name="LAST_COMMIT_MESSAGE" value="added some more player control" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/core/src/com/framework/systems/LightSystem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.27019498">
-          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.3/2bf97653cc496f9ef2f76ecf2f29b1918821f474/gdx-1.9.3-sources.jar!/com/badlogic/gdx/maps/tiled/TiledMapRenderer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30083567">
-          <caret line="22" column="17" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.3/2bf97653cc496f9ef2f76ecf2f29b1918821f474/gdx-1.9.3-sources.jar!/com/badlogic/gdx/maps/MapRenderer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1788,26 +1778,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/framework/SceneMapLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3850365">
-          <caret line="316" column="27" selection-start-line="316" selection-start-column="27" selection-end-line="316" selection-end-column="27" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#8353#8375#0" expanded="true" />
-            <element signature="e#9224#9244#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-box2d/1.9.3/888daa999deda24ababa41d0141b5b2928676f78/gdx-box2d-1.9.3-sources.jar!/com/badlogic/gdx/physics/box2d/PolygonShape.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="20" column="39" selection-start-line="20" selection-start-column="34" selection-end-line="20" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-box2d/1.9.3/888daa999deda24ababa41d0141b5b2928676f78/gdx-box2d-1.9.3-sources.jar!/com/badlogic/gdx/physics/box2d/ChainShape.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6744186">
@@ -1888,7 +1858,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="10" column="14" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1898,7 +1868,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1906,15 +1876,65 @@
     <entry file="file://$PROJECT_DIR$/core/src/com/framework/systems/UpdateSystem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="40" column="27" selection-start-line="40" selection-start-column="27" selection-end-line="40" selection-end-column="27" />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/framework/systems/RenderSystem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="93" column="14" selection-start-line="93" selection-start-column="14" selection-end-line="93" selection-end-column="14" />
+          <folding>
+            <element signature="e#1784#1793#0" expanded="true" />
+            <element signature="e#1849#1858#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.3/2bf97653cc496f9ef2f76ecf2f29b1918821f474/gdx-1.9.3-sources.jar!/com/badlogic/gdx/maps/objects/EllipseMapObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="45" column="24" selection-start-line="45" selection-start-column="24" selection-end-line="45" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.3/2bf97653cc496f9ef2f76ecf2f29b1918821f474/gdx-1.9.3-sources.jar!/com/badlogic/gdx/math/Ellipse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.604651">
+          <caret line="53" column="11" selection-start-line="53" selection-start-column="11" selection-end-line="53" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/framework/SceneMapLoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6744186">
+          <caret line="274" column="42" selection-start-line="274" selection-start-column="42" selection-end-line="274" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#8353#8375#0" expanded="true" />
+            <element signature="e#9224#9244#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-box2d/1.9.3/888daa999deda24ababa41d0141b5b2928676f78/gdx-box2d-1.9.3-sources.jar!/com/badlogic/gdx/physics/box2d/PolygonShape.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="83" column="16" selection-start-line="83" selection-start-column="16" selection-end-line="83" selection-end-column="16" />
+          <folding>
+            <element signature="e#2872#2873#0" expanded="true" />
+            <element signature="e#2904#2905#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/platut/scripts/PlayerController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.59173125">
-          <caret line="62" column="67" selection-start-line="62" selection-start-column="67" selection-end-line="62" selection-end-column="67" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="61" column="90" selection-start-line="61" selection-start-column="90" selection-end-line="61" selection-end-column="90" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1923,24 +1943,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/framework/Scene.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="272" column="0" selection-start-line="272" selection-start-column="0" selection-end-line="272" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.3120438">
+          <caret line="198" column="13" selection-start-line="198" selection-start-column="13" selection-end-line="198" selection-end-column="13" />
           <folding>
-            <element signature="e#14256#14286#0" expanded="true" />
-            <element signature="e#18716#18746#0" expanded="true" />
-            <element signature="e#19829#19830#0" expanded="true" />
-            <element signature="e#19889#19890#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/framework/systems/RenderSystem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.81395346">
-          <caret line="110" column="8" selection-start-line="110" selection-start-column="8" selection-end-line="110" selection-end-column="8" />
-          <folding>
-            <element signature="e#1784#1793#0" expanded="true" />
-            <element signature="e#1849#1858#0" expanded="true" />
+            <element signature="e#16277#16307#0" expanded="true" />
+            <element signature="e#20781#20811#0" expanded="true" />
+            <element signature="e#21894#21895#0" expanded="true" />
+            <element signature="e#21954#21955#0" expanded="true" />
           </folding>
         </state>
       </provider>
