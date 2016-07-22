@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.framework.Mappers;
@@ -35,17 +36,19 @@ public class RenderSystem extends EntitySystem {
 
     TiledMapRenderer mapRenderer;
     Box2DDebugRenderer box2DRenderer;
+    float pixels2meters = 1f;
 
     int[] bgLayers;
     int[] fgLayers;
 
-    public RenderSystem (OrthographicCamera camera, World world, TiledMap map) {
+    public RenderSystem (OrthographicCamera camera, World world, TiledMap map, float pixels2meters) {
         this.camera = camera;
         this.world = world;
         batch = new SpriteBatch();
 
         mapRenderer = new OrthogonalTiledMapRenderer (map, 1f);
         box2DRenderer = new Box2DDebugRenderer (true, true, false, true, true, true);
+        this.pixels2meters = pixels2meters;
 
         MapLayers layers = map.getLayers();
         int gameIndex = layers.getIndex ("gm");
@@ -102,6 +105,8 @@ public class RenderSystem extends EntitySystem {
 
         mapRenderer.render (fgLayers);
 
-        box2DRenderer.render (world, camera.combined);
+
+        Matrix4 debugMatrix = camera.combined.cpy().scale(1f/pixels2meters, 1f/pixels2meters, 0);
+        box2DRenderer.render (world, debugMatrix);
     }
 }

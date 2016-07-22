@@ -60,8 +60,10 @@ public class PlayerController extends Script {
 
         //collider.body.applyForce (move, collider.body.getLocalCenter(), true);
 
-        getTransform().position.x = collider.body.getPosition().x-8;//sprite.getWidth()/2;
-        getTransform().position.y = collider.body.getPosition().y-8;//sprite.getHeight()/2;
+        float x = collider.body.getPosition().x*getMeters2Pixels()-8;//sprite.getWidth()/2;
+        float y = collider.body.getPosition().y*getMeters2Pixels()-8;//sprite.getHeight()/2;
+        getTransform().position.x = x;
+        getTransform().position.y = y;
 
         gameCamera.position.lerp (getTransform().position, 0.1f);
     }

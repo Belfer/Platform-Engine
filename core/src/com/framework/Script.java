@@ -17,6 +17,8 @@ public abstract class Script implements InputProcessor {
 
     SceneManager sceneManager;
     Entity entity;
+    float pixels2meters;
+    float meters2pixels;
 
     CGameObject gameObject;
     CTransform transform;
@@ -25,12 +27,16 @@ public abstract class Script implements InputProcessor {
     {
         this.sceneManager = sceneManager;
         this.entity = entity;
+        pixels2meters = sceneManager.getScene().getPixels2Meters();
+        meters2pixels = 1f/pixels2meters;
     }
 
     public SceneManager getSceneManager() { return sceneManager; }
     public Entity getEntity() { return entity; }
     public CGameObject getGameObject () { return gameObject; }
     public CTransform getTransform () { return transform; }
+    public float getPixels2Meters () { return pixels2meters; }
+    public float getMeters2Pixels () { return meters2pixels; }
     public <T extends Component> T getComponent (Class<T> componentClass) {
         return entity.getComponent(componentClass);
     }

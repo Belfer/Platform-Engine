@@ -39,6 +39,8 @@ public class UpdateSystem extends EntitySystem {
     }
 
     public void update(float deltaTime) {
+        world.step (WORLD_STEP, POS_IT, VEL_IT);
+
         for (Entity entity : gameObjectEntities) {
             CGameObject gameObject = Mappers.GAMEOBJECT.get(entity);
 
@@ -46,8 +48,6 @@ public class UpdateSystem extends EntitySystem {
                 script.update (Gdx.graphics.getDeltaTime ());
             }
         }
-
-        world.step (WORLD_STEP, POS_IT, VEL_IT);
     }
 
     private class EntityContactListener implements ContactListener
