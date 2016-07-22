@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.MapLayer;
@@ -53,8 +54,6 @@ import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 
-import javafx.util.Pair;
-
 /**
  * Created by conor on 16/07/16.
  */
@@ -68,6 +67,8 @@ public class Scene implements EntityListener
     World world;
     Stage stage;
     TiledMap map;
+
+    InputMultiplexer inputMultiplexer;
 
     IEntityFactory entityFactory;
 
@@ -98,9 +99,12 @@ public class Scene implements EntityListener
         gameCamera = new OrthographicCamera (viewportX, viewportY);
         guiCamera = new OrthographicCamera (Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         viewport = new FitViewport (viewportX, viewportY, gameCamera);
+        inputMultiplexer = new InputMultiplexer ();
 
         stage = new Stage ();
-        Gdx.input.setInputProcessor (stage);
+        inputMultiplexer.addProcessor(stage);
+
+        Gdx.input.setInputProcessor (inputMultiplexer);
 
         engine = new Engine ();
         engine.addEntityListener (this);
@@ -281,6 +285,8 @@ public class Scene implements EntityListener
                                     FixtureDef fixtureDef = new FixtureDef();
                                     fixtureDef.shape = shape;
                                     fixtureDef.density = 1f;
+                                    fixtureDef.friction = 0.5f;
+                                    fixtureDef.restitution = 0.1f;
                                     body.createFixture(fixtureDef);
                                 }
                             }
@@ -385,6 +391,7 @@ public class Scene implements EntityListener
                     assert (object instanceof Script);
 
                     Script script = (Script) object;
+                    inputMultiplexer.addProcessor (script);
                     gameObject.scripts.add(script);
 
                 } catch (ReflectionException e) {
@@ -420,6 +427,8 @@ public class Scene implements EntityListener
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = 1f;
+        fixtureDef.friction = 0.5f;
+        fixtureDef.restitution = 0.1f;
 
         for (MapObject obj : colliders) {
             MapProperties properties = obj.getProperties();

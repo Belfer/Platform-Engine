@@ -38,6 +38,6 @@ public class UpdateSystem extends EntitySystem {
             }
         }
 
-        world.step(deltaTime, 10, 10);
+        world.step (1/120f, 10, 10);
     }
 }

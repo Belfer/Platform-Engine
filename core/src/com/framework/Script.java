@@ -1,5 +1,6 @@
 package com.framework;
 
+import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -27,6 +28,9 @@ public abstract class Script implements InputProcessor {
     public Entity getEntity() { return entity; }
     public CGameObject getGameObject () { return gameObject; }
     public CTransform getTransform () { return transform; }
+    public <T extends Component> T getComponent (Class<T> componentClass) {
+        return entity.getComponent(componentClass);
+    }
 
     public void create ()
     {

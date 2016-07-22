@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.framework.SceneManager;
 import com.framework.Script;
 import com.framework.components.CCollider;
@@ -33,10 +32,10 @@ public class PlayerController extends Script {
         gameCamera = getSceneManager().getScene().getGameCamera();
         gameCamera.position.set (getTransform().position);
 
-        sprite = getEntity().getComponent (CSprite.class);
-        collider = getEntity().getComponent (CCollider.class);
+        sprite = getComponent (CSprite.class);
+        collider = getComponent (CCollider.class);
 
-        idle = new Sprite (new TextureRegion(sprite.sprite.getTexture(), 0, 0, 16, 16));
+        idle = new Sprite (new TextureRegion(sprite.getTexture(), 0, 0, 16, 16));
     }
 
     @Override
@@ -60,8 +59,8 @@ public class PlayerController extends Script {
 
         //collider.body.applyForce (move, collider.body.getLocalCenter(), true);
 
-        getTransform().position.x = collider.body.getPosition().x-8;
-        getTransform().position.y = collider.body.getPosition().y-8;
+        getTransform().position.x = collider.body.getPosition().x-8;//-sprite.getWidth()/4;
+        getTransform().position.y = collider.body.getPosition().y-6;//-sprite.getHeight()/4;
 
         gameCamera.position.lerp (getTransform().position, 0.1f);
     }
