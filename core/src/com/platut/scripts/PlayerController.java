@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.WorldManifold;
 import com.framework.SceneManager;
 import com.framework.Script;
 import com.framework.components.CCollider;
@@ -27,6 +29,23 @@ public class PlayerController extends Script {
     CCollider collider;
 
     Sprite idle;
+    //Sprite run;
+    int direction = 1;
+
+    int KEY_LEFT = Input.Keys.LEFT;
+    int KEY_RIGHT = Input.Keys.RIGHT;
+    int KEY_JUMP = Input.Keys.SPACE;
+
+    final static float MAX_VELOCITY = 15f;
+    final static float JUMP_VELOCITY = 50f;
+    boolean jump = false;
+    boolean grounded = false;
+
+    Fixture bodyFixture;
+    Fixture sensorFixture;
+
+    float stillTime = 0;
+    long lastGroundTime = 0;
 
     @Override
     public void start() {
@@ -37,33 +56,78 @@ public class PlayerController extends Script {
         collider = getComponent (CCollider.class);
 
         idle = new Sprite (new TextureRegion(sprite.getTexture(), 0, 0, 16, 16));
+
+        for (Fixture fixture : collider.body.getFixtureList()) {
+            if (fixture.getUserData().equals("body")) {
+                bodyFixture = fixture;
+            } else if (fixture.getUserData().equals("sensor")) {
+                sensorFixture = fixture;
+            }
+        }
     }
 
     @Override
     public void update(float deltaTime) {
-        Vector2 move = new Vector2 ();
+        //System.out.println ("grounded: "+grounded);
 
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            move.y = 1;
-        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            move.y = -1;
+        Vector2 vel = collider.body.getLinearVelocity();
+        Vector2 pos = collider.body.getPosition();
+
+        if(grounded) {
+            lastGroundTime = System.nanoTime();
+        } else {
+            if(System.nanoTime() - lastGroundTime < 100000000) {
+                grounded = true;
+            }
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            move.x = -1;
-        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            move.x = 1;
+        if(Math.abs(vel.x) > MAX_VELOCITY) {
+            vel.x = Math.signum(vel.x) * MAX_VELOCITY;
+            collider.body.setLinearVelocity(vel.x, vel.y);
         }
 
-        move = move.nor().scl (100 * deltaTime);
-        collider.body.setLinearVelocity(collider.body.getLinearVelocity().add(move));
+        if(!Gdx.input.isKeyPressed(KEY_LEFT) && !Gdx.input.isKeyPressed(KEY_RIGHT)) {
+            stillTime += Gdx.graphics.getDeltaTime();
+            collider.body.setLinearVelocity(vel.x * 0.9f, vel.y);
+        }
+        else {
+            stillTime = 0;
+        }
 
-        //collider.body.applyForce (move, collider.body.getLocalCenter(), true);
+        if (!grounded) {
+            bodyFixture.setFriction (0f);
+            sensorFixture.setFriction (0f);
+        } else {
+            if (!Gdx.input.isKeyPressed(KEY_LEFT) && !Gdx.input.isKeyPressed(KEY_RIGHT) && stillTime > 0.2) {
+                bodyFixture.setFriction (100f);
+                sensorFixture.setFriction (100f);
+            }
+            else {
+                bodyFixture.setFriction (0.2f);
+                sensorFixture.setFriction (0.2f);
+            }
+        }
 
-        float x = collider.body.getPosition().x*getMeters2Pixels()-8;//sprite.getWidth()/2;
-        float y = collider.body.getPosition().y*getMeters2Pixels()-8;//sprite.getHeight()/2;
-        getTransform().position.x = x;
-        getTransform().position.y = y;
+        if (Gdx.input.isKeyPressed (KEY_LEFT) && vel.x > -MAX_VELOCITY) {
+            direction = -1;
+            collider.body.applyLinearImpulse (-2f, 0, pos.x, pos.y, true);
+        }
+
+        if(Gdx.input.isKeyPressed (KEY_RIGHT) && vel.x < MAX_VELOCITY) {
+            direction = 1;
+            collider.body.applyLinearImpulse (2f, 0, pos.x, pos.y, true);
+        }
+
+        if (jump) {
+            jump = false;
+
+            collider.body.setLinearVelocity (vel.x, 0);
+            collider.body.setTransform (pos.x, pos.y + 0.01f, 0);
+            collider.body.applyLinearImpulse (0, JUMP_VELOCITY, pos.x, pos.y, true);
+        }
+
+        getTransform().position.x = collider.body.getPosition().x*getMeters2Pixels() - 8;
+        getTransform().position.y = collider.body.getPosition().y*getMeters2Pixels() - 8;
 
         gameCamera.position.lerp (getTransform().position, 0.1f);
     }
@@ -72,16 +136,36 @@ public class PlayerController extends Script {
     public void draw(SpriteBatch batch) {
         idle.setX (getTransform().position.x);
         idle.setY (getTransform().position.y);
+        idle.setScale (direction, 1);
         idle.draw (batch);
     }
 
     @Override
+    public boolean keyDown (int keycode) {
+        if(keycode == KEY_JUMP) jump = true;
+        return false;
+    }
+
+    @Override
+    public boolean keyUp (int keycode) {
+        if(keycode == KEY_JUMP) jump = false;
+        return false;
+    }
+
+    @Override
     public void beginContact (Contact contact, Entity other) {
-        System.out.println ("Player beginContact");
+        checkGrounded (contact);
     }
 
     @Override
     public void endContact (Contact contact, Entity other) {
-        System.out.println ("Player endContact");
+        checkGrounded (contact);
+    }
+
+    private void checkGrounded (Contact contact) {
+        WorldManifold manifold = contact.getWorldManifold();
+        float normalAngle = manifold.getNormal().angle();
+
+        System.out.println("normalAngle: "+normalAngle);
     }
 }

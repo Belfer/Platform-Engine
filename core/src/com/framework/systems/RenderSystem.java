@@ -37,6 +37,7 @@ public class RenderSystem extends EntitySystem {
     TiledMapRenderer mapRenderer;
     Box2DDebugRenderer box2DRenderer;
     float pixels2meters = 1f;
+    Matrix4 debugMatrix;
 
     int[] bgLayers;
     int[] fgLayers;
@@ -49,6 +50,7 @@ public class RenderSystem extends EntitySystem {
         mapRenderer = new OrthogonalTiledMapRenderer (map, 1f);
         box2DRenderer = new Box2DDebugRenderer (true, true, false, true, true, true);
         this.pixels2meters = pixels2meters;
+        debugMatrix = camera.combined.cpy().scale(1f/pixels2meters, 1f/pixels2meters, 0);
 
         MapLayers layers = map.getLayers();
         int gameIndex = layers.getIndex ("gm");
@@ -104,9 +106,6 @@ public class RenderSystem extends EntitySystem {
         batch.end();
 
         mapRenderer.render (fgLayers);
-
-
-        Matrix4 debugMatrix = camera.combined.cpy().scale(1f/pixels2meters, 1f/pixels2meters, 0);
         box2DRenderer.render (world, debugMatrix);
     }
 }

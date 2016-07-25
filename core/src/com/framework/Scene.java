@@ -32,6 +32,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
@@ -94,7 +95,7 @@ public class Scene implements EntityListener
         pixels2meters = 0.125f;
         //String[] gravity = properties.get ("gravity", "0 0", String.class).split("\\s");
         float gravityX = 0;//Float.parseFloat (gravity[0]);
-        float gravityY = -50f;//Float.parseFloat (gravity[1]);
+        float gravityY = -100f;//Float.parseFloat (gravity[1]);
 
         world = new World (new Vector2 (gravityX, gravityY), true);
         gameCamera = new OrthographicCamera (viewportX, viewportY);
@@ -320,7 +321,7 @@ public class Scene implements EntityListener
                                     fixtureDef.shape = shape;
                                     fixtureDef.density = 1f;
                                     fixtureDef.friction = 0.5f;
-                                    fixtureDef.restitution = 0.1f;
+                                    fixtureDef.restitution = 0f;
                                     body.createFixture(fixtureDef);
                                 }
                             }
@@ -460,22 +461,25 @@ public class Scene implements EntityListener
         Body body = world.createBody(bodyDef);
         body.setUserData (entity);
 
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.density = 1f;
-        fixtureDef.friction = 0.5f;
-        fixtureDef.restitution = 0.1f;
-
         for (MapObject obj : colliders) {
             MapProperties properties = obj.getProperties();
-            //int tileId = obj.getProperties().get ("tileId", 0, Integer.class);
+            //int tiled = obj.getProperties().get ("tileId", 0, Integer.class);
             float rotation = properties.get("rotation", 0f, Float.class);
 
             Map.Entry entry = correctShape (obj, tilewidth, tileheight, rotation);
             Shape shape = (Shape) entry.getKey();
             //Vector2 offset = (Vector2) entry.getValue();
             if (shape != null) {
+                FixtureDef fixtureDef = new FixtureDef();
+                fixtureDef.density = Float.parseFloat(properties.get("density", "1f", String.class));
+                fixtureDef.friction = Float.parseFloat(properties.get("friction", "0.3f", String.class));
+                fixtureDef.restitution = Float.parseFloat(properties.get("restitution", "0.1f", String.class));
+                fixtureDef.isSensor = Boolean.parseBoolean(properties.get("sensor", "false", String.class));
+
                 fixtureDef.shape = shape;
-                body.createFixture (fixtureDef);
+                Fixture fixture = body.createFixture (fixtureDef);
+                fixture.setUserData (obj.getName());
+
                 collider.shape = shape;
             }
         }
