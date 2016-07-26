@@ -23,7 +23,7 @@ public class SceneManager extends ApplicationAdapter {
     @Override
     public void render () {
         if (currentScene != null) {
-            Gdx.gl.glClearColor(0f, 0f, 0f, 1);
+            Gdx.gl.glClearColor(142/255f, 200/255f, 235/255f, 1f);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             currentScene.update();
         }

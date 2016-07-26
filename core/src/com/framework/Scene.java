@@ -48,11 +48,11 @@ import com.framework.components.CGameObject;
 import com.framework.components.CMaterial;
 import com.framework.components.CSprite;
 import com.framework.components.CTransform;
+import com.framework.map.SceneMapLoader;
 import com.framework.systems.GUISystem;
 import com.framework.systems.LightSystem;
 import com.framework.systems.RenderSystem;
 import com.framework.systems.UpdateSystem;
-import com.framework.util.SceneMapLoader;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -78,7 +78,7 @@ public class Scene implements EntityListener
     TiledMap map;
 
     boolean sceneLoaded = false;
-    float pixels2meters = 1f;
+    float pixelsToMeters = 1f;
     HashMap<Integer,Map.Entry<Shape,Vector2>> colliders;
 
     public Scene (SceneManager sceneManager, String filepath)
@@ -92,7 +92,7 @@ public class Scene implements EntityListener
         float viewportX = Float.parseFloat (properties.get ("viewportX", width+"", String.class));
         float viewportY = Float.parseFloat (properties.get ("viewportY", height+"", String.class));
 
-        pixels2meters = 0.125f;
+        pixelsToMeters = 0.125f;
         //String[] gravity = properties.get ("gravity", "0 0", String.class).split("\\s");
         float gravityX = 0;//Float.parseFloat (gravity[0]);
         float gravityY = -100f;//Float.parseFloat (gravity[1]);
@@ -136,7 +136,7 @@ public class Scene implements EntityListener
     protected void loadSystems ()
     {
         engine.addSystem (new UpdateSystem (world));
-        engine.addSystem (new RenderSystem (gameCamera, world, map, pixels2meters));
+        engine.addSystem (new RenderSystem (gameCamera, world, map, pixelsToMeters));
         engine.addSystem (new LightSystem ());
         engine.addSystem (new GUISystem (guiCamera, stage));
     }
@@ -171,8 +171,8 @@ public class Scene implements EntityListener
 
         if (obj instanceof CircleMapObject) {
             Circle circle = ((CircleMapObject) obj).getCircle();
-            offset.x = circle.x * pixels2meters;
-            offset.y = circle.y * pixels2meters;
+            offset.x = circle.x * pixelsToMeters;
+            offset.y = circle.y * pixelsToMeters;
 
             shape = new CircleShape ();
             shape.setRadius(circle.radius);
@@ -180,10 +180,10 @@ public class Scene implements EntityListener
         } else if (obj instanceof EllipseMapObject) {
             Ellipse ellipse = ((EllipseMapObject) obj).getEllipse();
             Vector2 center = new Vector2();
-            center.x = (ellipse.x + ellipse.width/2 - tilewidth/2) * pixels2meters;
-            center.y = (ellipse.y + ellipse.height/2 - tileheight/2) * pixels2meters;
-            offset.x = (tilewidth/2) * pixels2meters;
-            offset.y = (tileheight/2) * pixels2meters;
+            center.x = (ellipse.x + ellipse.width/2 - tilewidth/2) * pixelsToMeters;
+            center.y = (ellipse.y + ellipse.height/2 - tileheight/2) * pixelsToMeters;
+            offset.x = (tilewidth/2) * pixelsToMeters;
+            offset.y = (tileheight/2) * pixelsToMeters;
 
             shape = new ChainShape ();
             Vector2[] vertices = new Vector2[32];
@@ -191,8 +191,8 @@ public class Scene implements EntityListener
                 float angle = ((MathUtils.PI2)/32)*i;
                 float x, y;
 
-                x = (ellipse.width/2 * MathUtils.cos(angle)) * pixels2meters + center.x;
-                y = (ellipse.height/2 * MathUtils.sin(angle)) * pixels2meters + center.y;
+                x = (ellipse.width/2 * MathUtils.cos(angle)) * pixelsToMeters + center.x;
+                y = (ellipse.height/2 * MathUtils.sin(angle)) * pixelsToMeters + center.y;
                 vertices[i] = new Vector2 (x, y);
             }
             ((ChainShape)shape).createChain(vertices);
@@ -200,12 +200,12 @@ public class Scene implements EntityListener
         } else if (obj instanceof RectangleMapObject) {
             Rectangle rectangle = ((RectangleMapObject) obj).getRectangle();
             Vector2 center = new Vector2();
-            center.x = (rectangle.x + rectangle.getWidth()/2 - tilewidth/2) * pixels2meters;
-            center.y = (rectangle.y + rectangle.getHeight()/2 - tileheight/2) * pixels2meters;
-            offset.x = (tilewidth/2) * pixels2meters;
-            offset.y = (tileheight/2) * pixels2meters;
-            float width = (rectangle.getWidth()/2) * pixels2meters;
-            float height = (rectangle.getHeight()/2) * pixels2meters;
+            center.x = (rectangle.x + rectangle.getWidth()/2 - tilewidth/2) * pixelsToMeters;
+            center.y = (rectangle.y + rectangle.getHeight()/2 - tileheight/2) * pixelsToMeters;
+            offset.x = (tilewidth/2) * pixelsToMeters;
+            offset.y = (tileheight/2) * pixelsToMeters;
+            float width = (rectangle.getWidth()/2) * pixelsToMeters;
+            float height = (rectangle.getHeight()/2) * pixelsToMeters;
 
             shape = new PolygonShape();
             ((PolygonShape)shape).setAsBox(width, height, center, -rotation);
@@ -218,8 +218,8 @@ public class Scene implements EntityListener
             Vector2[] vertices = new Vector2[tmp.length / 2];
             int v = 0;
             for (int i = 0; i < tmp.length; i += 2) {
-                float x = (tmp[i] - polygon.getX()) * pixels2meters;
-                float y = (tmp[i + 1] - polygon.getY()) * pixels2meters;
+                float x = (tmp[i] - polygon.getX()) * pixelsToMeters;
+                float y = (tmp[i + 1] - polygon.getY()) * pixelsToMeters;
                 vertices[v++] = new Vector2(x, y);
             }
 
@@ -228,18 +228,18 @@ public class Scene implements EntityListener
             average.scl(1f / vertices.length);
 
             if (average.x < 0 && average.y > 0) {
-                for (Vector2 i : vertices) i.x += tilewidth * pixels2meters;
+                for (Vector2 i : vertices) i.x += tilewidth * pixelsToMeters;
             } else if (average.x > 0 && average.y < 0) {
-                for (Vector2 i : vertices) i.y += tileheight * pixels2meters;
+                for (Vector2 i : vertices) i.y += tileheight * pixelsToMeters;
             } else if (average.x < 0 && average.y < 0) {
                 for (Vector2 i : vertices) {
-                    i.x += tilewidth * pixels2meters;
-                    i.y += tileheight * pixels2meters;
+                    i.x += tilewidth * pixelsToMeters;
+                    i.y += tileheight * pixelsToMeters;
                 }
             }
 
-            offset.x = (polygon.getX() - (int) (polygon.getX() / tilewidth) * tilewidth) * pixels2meters;
-            offset.y = (polygon.getY() - (int) (polygon.getY() / tileheight) * tileheight) * pixels2meters;
+            offset.x = (polygon.getX() - (int) (polygon.getX() / tilewidth) * tilewidth) * pixelsToMeters;
+            offset.y = (polygon.getY() - (int) (polygon.getY() / tileheight) * tileheight) * pixelsToMeters;
 
             shape = new PolygonShape();
             ((PolygonShape)shape).set(vertices);
@@ -311,8 +311,8 @@ public class Scene implements EntityListener
 
                                     int tilewidth = 16;
                                     int tileheight = 16;
-                                    float x = (i*tilewidth*pixels2meters)+offset.x;
-                                    float y = (j*tileheight*pixels2meters)+offset.y;
+                                    float x = (i*tilewidth* pixelsToMeters)+offset.x;
+                                    float y = (j*tileheight* pixelsToMeters)+offset.y;
                                     bodyDef.position.set (x, y);
 
                                     Body body = world.createBody(bodyDef);
@@ -457,8 +457,8 @@ public class Scene implements EntityListener
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
-        bodyDef.position.set(bounds.x*pixels2meters, bounds.y*pixels2meters);
-        Body body = world.createBody(bodyDef);
+        bodyDef.position.set (bounds.x* pixelsToMeters, bounds.y* pixelsToMeters);
+        Body body = world.createBody (bodyDef);
         body.setUserData (entity);
 
         for (MapObject obj : colliders) {
@@ -588,5 +588,5 @@ public class Scene implements EntityListener
 
     public OrthographicCamera getGameCamera () { return gameCamera; }
     public OrthographicCamera getGUICamera () { return guiCamera; }
-    public float getPixels2Meters () { return pixels2meters; }
+    public float getPixels2Meters () { return pixelsToMeters; }
 }

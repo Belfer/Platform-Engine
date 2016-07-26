@@ -29,7 +29,7 @@ public class PlayerController extends Script {
     CCollider collider;
 
     Sprite idle;
-    //Sprite run;
+    Sprite run;
     int direction = 1;
 
     int KEY_LEFT = Input.Keys.LEFT;
@@ -56,6 +56,7 @@ public class PlayerController extends Script {
         collider = getComponent (CCollider.class);
 
         idle = new Sprite (new TextureRegion(sprite.getTexture(), 0, 0, 16, 16));
+        run = new Sprite (new TextureRegion(sprite.getTexture(), 0, 16, 16, 16));
 
         for (Fixture fixture : collider.body.getFixtureList()) {
             if (fixture.getUserData().equals("body")) {
@@ -126,18 +127,25 @@ public class PlayerController extends Script {
             collider.body.applyLinearImpulse (0, JUMP_VELOCITY, pos.x, pos.y, true);
         }
 
-        getTransform().position.x = collider.body.getPosition().x*getMeters2Pixels() - 8;
-        getTransform().position.y = collider.body.getPosition().y*getMeters2Pixels() - 8;
+        getTransform().position.x = collider.body.getPosition().x*getMeters2Pixels();
+        getTransform().position.y = collider.body.getPosition().y*getMeters2Pixels();
 
         gameCamera.position.lerp (getTransform().position, 0.1f);
     }
 
     @Override
     public void draw(SpriteBatch batch) {
-        idle.setX (getTransform().position.x);
-        idle.setY (getTransform().position.y);
-        idle.setScale (direction, 1);
-        idle.draw (batch);
+        if (collider.body.getLinearVelocity().isZero(1f)) {
+            idle.setX(getTransform().position.x - 8);
+            idle.setY(getTransform().position.y - 8);
+            idle.setScale(direction, 1);
+            idle.draw(batch);
+        } else {
+            run.setX(getTransform().position.x - 8);
+            run.setY(getTransform().position.y - 8);
+            run.setScale(direction, 1);
+            run.draw(batch);
+        }
     }
 
     @Override
@@ -166,6 +174,6 @@ public class PlayerController extends Script {
         WorldManifold manifold = contact.getWorldManifold();
         float normalAngle = manifold.getNormal().angle();
 
-        System.out.println("normalAngle: "+normalAngle);
+        //System.out.println("normalAngle: "+normalAngle);
     }
 }

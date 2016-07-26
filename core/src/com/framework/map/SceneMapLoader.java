@@ -1,4 +1,4 @@
-package com.framework.util;
+package com.framework.map;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
