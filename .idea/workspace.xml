@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fa4e37f9-3371-4812-8c98-1def988cfc66" name="Default" comment="improved player controller">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/com/framework/map/ParallaxMapRenderer.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/core/src/com/framework/util/SceneMapLoader.java" afterPath="$PROJECT_DIR$/core/src/com/framework/map/SceneMapLoader.java" />
+    <list default="true" id="fa4e37f9-3371-4812-8c98-1def988cfc66" name="Default" comment="added parallax effect">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/assets/styles/style.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/assets/animations/oldhero.tmx" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/assets/colliders/player.tmx" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/assets/colliders/tiles.tmx" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/assets/colliders/tilestest.tmx" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/assets/levels/level1.tmx" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/assets/styles/style.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/assets/styles/style.tmx" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/assets/ui/hud.tmx" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/assets/ui/menu.tmx" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/assets/ui/test.tmx" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/framework/Scene.java" afterPath="$PROJECT_DIR$/core/src/com/framework/Scene.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/framework/SceneManager.java" afterPath="$PROJECT_DIR$/core/src/com/framework/SceneManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/framework/systems/RenderSystem.java" afterPath="$PROJECT_DIR$/core/src/com/framework/systems/RenderSystem.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/framework/systems/UpdateSystem.java" afterPath="$PROJECT_DIR$/core/src/com/framework/systems/UpdateSystem.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/platut/scripts/PlayerController.java" afterPath="$PROJECT_DIR$/core/src/com/platut/scripts/PlayerController.java" />
     </list>
     <ignored path="Platut.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -68,10 +72,10 @@
         <entry file="file://$PROJECT_DIR$/core/src/com/framework/systems/RenderSystem.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="-0.10614525">
-              <caret line="63" column="35" selection-start-line="63" selection-start-column="35" selection-end-line="63" selection-end-column="35" />
+              <caret line="61" column="35" selection-start-line="61" selection-start-column="35" selection-end-line="61" selection-end-column="35" />
               <folding>
-                <element signature="e#2718#2727#0" expanded="true" />
-                <element signature="e#2850#2859#0" expanded="true" />
+                <element signature="e#2592#2601#0" expanded="true" />
+                <element signature="e#2724#2733#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -889,8 +893,8 @@
         <option value="$PROJECT_DIR$/core/src/com/framework/systems/UpdateSystem.java" />
         <option value="$PROJECT_DIR$/core/src/com/platut/scripts/PlayerController.java" />
         <option value="$PROJECT_DIR$/core/src/com/framework/map/SceneMapLoader.java" />
-        <option value="$PROJECT_DIR$/core/src/com/framework/systems/RenderSystem.java" />
         <option value="$PROJECT_DIR$/core/src/com/framework/map/ParallaxMapRenderer.java" />
+        <option value="$PROJECT_DIR$/core/src/com/framework/systems/RenderSystem.java" />
       </list>
     </option>
   </component>
@@ -910,7 +914,7 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectView">
-    <navigator currentView="AndroidView" proportions="" version="1">
+    <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -1134,6 +1138,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Platut" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Platut" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1499,12 +1521,18 @@
       <option name="project" value="LOCAL" />
       <updated>1469452319361</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="added parallax effect">
+      <created>1469496076188</created>
+      <option name="number" value="00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1469496076188</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="24" width="1366" height="690" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1517,7 +1545,7 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2647504" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2647504" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290469" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
@@ -1556,7 +1584,8 @@
     <MESSAGE value="added script collision callbacks, clean up" />
     <MESSAGE value="fixed box2d scale" />
     <MESSAGE value="improved player controller" />
-    <option name="LAST_COMMIT_MESSAGE" value="improved player controller" />
+    <MESSAGE value="added parallax effect" />
+    <option name="LAST_COMMIT_MESSAGE" value="added parallax effect" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1999,10 +2028,10 @@
     <entry file="file://$PROJECT_DIR$/core/src/com/framework/systems/RenderSystem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.10614525">
-          <caret line="63" column="35" selection-start-line="63" selection-start-column="35" selection-end-line="63" selection-end-column="35" />
+          <caret line="61" column="35" selection-start-line="61" selection-start-column="35" selection-end-line="61" selection-end-column="35" />
           <folding>
-            <element signature="e#2718#2727#0" expanded="true" />
-            <element signature="e#2850#2859#0" expanded="true" />
+            <element signature="e#2592#2601#0" expanded="true" />
+            <element signature="e#2724#2733#0" expanded="true" />
           </folding>
         </state>
       </provider>

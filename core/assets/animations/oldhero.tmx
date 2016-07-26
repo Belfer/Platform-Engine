@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-up" width="6" height="5" tilewidth="16" tileheight="16" nextobjectid="11">
+ <tileset firstgid="1" name="oldhero" tilewidth="16" tileheight="16" tilecount="30" columns="6">
+  <image source="../oldhero.png" width="96" height="80"/>
+ </tileset>
+ <layer name="image" width="6" height="5">
+  <data encoding="base64" compression="zlib">
+   eJwNw4UNwzAAALCUeWWG/8+cLTkKIcQmpmbmFpZW1ja2dv7sHRydnF1c3dw9PL28fXz9/ANN+AHS
+  </data>
+ </layer>
+ <objectgroup name="anim">
+  <object id="1" name="idle" type="animation" x="0" y="0" width="64" height="16"/>
+  <object id="2" name="run" type="animation" x="0" y="16" width="96" height="16"/>
+  <object id="3" name="death" type="sprite" x="64" y="0" width="16" height="16"/>
+  <object id="4" name="parachute" type="sprite" x="80" y="0" width="16" height="16"/>
+  <object id="5" name="jump" type="animation" x="0" y="32" width="48" height="16"/>
+  <object id="6" name="kick" type="sprite" x="48" y="32" width="16" height="16"/>
+  <object id="7" name="cheer" type="sprite" x="80" y="32" width="16" height="16"/>
+  <object id="8" name="swim" type="animation" x="0" y="48" width="96" height="16"/>
+  <object id="9" name="punch" type="animation" x="0" y="64" width="48" height="16"/>
+ </objectgroup>
+</map>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-up" width="4" height="7" tilewidth="16" tileheight="16" nextobjectid="76">
+ <tileset firstgid="1" name="mininicular" tilewidth="16" tileheight="16" tilecount="64" columns="8">
+  <image source="../mininicular.png" width="128" height="128"/>
+  <tile id="0">
+   <objectgroup draworder="index">
+    <object id="4" x="0" y="0" width="16" height="16">
+     <ellipse/>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="2">
+   <objectgroup draworder="index">
+    <object id="1" x="0" y="1">
+     <polygon points="0,0 16,0 16,15 0,15"/>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="3">
+   <objectgroup draworder="index">
+    <object id="2" x="0" y="1">
+     <polygon points="0,0 16,0 16,15 0,15"/>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="8">
+   <objectgroup draworder="index">
+    <object id="1" x="16" y="0">
+     <polygon points="0,0 -12,0 -16,4 -16,9 -10,14 -10,16 0,16"/>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="9">
+   <objectgroup draworder="index">
+    <object id="1" x="0" y="0">
+     <polygon points="0,0 12,0 16,4 16,9 10,14 10,16 0,16"/>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="10">
+   <objectgroup draworder="index">
+    <object id="1" x="16" y="16">
+     <polygon points="0,0 0,-16 -16,0"/>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="11">
+   <objectgroup draworder="index">
+    <object id="1" x="0" y="0">
+     <polygon points="0,0 16,16 0,16"/>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="16">
+   <objectgroup draworder="index">
+    <object id="1" x="16" y="0">
+     <polygon points="0,0 -10,0 -15,4 -15,16 0,16"/>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="17">
+   <objectgroup draworder="index">
+    <object id="1" x="0" y="0">
+     <polygon points="0,0 10,0 15,5 15,16 0,16"/>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="18">
+   <objectgroup draworder="index">
+    <object id="1" x="0" y="0">
+     <polygon points="0,0 16,16 16,0"/>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="19">
+   <objectgroup draworder="index">
+    <object id="1" x="0" y="0">
+     <polygon points="0,0 0,16 16,0"/>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="24">
+   <objectgroup draworder="index">
+    <object id="1" x="16" y="0">
+     <polygon points="0,0 -15,0 -15,16 0,16"/>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="25">
+   <objectgroup draworder="index">
+    <object id="1" x="17" y="10">
+     <polygon points="-2,-10 -17,-10 -17,6 -2,6"/>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="32">
+   <objectgroup draworder="index">
+    <object id="1" x="8" y="7">
+     <polygon points="8,-7 -7,-7 -7,9 8,9"/>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="33">
+   <objectgroup draworder="index">
+    <object id="1" x="15" y="0">
+     <polygon points="0,0 -15,0 -15,16 0,16"/>
+    </object>
+   </objectgroup>
+  </tile>
+ </tileset>
+</map>
