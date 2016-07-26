@@ -10,6 +10,7 @@ public class DesktopLauncher {
 		config.title = "Platut-Game";
 		config.width = 800;
 		config.height = 480;
+		config.vSyncEnabled = true;
 
 		new LwjglApplication(new PlatutGame(), config);
 	}
