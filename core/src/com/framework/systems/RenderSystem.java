@@ -41,7 +41,7 @@ public class RenderSystem extends EntitySystem {
     float pixelsToMeters = 1f;
     Matrix4 debugMatrix;
 
-    boolean debug = false;
+    boolean debug = true;
 
     float wWidth, wHeight;
     float vpWidth, vpHeight;

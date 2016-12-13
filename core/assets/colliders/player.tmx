@@ -8,14 +8,14 @@
   <image source="../oldhero.png" width="96" height="80"/>
   <tile id="0">
    <objectgroup draworder="index">
-    <object id="1" name="sensor" type="collider" x="4" y="11" width="8" height="4">
+    <object id="1" name="sensor" type="collider" x="4" y="10" width="8" height="6">
      <properties>
       <property name="restitution" type="float" value="0"/>
       <property name="sensor" type="bool" value="false"/>
      </properties>
      <ellipse/>
     </object>
-    <object id="3" name="body" type="collider" x="4" y="2" width="8" height="11">
+    <object id="3" name="body" type="collider" x="4" y="1" width="8" height="12">
      <properties>
       <property name="restitution" type="float" value="0"/>
      </properties>
