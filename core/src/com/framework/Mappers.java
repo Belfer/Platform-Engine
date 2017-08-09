@@ -1,33 +1,33 @@
 package com.framework;
 
 import com.badlogic.ashley.core.ComponentMapper;
-import com.framework.components.CButton;
-import com.framework.components.CCollider;
-import com.framework.components.CGameObject;
-import com.framework.components.CMaterial;
-import com.framework.components.CSprite;
-import com.framework.components.CTransform;
+import com.framework.components.ButtonCmp;
+import com.framework.components.ColliderCmp;
+import com.framework.components.GameObjectCmp;
+import com.framework.components.MaterialCmp;
+import com.framework.components.SpriteCmp;
+import com.framework.components.TransformCmp;
 
 /**
  * Created by conor on 16/07/16.
  */
 public class Mappers {
 
-    public static final ComponentMapper<CGameObject>
-            GAMEOBJECT = ComponentMapper.getFor(CGameObject.class);
+    public static final ComponentMapper<GameObjectCmp>
+            GAMEOBJECT = ComponentMapper.getFor(GameObjectCmp.class);
 
-    public static final ComponentMapper<CTransform>
-            TRANSFORM = ComponentMapper.getFor(CTransform.class);
+    public static final ComponentMapper<TransformCmp>
+            TRANSFORM = ComponentMapper.getFor(TransformCmp.class);
 
-    public static final ComponentMapper<CMaterial>
-            MATERIAL = ComponentMapper.getFor(CMaterial.class);
+    public static final ComponentMapper<MaterialCmp>
+            MATERIAL = ComponentMapper.getFor(MaterialCmp.class);
 
-    public static final ComponentMapper<CSprite>
-            SPRITE = ComponentMapper.getFor(CSprite.class);
+    public static final ComponentMapper<SpriteCmp>
+            SPRITE = ComponentMapper.getFor(SpriteCmp.class);
 
-    public static final ComponentMapper<CCollider>
-            COLLIDER = ComponentMapper.getFor(CCollider.class);
+    public static final ComponentMapper<ColliderCmp>
+            COLLIDER = ComponentMapper.getFor(ColliderCmp.class);
 
-    public static final ComponentMapper<CButton>
-            BUTTON = ComponentMapper.getFor(CButton.class);
+    public static final ComponentMapper<ButtonCmp>
+            BUTTON = ComponentMapper.getFor(ButtonCmp.class);
 }

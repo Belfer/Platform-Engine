@@ -12,21 +12,23 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.WorldManifold;
 import com.framework.SceneManager;
-import com.framework.Script;
-import com.framework.components.CCollider;
-import com.framework.components.CSprite;
+import com.framework.BaseScript;
+import com.framework.components.ColliderCmp;
+import com.framework.components.SpriteCmp;
+
+import static com.framework.Constants.MeterToPixels;
 
 /**
  * Created by conor on 18/07/16.
  */
-public class PlayerController extends Script {
+public class PlayerController extends BaseScript {
     public PlayerController(SceneManager sceneManager, Entity entity) {
         super(sceneManager, entity);
     }
 
     OrthographicCamera gameCamera;
-    CSprite sprite;
-    CCollider collider;
+    SpriteCmp sprite;
+    ColliderCmp collider;
 
     Sprite idle;
     Sprite run;
@@ -49,14 +51,14 @@ public class PlayerController extends Script {
 
     @Override
     public void start() {
-        gameCamera = getSceneManager().getScene().getGameCamera();
-        gameCamera.position.set (getTransform().position);
+        gameCamera = getSceneManager().getCurrentScene().getGameCamera();
+        gameCamera.position.set(getTransform().position);
 
-        sprite = getComponent (CSprite.class);
-        collider = getComponent (CCollider.class);
+        sprite = getComponent(SpriteCmp.class);
+        collider = getComponent(ColliderCmp.class);
 
-        idle = new Sprite (new TextureRegion(sprite.getTexture(), 0, 0, 16, 16));
-        run = new Sprite (new TextureRegion(sprite.getTexture(), 0, 16, 16, 16));
+        idle = new Sprite(new TextureRegion(sprite.getTexture(), 0, 0, 16, 16));
+        run = new Sprite(new TextureRegion(sprite.getTexture(), 0, 16, 16, 16));
 
         for (Fixture fixture : collider.body.getFixtureList()) {
             if (fixture.getUserData().equals("body")) {
@@ -74,63 +76,61 @@ public class PlayerController extends Script {
         Vector2 vel = collider.body.getLinearVelocity();
         Vector2 pos = collider.body.getPosition();
 
-        if(grounded) {
+        if (grounded) {
             lastGroundTime = System.nanoTime();
         } else {
-            if(System.nanoTime() - lastGroundTime < 100000000) {
+            if (System.nanoTime() - lastGroundTime < 100000000) {
                 grounded = true;
             }
         }
 
-        if(Math.abs(vel.x) > MAX_VELOCITY) {
+        if (Math.abs(vel.x) > MAX_VELOCITY) {
             vel.x = Math.signum(vel.x) * MAX_VELOCITY;
             collider.body.setLinearVelocity(vel.x, vel.y);
         }
 
-        if(!Gdx.input.isKeyPressed(KEY_LEFT) && !Gdx.input.isKeyPressed(KEY_RIGHT)) {
+        if (!Gdx.input.isKeyPressed(KEY_LEFT) && !Gdx.input.isKeyPressed(KEY_RIGHT)) {
             stillTime += Gdx.graphics.getDeltaTime();
             collider.body.setLinearVelocity(vel.x * 0.9f, vel.y);
-        }
-        else {
+        } else {
             stillTime = 0;
         }
 
         if (!grounded) {
-            bodyFixture.setFriction (0f);
-            sensorFixture.setFriction (0f);
+            bodyFixture.setFriction(0f);
+            sensorFixture.setFriction(0f);
         } else {
             if (!Gdx.input.isKeyPressed(KEY_LEFT) && !Gdx.input.isKeyPressed(KEY_RIGHT) && stillTime > 0.2) {
-                bodyFixture.setFriction (100f);
-                sensorFixture.setFriction (100f);
-            }
-            else {
-                bodyFixture.setFriction (0.2f);
-                sensorFixture.setFriction (0.2f);
+                bodyFixture.setFriction(100f);
+                sensorFixture.setFriction(100f);
+            } else {
+                bodyFixture.setFriction(0.2f);
+                sensorFixture.setFriction(0.2f);
             }
         }
 
-        if (Gdx.input.isKeyPressed (KEY_LEFT) && vel.x > -MAX_VELOCITY) {
+        if (Gdx.input.isKeyPressed(KEY_LEFT) && vel.x > -MAX_VELOCITY) {
             direction = -1;
-            collider.body.applyLinearImpulse (-2f, 0, pos.x, pos.y, true);
+            collider.body.applyLinearImpulse(-2f, 0, pos.x, pos.y, true);
         }
 
-        if(Gdx.input.isKeyPressed (KEY_RIGHT) && vel.x < MAX_VELOCITY) {
+        if (Gdx.input.isKeyPressed(KEY_RIGHT) && vel.x < MAX_VELOCITY) {
             direction = 1;
-            collider.body.applyLinearImpulse (2f, 0, pos.x, pos.y, true);
+            collider.body.applyLinearImpulse(2f, 0, pos.x, pos.y, true);
         }
 
         if (jump) {
             jump = false;
 
-            collider.body.setLinearVelocity (vel.x, 0);
-            collider.body.setTransform (pos.x, pos.y + 0.01f, 0);
-            collider.body.applyLinearImpulse (0, JUMP_VELOCITY, pos.x, pos.y, true);
+            collider.body.setLinearVelocity(vel.x, 0);
+            collider.body.setTransform(pos.x, pos.y + 0.01f, 0);
+            collider.body.applyLinearImpulse(0, JUMP_VELOCITY, pos.x, pos.y, true);
         }
 
-        getTransform().position.x = collider.body.getPosition().x*getMeters2Pixels();
-        getTransform().position.y = collider.body.getPosition().y*getMeters2Pixels();
+        getTransform().position.x = collider.body.getPosition().x * MeterToPixels;
+        getTransform().position.y = collider.body.getPosition().y * MeterToPixels;
 
-        gameCamera.position.lerp (getTransform().position, 0.1f);
+        gameCamera.position.lerp(getTransform().position, 0.1f);
     }
 
     @Override
@@ -149,28 +149,28 @@ public class PlayerController extends Script {
     }
 
     @Override
-    public boolean keyDown (int keycode) {
-        if(keycode == KEY_JUMP) jump = true;
+    public boolean keyDown(int keycode) {
+        if (keycode == KEY_JUMP) jump = true;
         return false;
     }
 
     @Override
-    public boolean keyUp (int keycode) {
-        if(keycode == KEY_JUMP) jump = false;
+    public boolean keyUp(int keycode) {
+        if (keycode == KEY_JUMP) jump = false;
         return false;
     }
 
     @Override
-    public void beginContact (Contact contact, Entity other) {
-        checkGrounded (contact);
+    public void beginContact(Contact contact, Entity other) {
+        checkGrounded(contact);
     }
 
     @Override
-    public void endContact (Contact contact, Entity other) {
-        checkGrounded (contact);
+    public void endContact(Contact contact, Entity other) {
+        checkGrounded(contact);
     }
 
-    private void checkGrounded (Contact contact) {
+    private void checkGrounded(Contact contact) {
         WorldManifold manifold = contact.getWorldManifold();
         float normalAngle = manifold.getNormal().angle();
 

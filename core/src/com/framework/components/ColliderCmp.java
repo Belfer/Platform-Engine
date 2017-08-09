@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 /**
  * Created by conor on 21/07/16.
  */
-public class CCollider implements Component {
+public class ColliderCmp implements Component {
     public Shape shape = null;
     public Body body = null;
 }

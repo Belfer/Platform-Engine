@@ -6,6 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 /**
  * Created by conor on 21/07/16.
  */
-public class CButton implements Component {
-    public Button button = new Button ();
+public class ButtonCmp implements Component {
+    public Button button = new Button();
 }

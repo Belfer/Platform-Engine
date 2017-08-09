@@ -8,10 +8,10 @@ import com.badlogic.gdx.math.Vector3;
 /**
  * Created by conor on 16/07/16.
  */
-public class CTransform implements Component {
+public class TransformCmp implements Component {
 
-    public Rectangle bounds = new Rectangle ();
-    public Vector3 position = new Vector3 ();
-    public Vector2 scale = new Vector2 (1f, 1f);
+    public Rectangle bounds = new Rectangle();
+    public Vector3 position = new Vector3();
+    public Vector2 scale = new Vector2(1f, 1f);
     public float rotation = 0f;
 }

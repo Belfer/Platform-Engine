@@ -10,10 +10,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.framework.Mappers;
-import com.framework.Script;
-import com.framework.components.CGameObject;
-import com.framework.components.CSprite;
-import com.framework.components.CTransform;
+import com.framework.BaseScript;
+import com.framework.components.GameObjectCmp;
+import com.framework.components.SpriteCmp;
+import com.framework.components.TransformCmp;
 
 /**
  * Created by conor on 17/07/16.
@@ -28,10 +28,10 @@ public class GUISystem extends EntitySystem {
     Stage stage;
     Table table;
 
-    public GUISystem (OrthographicCamera camera, Stage stage) {
+    public GUISystem(OrthographicCamera camera, Stage stage) {
         this.camera = camera;
         this.stage = stage;
-        batch = new SpriteBatch ();
+        batch = new SpriteBatch();
 
         //stage = new Stage();
         //Gdx.input.setInputProcessor(stage);
@@ -44,26 +44,26 @@ public class GUISystem extends EntitySystem {
     }
 
     @Override
-    public void addedToEngine (Engine engine) {
-        spriteEntities = engine.getEntitiesFor(Family.all(CTransform.class, CSprite.class).get());
-        gameObjectEntities = engine.getEntitiesFor(Family.all(CGameObject.class, CTransform.class).get());
+    public void addedToEngine(Engine engine) {
+        spriteEntities = engine.getEntitiesFor(Family.all(TransformCmp.class, SpriteCmp.class).get());
+        gameObjectEntities = engine.getEntitiesFor(Family.all(GameObjectCmp.class, TransformCmp.class).get());
     }
 
     @Override
-    public void removedFromEngine (Engine engine) {
+    public void removedFromEngine(Engine engine) {
         //stage.dispose();
     }
 
     @Override
-    public void update (float deltaTime) {
+    public void update(float deltaTime) {
         /*for (Entity entity : spriteEntities) {
-            CTransform transform = Mappers.TRANSFORM.get(entity);
-            CSprite sprite = Mappers.SPRITE.get(entity);
+            TransformCmp transform = Mappers.TRANSFORM.get(entity);
+            SpriteCmp sprite = Mappers.SPRITE.get(entity);
             sprite.sprite.setX (transform.position.x);
             sprite.sprite.setY (transform.position.y);
         }*/
-        stage.act (deltaTime);
-        stage.draw ();
+        stage.act(deltaTime);
+        stage.draw();
 
         camera.update();
 
@@ -71,10 +71,10 @@ public class GUISystem extends EntitySystem {
         batch.begin();
 
         for (Entity entity : gameObjectEntities) {
-            CGameObject gameObject = Mappers.GAMEOBJECT.get(entity);
+            GameObjectCmp gameObject = Mappers.GAMEOBJECT.get(entity);
 
-            for (Script script : gameObject.scripts) {
-                script.drawGUI (batch);
+            for (BaseScript script : gameObject.scripts) {
+                script.drawGUI(batch);
             }
         }
 

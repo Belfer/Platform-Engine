@@ -1,25 +1,21 @@
 package com.framework.systems;
 
 import com.badlogic.ashley.core.EntitySystem;
-
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import box2dLight.RayHandler;
-import javafx.fxml.Initializable;
+//import javafx.fxml.Initializable;
 
 /**
  * Created by conor on 17/07/16.
  */
-public class LightSystem extends EntitySystem implements Initializable {
+public class LightSystem extends EntitySystem {// implements Initializable {
 
+    /*
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
 
     private RayHandler rayHandler;
 
-    /*
+
     @Override
     public void init() {
         rayHandler = new RayHandler(Objects.world);
@@ -29,7 +25,7 @@ public class LightSystem extends EntitySystem implements Initializable {
     }
 
     @Override
-    public void update(float deltaTime) {
+    public void render(float deltaTime) {
         rayHandler.setCombinedMatrix(Objects.camera.combined);
         rayHandler.updateAndRender();
     }

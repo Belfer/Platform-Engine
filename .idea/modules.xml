@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Platut.iml" filepath="$PROJECT_DIR$/Platut.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core/core.iml" filepath="$PROJECT_DIR$/core/core.iml" />
-      <module fileurl="file://$PROJECT_DIR$/desktop/desktop.iml" filepath="$PROJECT_DIR$/desktop/desktop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Platut.iml" filepath="$PROJECT_DIR$/.idea/modules/Platut.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/core.iml" filepath="$PROJECT_DIR$/.idea/modules/core/core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop/desktop.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop/desktop.iml" />
     </modules>
   </component>
 </project>

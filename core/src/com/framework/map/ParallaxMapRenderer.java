@@ -23,37 +23,37 @@ public class ParallaxMapRenderer extends OrthogonalTiledMapRenderer {
     float wWidth, wHeight;
     Vector3 worldCenter;
 
-    public ParallaxMapRenderer (TiledMap map, float wWidth, float wHeight) {
+    public ParallaxMapRenderer(TiledMap map, float wWidth, float wHeight) {
         super(map);
         this.wWidth = wWidth;
         this.wHeight = wHeight;
 
-        worldCenter = new Vector3 (wWidth/2, wHeight/2, 0f);
+        worldCenter = new Vector3(wWidth / 2, wHeight / 2, 0f);
     }
 
     @Override
-    public void setView (OrthographicCamera camera) {
+    public void setView(OrthographicCamera camera) {
         this.camera = camera;
     }
 
-    public void render (int[] layers, Vector2[] parallax) {
+    public void render(int[] layers, Vector2[] parallax) {
         if (layers.length != parallax.length) try {
-            throw new Exception ("Each layer must have a pairing vector!");
+            throw new Exception("Each layer must have a pairing vector!");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        for (int i=0; i<layers.length; i++) {
+        for (int i = 0; i < layers.length; i++) {
             MapLayer layer = map.getLayers().get(layers[i]);
             Vector2 p = parallax[i];
             if (layer.isVisible()) {
-                calculateParallax (camera, p.x, p.y);
+                calculateParallax(camera, p.x, p.y);
 
                 beginRender();
                 if (layer instanceof TiledMapTileLayer) {
-                    renderTileLayer((TiledMapTileLayer)layer);
+                    renderTileLayer((TiledMapTileLayer) layer);
                 } else if (layer instanceof TiledMapImageLayer) {
-                    renderImageLayer((TiledMapImageLayer)layer);
+                    renderImageLayer((TiledMapImageLayer) layer);
                 } else {
                     renderObjects(layer);
                 }
@@ -62,18 +62,18 @@ public class ParallaxMapRenderer extends OrthogonalTiledMapRenderer {
         }
     }
 
-    private void calculateParallax (OrthographicCamera camera, float parallaxX, float parallaxY) {
-        camera.update ();
+    private void calculateParallax(OrthographicCamera camera, float parallaxX, float parallaxY) {
+        camera.update();
         tmp.x = worldCenter.x + parallaxX * (camera.position.x - worldCenter.x);
         tmp.y = worldCenter.y + parallaxY * (camera.position.y - worldCenter.y);
 
-        parallaxView.setToLookAt (tmp, tmp2.set(tmp).add(camera.direction), camera.up);
-        parallaxCombined.set (camera.projection);
-        Matrix4.mul (parallaxCombined.val, parallaxView.val);
+        parallaxView.setToLookAt(tmp, tmp2.set(tmp).add(camera.direction), camera.up);
+        parallaxCombined.set(camera.projection);
+        Matrix4.mul(parallaxCombined.val, parallaxView.val);
 
-        batch.setProjectionMatrix (parallaxCombined);
+        batch.setProjectionMatrix(parallaxCombined);
         float width = camera.viewportWidth * camera.zoom;
         float height = camera.viewportHeight * camera.zoom;
-        viewBounds.set (tmp.x - width/2, tmp.y - height/2, width, height);
+        viewBounds.set(tmp.x - width / 2, tmp.y - height / 2, width, height);
     }
 }
