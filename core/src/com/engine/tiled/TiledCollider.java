@@ -1,4 +1,4 @@
-package com.engine.core;
+package com.engine.tiled;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.CircleMapObject;
@@ -15,12 +15,12 @@ import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.engine.core.Constants;
 
 /**
  * Created by conor on 09/08/17.
  */
-
-public class ColliderUtil {
+public class TiledCollider {
     public static class ColliderWrapper {
         public Shape shape;
         public Vector2 origin;

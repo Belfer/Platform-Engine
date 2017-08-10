@@ -1,4 +1,4 @@
-package com.engine.core;
+package com.engine.tiled;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -10,12 +10,13 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Rectangle;
+import com.engine.core.IEntityFactory;
 
 /**
  * Created by conor on 09/08/17.
  */
 
-public class UILoader {
+public class TiledUILoader {
     public static void loadUI(MapProperties properties, Engine engine, IEntityFactory entityFactory) {
         String filename = properties.get("ui", "", String.class);
 

@@ -1,4 +1,4 @@
-package com.engine.systems;
+package com.engine.core.systems;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -17,9 +17,9 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.engine.components.GameObjectCmp;
-import com.engine.components.TransformCmp;
 import com.engine.core.IScript;
+import com.engine.core.components.GameObjectCmp;
+import com.engine.core.components.TransformCmp;
 import com.engine.tiled.ParallaxMapRenderer;
 
 import java.util.ArrayList;

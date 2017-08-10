@@ -11,17 +11,17 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.WorldManifold;
-import com.engine.components.ColliderCmp;
-import com.engine.components.SpriteCmp;
-import com.engine.core.BaseScript;
 import com.engine.core.SceneManager;
+import com.engine.core.components.ColliderCmp;
+import com.engine.core.components.SpriteCmp;
+import com.engine.tiled.TiledScript;
 
 import static com.engine.core.Constants.MeterToPixels;
 
 /**
  * Created by conor on 18/07/16.
  */
-public class PlayerController extends BaseScript {
+public class PlayerController extends TiledScript {
     public PlayerController(SceneManager sceneManager, Entity entity) {
         super(sceneManager, entity);
     }

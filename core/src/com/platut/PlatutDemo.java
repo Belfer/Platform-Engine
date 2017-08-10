@@ -4,10 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.engine.core.BaseGame;
 
-public class PlatutGame extends BaseGame {
+public class PlatutDemo extends BaseGame {
     @Override
     public void create() {
-        getSceneManager().setScene("levels/level1.tmx");
+        getSceneManager().setScene("levels/level1.tmx", ExScene.class, ExEntityFactory.class);
     }
 
     public void render() {

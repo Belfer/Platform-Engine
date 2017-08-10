@@ -1,4 +1,4 @@
-package com.engine.systems;
+package com.engine.core.systems;
 
 import com.badlogic.ashley.core.EntitySystem;
 //import javafx.fxml.Initializable;

@@ -1,4 +1,4 @@
-package com.engine.core;
+package com.engine.tiled;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -17,6 +17,7 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -26,28 +27,31 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.engine.components.ButtonCmp;
-import com.engine.components.GameObjectCmp;
-import com.engine.components.MaterialCmp;
-import com.engine.components.SpriteCmp;
-import com.engine.systems.GUISystem;
-import com.engine.systems.LightSystem;
-import com.engine.systems.RenderSystem;
-import com.engine.systems.UpdateSystem;
-import com.engine.tiled.TmxMapPatchLoader;
+import com.engine.core.IEntityFactory;
+import com.engine.core.IScene;
+import com.engine.core.IScript;
+import com.engine.core.SceneManager;
+import com.engine.core.components.ButtonCmp;
+import com.engine.core.components.GameObjectCmp;
+import com.engine.core.components.MaterialCmp;
+import com.engine.core.components.SpriteCmp;
+import com.engine.core.systems.GUISystem;
+import com.engine.core.systems.LightSystem;
+import com.engine.core.systems.RenderSystem;
+import com.engine.core.systems.UpdateSystem;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
-import static com.engine.core.ColliderUtil.ColliderWrapper;
-import static com.engine.core.ColliderUtil.correctShape;
 import static com.engine.core.Constants.PixelToMeters;
+import static com.engine.tiled.TiledCollider.ColliderWrapper;
+import static com.engine.tiled.TiledCollider.correctShape;
 
 /**
  * Created by conor on 16/07/16.
  */
-public class BaseScene implements IScene, EntityListener {
+public class TiledScene implements IScene, EntityListener {
     protected SceneManager sceneManager;
     protected Viewport viewport;
     protected OrthographicCamera gameCamera;
@@ -65,20 +69,13 @@ public class BaseScene implements IScene, EntityListener {
 
     private HashMap<Integer, ColliderWrapper> colliders;
 
-    public BaseScene(SceneManager sceneManager, TiledMap map, Class<?> entityFactoryClass) {
+    @Override
+    public void init(String filename, SceneManager sceneManager, Class<?> entityFactoryClass) {
         this.sceneManager = sceneManager;
-        this.map = map;
+
+        map = new TmxMapLoader().load(filename);
         properties = map.getProperties();
 
-        init();
-        entityFactory = newEntityFactory(entityFactoryClass);
-        engine.addEntityListener(this);
-
-        inputMultiplexer.addProcessor(stage);
-        Gdx.input.setInputProcessor(inputMultiplexer);
-    }
-
-    private void init() {
         int width = Gdx.graphics.getWidth();
         int height = Gdx.graphics.getHeight();
         float viewportX = Float.parseFloat(properties.get("viewportX", width + "", String.class));
@@ -91,11 +88,16 @@ public class BaseScene implements IScene, EntityListener {
         gameCamera = new OrthographicCamera(viewportX, viewportY);
         guiCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         viewport = new FitViewport(viewportX, viewportY, gameCamera);
-
         engine = new Engine();
         stage = new Stage();
         inputMultiplexer = new InputMultiplexer();
         colliders = new HashMap<>();
+
+        entityFactory = newEntityFactory(entityFactoryClass);
+        engine.addEntityListener(this);
+
+        inputMultiplexer.addProcessor(stage);
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     private IEntityFactory newEntityFactory(Class<?> entityFactoryClass) {
@@ -116,6 +118,7 @@ public class BaseScene implements IScene, EntityListener {
         return (IEntityFactory) object;
     }
 
+    @Override
     public void build() {
         sceneLoaded = false;
 
@@ -184,7 +187,7 @@ public class BaseScene implements IScene, EntityListener {
 
                 TiledMapTileLayer.Cell cell = layer.getCell(i, j);
                 if (cell != null) {
-                    ColliderUtil.ColliderWrapper collider = colliders.get(cell.getTile().getId());
+                    ColliderWrapper collider = colliders.get(cell.getTile().getId());
 
                     if (collider != null) {
                         if (collider.shape != null) {

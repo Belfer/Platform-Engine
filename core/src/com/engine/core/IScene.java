@@ -6,8 +6,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 /**
  * Created by conor on 09/08/17.
  */
-
 public interface IScene extends EntityListener {
+    void init(String filename, SceneManager sceneManager, Class<?> entityFactoryClass);
+
     void build();
 
     void start();

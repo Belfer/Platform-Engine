@@ -7,13 +7,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.engine.components.GameObjectCmp;
-import com.engine.components.TransformCmp;
+import com.engine.core.components.GameObjectCmp;
+import com.engine.core.components.TransformCmp;
 
 /**
  * Created by conor on 09/08/17.
  */
-
 public interface IScript extends InputProcessor {
     SceneManager getSceneManager();
 

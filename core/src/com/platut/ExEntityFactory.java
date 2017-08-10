@@ -1,4 +1,4 @@
-package com.engine.core;
+package com.platut;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.InputMultiplexer;
@@ -16,26 +16,33 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
-import com.engine.components.ButtonCmp;
-import com.engine.components.ColliderCmp;
-import com.engine.components.GameObjectCmp;
-import com.engine.components.MaterialCmp;
-import com.engine.components.SpriteCmp;
-import com.engine.components.TransformCmp;
+import com.engine.core.Constants;
+import com.engine.core.IEntityFactory;
+import com.engine.core.SceneManager;
+import com.engine.core.components.ButtonCmp;
+import com.engine.core.components.ColliderCmp;
+import com.engine.core.components.GameObjectCmp;
+import com.engine.core.components.MaterialCmp;
+import com.engine.core.components.SpriteCmp;
+import com.engine.core.components.TransformCmp;
+import com.engine.tiled.TiledCollider;
+import com.engine.tiled.TiledScript;
 import com.engine.tiled.TmxMapPatchLoader;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * Created by conor on 09/08/17.
+ * Created by conor on 10/08/17.
  */
-public class BaseEntityFactory implements IEntityFactory {
-    SceneManager sceneManager;
-    InputMultiplexer inputMultiplexer;
-    World world;
 
-    public BaseEntityFactory(SceneManager sceneManager, InputMultiplexer inputMultiplexer, World world) {
+public class ExEntityFactory implements IEntityFactory {
+    private SceneManager sceneManager;
+    private InputMultiplexer inputMultiplexer;
+    private World world;
+
+    @Override
+    public void init(SceneManager sceneManager, InputMultiplexer inputMultiplexer, World world) {
         this.sceneManager = sceneManager;
         this.inputMultiplexer = inputMultiplexer;
         this.world = world;
@@ -101,9 +108,9 @@ public class BaseEntityFactory implements IEntityFactory {
                     }
 
                     assert (object != null);
-                    assert (object instanceof BaseScript);
+                    assert (object instanceof TiledScript);
 
-                    BaseScript script = (BaseScript) object;
+                    TiledScript script = (TiledScript) object;
                     inputMultiplexer.addProcessor(script);
                     gameObject.scripts.add(script);
 
@@ -144,7 +151,7 @@ public class BaseEntityFactory implements IEntityFactory {
             //int tiled = obj.getProperties().get ("tileId", 0, Integer.class);
             float rotation = properties.get("rotation", 0f, Float.class);
 
-            ColliderUtil.ColliderWrapper wrapper = ColliderUtil.correctShape(obj, tilewidth, tileheight, rotation);
+            TiledCollider.ColliderWrapper wrapper = TiledCollider.correctShape(obj, tilewidth, tileheight, rotation);
             if (wrapper.shape != null) {
                 FixtureDef fixtureDef = new FixtureDef();
                 fixtureDef.density = Float.parseFloat(properties.get("density", "1f", String.class));

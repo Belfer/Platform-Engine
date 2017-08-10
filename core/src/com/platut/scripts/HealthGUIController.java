@@ -2,14 +2,14 @@ package com.platut.scripts;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.engine.components.SpriteCmp;
-import com.engine.core.BaseScript;
 import com.engine.core.SceneManager;
+import com.engine.core.components.SpriteCmp;
+import com.engine.tiled.TiledScript;
 
 /**
  * Created by conor on 16/07/16.
  */
-public class HealthGUIController extends BaseScript {
+public class HealthGUIController extends TiledScript {
 
     SpriteCmp sprite;
 
