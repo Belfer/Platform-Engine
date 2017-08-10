@@ -1,4 +1,4 @@
-package com.framework.systems;
+package com.engine.systems;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -9,10 +9,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.framework.components.GameObjectCmp;
-import com.framework.components.SpriteCmp;
-import com.framework.components.TransformCmp;
-import com.framework.core.IScript;
+import com.engine.components.GameObjectCmp;
+import com.engine.components.SpriteCmp;
+import com.engine.components.TransformCmp;
+import com.engine.core.IScript;
 
 /**
  * Created by conor on 17/07/16.

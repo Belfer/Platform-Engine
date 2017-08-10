@@ -1,8 +1,8 @@
-package com.framework.components;
+package com.engine.components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.ComponentMapper;
-import com.framework.core.IScript;
+import com.engine.core.IScript;
 
 import java.util.ArrayList;
 

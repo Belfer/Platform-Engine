@@ -1,4 +1,4 @@
-package com.framework.core;
+package com.engine.core;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;

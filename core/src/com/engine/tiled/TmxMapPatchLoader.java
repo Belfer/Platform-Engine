@@ -1,4 +1,4 @@
-package com.framework.tiled;
+package com.engine.tiled;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -166,7 +166,7 @@ public class TmxMapPatchLoader extends TmxMapLoader {
             }
             Array<XmlReader.Element> tileElements = element.getChildrenByName("tile");
 
-            Array<AnimatedTiledMapTile> animatedTiles = new Array<AnimatedTiledMapTile>();
+            Array<AnimatedTiledMapTile> animatedTiles = new Array<>();
 
             MapLayer collidersLayer = new MapLayer();
             collidersLayer.setName("colliders");
@@ -182,7 +182,7 @@ public class TmxMapPatchLoader extends TmxMapLoader {
                     XmlReader.Element animationElement = tileElement.getChildByName("animation");
                     if (animationElement != null) {
 
-                        Array<StaticTiledMapTile> staticTiles = new Array<StaticTiledMapTile>();
+                        Array<StaticTiledMapTile> staticTiles = new Array<>();
                         IntArray intervals = new IntArray();
                         for (XmlReader.Element frameElement : animationElement.getChildrenByName("frame")) {
                             staticTiles.add((StaticTiledMapTile) tileset.getTile(firstgid + frameElement.getIntAttribute("tileid")));
@@ -224,7 +224,7 @@ public class TmxMapPatchLoader extends TmxMapLoader {
         }
     }
 
-    protected void loadObjectGroup(MapLayer layer, XmlReader.Element element, int tileId) {
+    private void loadObjectGroup(MapLayer layer, XmlReader.Element element, int tileId) {
         if (element.getName().equals("objectgroup")) {
             XmlReader.Element properties = element.getChildByName("properties");
             if (properties != null) {
@@ -237,7 +237,7 @@ public class TmxMapPatchLoader extends TmxMapLoader {
         }
     }
 
-    protected void loadObject(TiledMap map, MapLayer layer, XmlReader.Element element, int tileId) {
+    private void loadObject(TiledMap map, MapLayer layer, XmlReader.Element element, int tileId) {
         if (element.getName().equals("object")) {
             MapObject object = null;
 
@@ -251,7 +251,7 @@ public class TmxMapPatchLoader extends TmxMapLoader {
             float height = element.getFloatAttribute("height", 0) * scaleY;
 
             if (element.getChildCount() > 0) {
-                XmlReader.Element child = null;
+                XmlReader.Element child;
                 if ((child = element.getChildByName("polygon")) != null) {
                     String[] points = child.getAttribute("points").split(" ");
                     float[] vertices = new float[points.length * 2];
@@ -274,12 +274,12 @@ public class TmxMapPatchLoader extends TmxMapLoader {
                     Polyline polyline = new Polyline(vertices);
                     polyline.setPosition(x, y);
                     object = new PolylineMapObject(polyline);
-                } else if ((child = element.getChildByName("ellipse")) != null) {
+                } else if (element.getChildByName("ellipse") != null) {
                     object = new EllipseMapObject(x, flipY ? y - height : y, width, height);
                 }
             }
             if (object == null) {
-                String gid = null;
+                String gid;
                 if ((gid = element.getAttribute("gid", null)) != null) {
                     int id = (int) Long.parseLong(gid);
                     boolean flipHorizontally = ((id & FLAG_FLIP_HORIZONTALLY) != 0);

@@ -1,4 +1,4 @@
-package com.framework.core;
+package com.engine.core;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.framework.components.GameObjectCmp;
-import com.framework.components.TransformCmp;
+import com.engine.components.GameObjectCmp;
+import com.engine.components.TransformCmp;
 
 /**
  * Created by conor on 16/07/16.

@@ -2,9 +2,9 @@ package com.platut.scripts;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.framework.components.SpriteCmp;
-import com.framework.core.BaseScript;
-import com.framework.core.SceneManager;
+import com.engine.components.SpriteCmp;
+import com.engine.core.BaseScript;
+import com.engine.core.SceneManager;
 
 /**
  * Created by conor on 16/07/16.

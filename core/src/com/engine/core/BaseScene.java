@@ -1,4 +1,4 @@
-package com.framework.core;
+package com.engine.core;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -26,23 +26,23 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.framework.components.ButtonCmp;
-import com.framework.components.GameObjectCmp;
-import com.framework.components.MaterialCmp;
-import com.framework.components.SpriteCmp;
-import com.framework.systems.GUISystem;
-import com.framework.systems.LightSystem;
-import com.framework.systems.RenderSystem;
-import com.framework.systems.UpdateSystem;
-import com.framework.tiled.TmxMapPatchLoader;
+import com.engine.components.ButtonCmp;
+import com.engine.components.GameObjectCmp;
+import com.engine.components.MaterialCmp;
+import com.engine.components.SpriteCmp;
+import com.engine.systems.GUISystem;
+import com.engine.systems.LightSystem;
+import com.engine.systems.RenderSystem;
+import com.engine.systems.UpdateSystem;
+import com.engine.tiled.TmxMapPatchLoader;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
-import static com.framework.core.ColliderUtil.ColliderWrapper;
-import static com.framework.core.ColliderUtil.correctShape;
-import static com.framework.core.Constants.PixelToMeters;
+import static com.engine.core.ColliderUtil.ColliderWrapper;
+import static com.engine.core.ColliderUtil.correctShape;
+import static com.engine.core.Constants.PixelToMeters;
 
 /**
  * Created by conor on 16/07/16.
@@ -172,7 +172,7 @@ public class BaseScene implements IScene, EntityListener {
                 loadImageLayer((TiledMapImageLayer) layer);
 
             } else {
-                // Load game objects
+                // Load game entities
                 loadEntities(layer);
             }
         }

@@ -1,4 +1,4 @@
-package com.framework.core;
+package com.engine.core;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.InputMultiplexer;
@@ -16,13 +16,13 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
-import com.framework.components.ButtonCmp;
-import com.framework.components.ColliderCmp;
-import com.framework.components.GameObjectCmp;
-import com.framework.components.MaterialCmp;
-import com.framework.components.SpriteCmp;
-import com.framework.components.TransformCmp;
-import com.framework.tiled.TmxMapPatchLoader;
+import com.engine.components.ButtonCmp;
+import com.engine.components.ColliderCmp;
+import com.engine.components.GameObjectCmp;
+import com.engine.components.MaterialCmp;
+import com.engine.components.SpriteCmp;
+import com.engine.components.TransformCmp;
+import com.engine.tiled.TmxMapPatchLoader;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

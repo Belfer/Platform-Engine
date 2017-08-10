@@ -1,4 +1,4 @@
-package com.framework.components;
+package com.engine.components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.ComponentMapper;

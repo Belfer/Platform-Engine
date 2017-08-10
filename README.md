@@ -7,6 +7,8 @@ Go to the libGDX website and make yourself familiar with setting up a libGDX
 environment. You will need intelliJ or AndroidStudio if you want to do this,
 otherwise you will have to find a way to use it on your preferred IDE.
 
+Also, you will need to have the latest java dev kit (JDK).
+
 Once you download this repo open your IDE and follow these steps:
 - Synch gradle.
 - Create a new run/debug configuration.

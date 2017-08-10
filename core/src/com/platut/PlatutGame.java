@@ -2,7 +2,7 @@ package com.platut;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.framework.core.BaseGame;
+import com.engine.core.BaseGame;
 
 public class PlatutGame extends BaseGame {
     @Override

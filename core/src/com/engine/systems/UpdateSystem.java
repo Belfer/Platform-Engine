@@ -1,4 +1,4 @@
-package com.framework.systems;
+package com.engine.systems;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -12,9 +12,9 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
-import com.framework.components.GameObjectCmp;
-import com.framework.components.TransformCmp;
-import com.framework.core.IScript;
+import com.engine.components.GameObjectCmp;
+import com.engine.components.TransformCmp;
+import com.engine.core.IScript;
 
 /**
  * Created by conor on 16/07/16.
