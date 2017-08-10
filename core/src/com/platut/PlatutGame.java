@@ -1,11 +1,18 @@
 package com.platut;
 
-import com.framework.core.BaseScene;
-import com.framework.core.SceneManager;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.framework.core.BaseGame;
 
-public class PlatutGame extends SceneManager {
+public class PlatutGame extends BaseGame {
     @Override
     public void create() {
-        setScene("levels/level1.tmx", BaseScene.class, EntityFactory.class);
+        getSceneManager().setScene("levels/level1.tmx");
+    }
+
+    public void render() {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        getSceneManager().getCurrentScene().render();
     }
 }

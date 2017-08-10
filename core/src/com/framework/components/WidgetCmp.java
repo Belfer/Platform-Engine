@@ -1,6 +1,7 @@
 package com.framework.components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 
 /**
@@ -8,4 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Widget;
  */
 public class WidgetCmp implements Component {
     public Widget widget = null;
+
+    public static final ComponentMapper<WidgetCmp>
+            Mapper = ComponentMapper.getFor(WidgetCmp.class);
 }

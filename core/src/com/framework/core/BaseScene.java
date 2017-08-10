@@ -9,9 +9,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapLayers;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -24,9 +34,15 @@ import com.framework.systems.GUISystem;
 import com.framework.systems.LightSystem;
 import com.framework.systems.RenderSystem;
 import com.framework.systems.UpdateSystem;
+import com.framework.tiled.TmxMapPatchLoader;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+
+import static com.framework.core.ColliderUtil.ColliderWrapper;
+import static com.framework.core.ColliderUtil.correctShape;
+import static com.framework.core.Constants.PixelToMeters;
 
 /**
  * Created by conor on 16/07/16.
@@ -43,27 +59,26 @@ public class BaseScene implements IScene, EntityListener {
     protected World world;
     protected Stage stage;
     protected TiledMap map;
-
-    protected ColliderLoader colliderLoader;
-    protected UILoader uiLoader;
-    protected MapLoader mapLoader;
+    protected MapProperties properties;
 
     protected boolean sceneLoaded = false;
+
+    private HashMap<Integer, ColliderWrapper> colliders;
 
     public BaseScene(SceneManager sceneManager, TiledMap map, Class<?> entityFactoryClass) {
         this.sceneManager = sceneManager;
         this.map = map;
+        properties = map.getProperties();
 
-        init(map.getProperties());
-        entityFactory = getEntityFactory(entityFactoryClass);
-
+        init();
+        entityFactory = newEntityFactory(entityFactoryClass);
         engine.addEntityListener(this);
 
         inputMultiplexer.addProcessor(stage);
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
-    private void init(MapProperties properties) {
+    private void init() {
         int width = Gdx.graphics.getWidth();
         int height = Gdx.graphics.getHeight();
         float viewportX = Float.parseFloat(properties.get("viewportX", width + "", String.class));
@@ -76,13 +91,14 @@ public class BaseScene implements IScene, EntityListener {
         gameCamera = new OrthographicCamera(viewportX, viewportY);
         guiCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         viewport = new FitViewport(viewportX, viewportY, gameCamera);
-        inputMultiplexer = new InputMultiplexer();
-        stage = new Stage();
+
         engine = new Engine();
-        colliderLoader = new ColliderLoader();
+        stage = new Stage();
+        inputMultiplexer = new InputMultiplexer();
+        colliders = new HashMap<>();
     }
 
-    private IEntityFactory getEntityFactory(Class<?> entityFactoryClass) {
+    private IEntityFactory newEntityFactory(Class<?> entityFactoryClass) {
         Object object = null;
         Constructor constructor = null;
         try {
@@ -91,12 +107,9 @@ public class BaseScene implements IScene, EntityListener {
             e.printStackTrace();
         }
         try {
+            assert constructor != null;
             object = constructor.newInstance(sceneManager, inputMultiplexer, world);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
         assert (object instanceof IEntityFactory);
@@ -106,12 +119,9 @@ public class BaseScene implements IScene, EntityListener {
     public void build() {
         sceneLoaded = false;
 
-        MapProperties properties = map.getProperties();
-
-        ColliderLoader.loadColliders(properties, colliderLoader);
-        UILoader.loadUI(properties, engine, entityFactory);
-        MapLoader.loadMap(engine, entityFactory, map, world, colliderLoader);
         loadSystems();
+        loadColliders();
+        loadMap();
 
         sceneManager.getAssetManager().finishLoading();
         sceneLoaded = true;
@@ -119,18 +129,112 @@ public class BaseScene implements IScene, EntityListener {
         onPostLoad();
     }
 
-    protected void loadSystems() {
+    private void loadSystems() {
         engine.addSystem(new UpdateSystem(world));
-        engine.addSystem(new RenderSystem(gameCamera, world, map, Constants.PixelToMeters));
+        engine.addSystem(new RenderSystem(gameCamera, world, map));
         engine.addSystem(new LightSystem());
         engine.addSystem(new GUISystem(guiCamera, stage));
+    }
+
+    private void loadColliders() {
+        String filename = properties.get("collider", "", String.class);
+
+        if (!filename.isEmpty()) {
+            TiledMap colliderMap = new TmxMapPatchLoader().load(filename);
+            MapProperties mapProperties = colliderMap.getProperties();
+            MapLayers mapLayers = colliderMap.getLayers();
+
+            int tilewidth = mapProperties.get("tilewidth", 0, Integer.class);
+            int tileheight = mapProperties.get("tileheight", 0, Integer.class);
+
+            MapLayer colliderLayer = mapLayers.get("colliders");
+
+            for (MapObject obj : colliderLayer.getObjects()) {
+                MapProperties layerProp = obj.getProperties();
+                float rotation = layerProp.get("rotation", 0f, Float.class);
+
+                ColliderWrapper wrapper = correctShape(obj, tilewidth, tileheight, rotation);
+
+                int tileId = obj.getProperties().get("tileId", 0, Integer.class);
+                colliders.put(tileId, wrapper);
+            }
+        }
+    }
+
+    private void loadMap() {
+        for (MapLayer layer : map.getLayers()) {
+            if (layer instanceof TiledMapTileLayer) {
+                // Load tile colliders
+                loadTileColliders((TiledMapTileLayer) layer);
+
+            } else if (layer instanceof TiledMapImageLayer) {
+                // Load image data
+                loadImageLayer((TiledMapImageLayer) layer);
+
+            } else {
+                // Load game objects
+                loadEntities(layer);
+            }
+        }
+    }
+
+    private void loadTileColliders(TiledMapTileLayer layer) {
+        for (int i = 0; i < layer.getWidth(); i++) {
+            for (int j = 0; j < layer.getHeight(); j++) {
+
+                TiledMapTileLayer.Cell cell = layer.getCell(i, j);
+                if (cell != null) {
+                    ColliderUtil.ColliderWrapper collider = colliders.get(cell.getTile().getId());
+
+                    if (collider != null) {
+                        if (collider.shape != null) {
+                            BodyDef bodyDef = new BodyDef();
+                            bodyDef.type = BodyDef.BodyType.StaticBody;
+
+                            int tilewidth = 16;
+                            int tileheight = 16;
+                            float x = (i * tilewidth * PixelToMeters) + collider.origin.x;
+                            float y = (j * tileheight * PixelToMeters) + collider.origin.y;
+                            bodyDef.position.set(x, y);
+
+                            Body body = world.createBody(bodyDef);
+
+                            FixtureDef fixtureDef = new FixtureDef();
+                            fixtureDef.shape = collider.shape;
+                            fixtureDef.density = 1f;
+                            fixtureDef.friction = 0.5f;
+                            fixtureDef.restitution = 0f;
+                            body.createFixture(fixtureDef);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void loadImageLayer(TiledMapImageLayer layer) {
+        // TODO add image colliderLoader?
+    }
+
+    private void loadEntities(MapLayer layer) {
+        for (MapObject obj : layer.getObjects()) {
+            Entity entity = new Entity();
+
+            Rectangle bounds = ((RectangleMapObject) obj).getRectangle();
+            MapProperties properties = obj.getProperties();
+            String name = obj.getName();
+            String type = (String) properties.get("type");
+
+            entityFactory.buildEntity(entity, name, type, bounds, properties);
+            engine.addEntity(entity);
+        }
     }
 
     @SuppressWarnings("unchecked")
     private void onPostLoad() {
         ImmutableArray<Entity> entities = engine.getEntitiesFor(Family.all(MaterialCmp.class).get());
         for (Entity entity : entities) {
-            MaterialCmp material = Mappers.MATERIAL.get(entity);
+            MaterialCmp material = MaterialCmp.Mapper.get(entity);
 
             for (String img : material.images) {
                 Texture texture = sceneManager.getAssetManager().get(img, Texture.class);
@@ -152,9 +256,7 @@ public class BaseScene implements IScene, EntityListener {
     public void start() {
         for (Entity entity : engine.getEntities()) {
             GameObjectCmp gameObject = entity.getComponent(GameObjectCmp.class);
-            for (BaseScript script : gameObject.scripts) {
-                script.start();
-            }
+            gameObject.scripts.forEach(IScript::start);
         }
     }
 
@@ -170,27 +272,24 @@ public class BaseScene implements IScene, EntityListener {
     @Override
     public void entityAdded(Entity entity) {
         GameObjectCmp gameObject = entity.getComponent(GameObjectCmp.class);
-        for (BaseScript script : gameObject.scripts) {
-            script.create();
-
-            if (sceneLoaded) {
-                script.start();
-            }
+        gameObject.scripts.forEach(IScript::create);
+        if (sceneLoaded) {
+            gameObject.scripts.forEach(IScript::start);
         }
     }
 
     @Override
     public void entityRemoved(Entity entity) {
         GameObjectCmp gameObject = entity.getComponent(GameObjectCmp.class);
-        for (BaseScript script : gameObject.scripts) {
-            script.destroy();
-        }
+        gameObject.scripts.forEach(IScript::destroy);
     }
 
+    @Override
     public OrthographicCamera getGameCamera() {
         return gameCamera;
     }
 
+    @Override
     public OrthographicCamera getGUICamera() {
         return guiCamera;
     }

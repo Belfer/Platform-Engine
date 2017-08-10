@@ -1,6 +1,7 @@
 package com.framework.components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.ashley.core.ComponentMapper;
 
 import java.util.ArrayList;
 
@@ -9,4 +10,7 @@ import java.util.ArrayList;
  */
 public class MaterialCmp implements Component {
     public ArrayList<String> images = new ArrayList<String>();
+
+    public static final ComponentMapper<MaterialCmp>
+            Mapper = ComponentMapper.getFor(MaterialCmp.class);
 }

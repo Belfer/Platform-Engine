@@ -14,21 +14,14 @@ import com.badlogic.gdx.math.Vector3;
  * Created by conor on 25/07/16.
  */
 public class ParallaxMapRenderer extends OrthogonalTiledMapRenderer {
-    OrthographicCamera camera;
-    Matrix4 parallaxView = new Matrix4();
-    Matrix4 parallaxCombined = new Matrix4();
-    Vector3 tmp = new Vector3();
-    Vector3 tmp2 = new Vector3();
+    private OrthographicCamera camera;
+    private Matrix4 parallaxView = new Matrix4();
+    private Matrix4 parallaxCombined = new Matrix4();
+    private Vector3 worldCenter;
 
-    float wWidth, wHeight;
-    Vector3 worldCenter;
-
-    public ParallaxMapRenderer(TiledMap map, float wWidth, float wHeight) {
+    public ParallaxMapRenderer(TiledMap map, float width, float height) {
         super(map);
-        this.wWidth = wWidth;
-        this.wHeight = wHeight;
-
-        worldCenter = new Vector3(wWidth / 2, wHeight / 2, 0f);
+        worldCenter = new Vector3(width * 0.5f, height * 0.5f, 0f);
     }
 
     @Override
@@ -64,16 +57,20 @@ public class ParallaxMapRenderer extends OrthogonalTiledMapRenderer {
 
     private void calculateParallax(OrthographicCamera camera, float parallaxX, float parallaxY) {
         camera.update();
-        tmp.x = worldCenter.x + parallaxX * (camera.position.x - worldCenter.x);
-        tmp.y = worldCenter.y + parallaxY * (camera.position.y - worldCenter.y);
 
-        parallaxView.setToLookAt(tmp, tmp2.set(tmp).add(camera.direction), camera.up);
+        Vector3 camPos = new Vector3();
+        camPos.x = worldCenter.x + parallaxX * (camera.position.x - worldCenter.x);
+        camPos.y = worldCenter.y + parallaxY * (camera.position.y - worldCenter.y);
+
+        Vector3 lookAt = camPos.cpy().add(camera.direction);
+
+        parallaxView.setToLookAt(camPos, lookAt, camera.up);
         parallaxCombined.set(camera.projection);
         Matrix4.mul(parallaxCombined.val, parallaxView.val);
 
         batch.setProjectionMatrix(parallaxCombined);
         float width = camera.viewportWidth * camera.zoom;
         float height = camera.viewportHeight * camera.zoom;
-        viewBounds.set(tmp.x - width / 2, tmp.y - height / 2, width, height);
+        viewBounds.set(camPos.x - (width * .5f), camPos.y - (height * .5f), width, height);
     }
 }

@@ -1,6 +1,7 @@
 package com.framework.components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 
 /**
@@ -8,4 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
  */
 public class ButtonCmp implements Component {
     public Button button = new Button();
+
+    public static final ComponentMapper<ButtonCmp>
+            Mapper = ComponentMapper.getFor(ButtonCmp.class);
 }

@@ -12,8 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.framework.components.GameObjectCmp;
 import com.framework.components.SpriteCmp;
 import com.framework.components.TransformCmp;
-import com.framework.core.BaseScript;
-import com.framework.core.Mappers;
+import com.framework.core.IScript;
 
 /**
  * Created by conor on 17/07/16.
@@ -71,9 +70,9 @@ public class GUISystem extends EntitySystem {
         batch.begin();
 
         for (Entity entity : gameObjectEntities) {
-            GameObjectCmp gameObject = Mappers.GAMEOBJECT.get(entity);
+            GameObjectCmp gameObject = GameObjectCmp.Mapper.get(entity);
 
-            for (BaseScript script : gameObject.scripts) {
+            for (IScript script : gameObject.scripts) {
                 script.drawGUI(batch);
             }
         }

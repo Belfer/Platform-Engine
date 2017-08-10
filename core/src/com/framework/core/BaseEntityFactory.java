@@ -30,7 +30,6 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * Created by conor on 09/08/17.
  */
-
 public class BaseEntityFactory implements IEntityFactory {
     SceneManager sceneManager;
     InputMultiplexer inputMultiplexer;
@@ -42,6 +41,7 @@ public class BaseEntityFactory implements IEntityFactory {
         this.world = world;
     }
 
+    @Override
     public boolean buildEntity(Entity entity, String name, String type, Rectangle bounds, MapProperties properties) {
         String prefab = (String) properties.get("prefab");
         if (prefab != null) {
@@ -72,6 +72,7 @@ public class BaseEntityFactory implements IEntityFactory {
         return true;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public void addGameObject(Entity entity, String name, String tag, String scriptSrc) {
         GameObjectCmp gameObject = new GameObjectCmp();
@@ -95,11 +96,7 @@ public class BaseEntityFactory implements IEntityFactory {
                     Object object = null;
                     try {
                         object = constructor.newInstance(sceneManager, entity);
-                    } catch (InstantiationException e) {
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
+                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                         e.printStackTrace();
                     }
 
@@ -121,6 +118,7 @@ public class BaseEntityFactory implements IEntityFactory {
         entity.add(gameObject);
     }
 
+    @Override
     public void addTransform(Entity entity, Rectangle bounds) {
         TransformCmp transform = new TransformCmp();
         transform.bounds = bounds;
@@ -130,6 +128,7 @@ public class BaseEntityFactory implements IEntityFactory {
         entity.add(transform);
     }
 
+    @Override
     public void addCollider(Entity entity, Rectangle bounds, MapObjects colliders, int tilewidth, int tileheight) {
         ColliderCmp collider = new ColliderCmp();
 
@@ -145,7 +144,7 @@ public class BaseEntityFactory implements IEntityFactory {
             //int tiled = obj.getProperties().get ("tileId", 0, Integer.class);
             float rotation = properties.get("rotation", 0f, Float.class);
 
-            ColliderLoader.ColliderWrapper wrapper = ColliderLoader.correctShape(obj, tilewidth, tileheight, rotation);
+            ColliderUtil.ColliderWrapper wrapper = ColliderUtil.correctShape(obj, tilewidth, tileheight, rotation);
             if (wrapper.shape != null) {
                 FixtureDef fixtureDef = new FixtureDef();
                 fixtureDef.density = Float.parseFloat(properties.get("density", "1f", String.class));
@@ -165,6 +164,7 @@ public class BaseEntityFactory implements IEntityFactory {
         entity.add(collider);
     }
 
+    @Override
     public void addSprite(Entity entity, String imageSrc) {
         MaterialCmp material = new MaterialCmp();
         SpriteCmp sprite = new SpriteCmp();
@@ -179,6 +179,7 @@ public class BaseEntityFactory implements IEntityFactory {
         entity.add(material);
     }
 
+    @Override
     public void addButton(Entity entity, Rectangle bounds, String imageSrc) {
         MaterialCmp material = new MaterialCmp();
         ButtonCmp button = new ButtonCmp();

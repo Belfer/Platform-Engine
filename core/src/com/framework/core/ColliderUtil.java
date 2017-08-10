@@ -1,14 +1,10 @@
 package com.framework.core;
 
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.CircleMapObject;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.MathUtils;
@@ -19,60 +15,26 @@ import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
-import com.framework.tiled.TmxMapPatchLoader;
-
-import java.util.HashMap;
 
 /**
  * Created by conor on 09/08/17.
  */
 
-public class ColliderLoader {
+public class ColliderUtil {
     public static class ColliderWrapper {
         public Shape shape;
-        public Vector2 offset;
-    }
-
-    public HashMap<Integer, ColliderWrapper> colliders;
-
-    public ColliderLoader() {
-        colliders = new HashMap<>();
-    }
-
-    public static void loadColliders(MapProperties properties, ColliderLoader loader) {
-        String filename = properties.get("collider", "", String.class);
-
-        if (!filename.isEmpty()) {
-            TiledMap colliderMap = new TmxMapPatchLoader().load(filename);
-            MapProperties mapProperties = colliderMap.getProperties();
-            MapLayers mapLayers = colliderMap.getLayers();
-
-            int tilewidth = mapProperties.get("tilewidth", 0, Integer.class);
-            int tileheight = mapProperties.get("tileheight", 0, Integer.class);
-
-            MapLayer colliderLayer = mapLayers.get("colliders");
-
-            for (MapObject obj : colliderLayer.getObjects()) {
-                MapProperties layerProp = obj.getProperties();
-                float rotation = layerProp.get("rotation", 0f, Float.class);
-
-                ColliderWrapper wrapper = correctShape(obj, tilewidth, tileheight, rotation);
-
-                int tileId = obj.getProperties().get("tileId", 0, Integer.class);
-                loader.colliders.put(tileId, wrapper);
-            }
-        }
+        public Vector2 origin;
     }
 
     public static ColliderWrapper correctShape(MapObject obj, int tilewidth, int tileheight, float rotation) {
         ColliderWrapper wrapper = new ColliderWrapper();
-        wrapper.offset = new Vector2();
+        wrapper.origin = new Vector2();
         wrapper.shape = null;
 
         if (obj instanceof CircleMapObject) {
             Circle circle = ((CircleMapObject) obj).getCircle();
-            wrapper.offset.x = circle.x * Constants.PixelToMeters;
-            wrapper.offset.y = circle.y * Constants.PixelToMeters;
+            wrapper.origin.x = circle.x * Constants.PixelToMeters;
+            wrapper.origin.y = circle.y * Constants.PixelToMeters;
 
             wrapper.shape = new CircleShape();
             wrapper.shape.setRadius(circle.radius);
@@ -82,8 +44,8 @@ public class ColliderLoader {
             Vector2 center = new Vector2();
             center.x = (ellipse.x + ellipse.width / 2 - tilewidth / 2) * Constants.PixelToMeters;
             center.y = (ellipse.y + ellipse.height / 2 - tileheight / 2) * Constants.PixelToMeters;
-            wrapper.offset.x = (tilewidth / 2) * Constants.PixelToMeters;
-            wrapper.offset.y = (tileheight / 2) * Constants.PixelToMeters;
+            wrapper.origin.x = (tilewidth / 2) * Constants.PixelToMeters;
+            wrapper.origin.y = (tileheight / 2) * Constants.PixelToMeters;
 
             wrapper.shape = new ChainShape();
             Vector2[] vertices = new Vector2[32];
@@ -102,8 +64,8 @@ public class ColliderLoader {
             Vector2 center = new Vector2();
             center.x = (rectangle.x + rectangle.getWidth() / 2 - tilewidth / 2) * Constants.PixelToMeters;
             center.y = (rectangle.y + rectangle.getHeight() / 2 - tileheight / 2) * Constants.PixelToMeters;
-            wrapper.offset.x = (tilewidth / 2) * Constants.PixelToMeters;
-            wrapper.offset.y = (tileheight / 2) * Constants.PixelToMeters;
+            wrapper.origin.x = (tilewidth / 2) * Constants.PixelToMeters;
+            wrapper.origin.y = (tileheight / 2) * Constants.PixelToMeters;
             float width = (rectangle.getWidth() / 2) * Constants.PixelToMeters;
             float height = (rectangle.getHeight() / 2) * Constants.PixelToMeters;
 
@@ -138,8 +100,8 @@ public class ColliderLoader {
                 }
             }
 
-            wrapper.offset.x = (polygon.getX() - (int) (polygon.getX() / tilewidth) * tilewidth) * Constants.PixelToMeters;
-            wrapper.offset.y = (polygon.getY() - (int) (polygon.getY() / tileheight) * tileheight) * Constants.PixelToMeters;
+            wrapper.origin.x = (polygon.getX() - (int) (polygon.getX() / tilewidth) * tilewidth) * Constants.PixelToMeters;
+            wrapper.origin.y = (polygon.getY() - (int) (polygon.getY() / tileheight) * tileheight) * Constants.PixelToMeters;
 
             wrapper.shape = new PolygonShape();
             ((PolygonShape) wrapper.shape).set(vertices);

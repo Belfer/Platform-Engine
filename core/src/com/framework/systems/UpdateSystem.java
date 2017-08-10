@@ -14,8 +14,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.framework.components.GameObjectCmp;
 import com.framework.components.TransformCmp;
-import com.framework.core.BaseScript;
-import com.framework.core.Mappers;
+import com.framework.core.IScript;
 
 /**
  * Created by conor on 16/07/16.
@@ -41,9 +40,9 @@ public class UpdateSystem extends EntitySystem {
         world.step(WORLD_STEP, POS_IT, VEL_IT);
 
         for (Entity entity : gameObjectEntities) {
-            GameObjectCmp gameObject = Mappers.GAMEOBJECT.get(entity);
+            GameObjectCmp gameObject = GameObjectCmp.Mapper.get(entity);
 
-            for (BaseScript script : gameObject.scripts) {
+            for (IScript script : gameObject.scripts) {
                 script.update(Gdx.graphics.getDeltaTime());
             }
         }
@@ -58,15 +57,15 @@ public class UpdateSystem extends EntitySystem {
             Entity entityB = (Entity) fixtureB.getBody().getUserData();
 
             if (entityA != null) {
-                GameObjectCmp gameObjectA = Mappers.GAMEOBJECT.get(entityA);
-                for (BaseScript script : gameObjectA.scripts) {
+                GameObjectCmp gameObjectA = GameObjectCmp.Mapper.get(entityA);
+                for (IScript script : gameObjectA.scripts) {
                     script.beginContact(contact, entityB);
                 }
             }
 
             if (entityB != null) {
-                GameObjectCmp gameObjectB = Mappers.GAMEOBJECT.get(entityB);
-                for (BaseScript script : gameObjectB.scripts) {
+                GameObjectCmp gameObjectB = GameObjectCmp.Mapper.get(entityB);
+                for (IScript script : gameObjectB.scripts) {
                     script.beginContact(contact, entityA);
                 }
             }
@@ -80,15 +79,15 @@ public class UpdateSystem extends EntitySystem {
             Entity entityB = (Entity) fixtureB.getBody().getUserData();
 
             if (entityA != null) {
-                GameObjectCmp gameObjectA = Mappers.GAMEOBJECT.get(entityA);
-                for (BaseScript script : gameObjectA.scripts) {
+                GameObjectCmp gameObjectA = GameObjectCmp.Mapper.get(entityA);
+                for (IScript script : gameObjectA.scripts) {
                     script.endContact(contact, entityB);
                 }
             }
 
             if (entityB != null) {
-                GameObjectCmp gameObjectB = Mappers.GAMEOBJECT.get(entityB);
-                for (BaseScript script : gameObjectB.scripts) {
+                GameObjectCmp gameObjectB = GameObjectCmp.Mapper.get(entityB);
+                for (IScript script : gameObjectB.scripts) {
                     script.endContact(contact, entityA);
                 }
             }
@@ -102,15 +101,15 @@ public class UpdateSystem extends EntitySystem {
             Entity entityB = (Entity) fixtureB.getBody().getUserData();
 
             if (entityA != null) {
-                GameObjectCmp gameObjectA = Mappers.GAMEOBJECT.get(entityA);
-                for (BaseScript script : gameObjectA.scripts) {
+                GameObjectCmp gameObjectA = GameObjectCmp.Mapper.get(entityA);
+                for (IScript script : gameObjectA.scripts) {
                     script.preSolve(contact, oldManifold, entityB);
                 }
             }
 
             if (entityB != null) {
-                GameObjectCmp gameObjectB = Mappers.GAMEOBJECT.get(entityB);
-                for (BaseScript script : gameObjectB.scripts) {
+                GameObjectCmp gameObjectB = GameObjectCmp.Mapper.get(entityB);
+                for (IScript script : gameObjectB.scripts) {
                     script.preSolve(contact, oldManifold, entityA);
                 }
             }
@@ -124,15 +123,15 @@ public class UpdateSystem extends EntitySystem {
             Entity entityB = (Entity) fixtureB.getBody().getUserData();
 
             if (entityA != null) {
-                GameObjectCmp gameObjectA = Mappers.GAMEOBJECT.get(entityA);
-                for (BaseScript script : gameObjectA.scripts) {
+                GameObjectCmp gameObjectA = GameObjectCmp.Mapper.get(entityA);
+                for (IScript script : gameObjectA.scripts) {
                     script.postSolve(contact, impulse, entityB);
                 }
             }
 
             if (entityB != null) {
-                GameObjectCmp gameObjectB = Mappers.GAMEOBJECT.get(entityB);
-                for (BaseScript script : gameObjectB.scripts) {
+                GameObjectCmp gameObjectB = GameObjectCmp.Mapper.get(entityB);
+                for (IScript script : gameObjectB.scripts) {
                     script.postSolve(contact, impulse, entityA);
                 }
             }

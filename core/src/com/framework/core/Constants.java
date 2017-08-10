@@ -5,6 +5,6 @@ package com.framework.core;
  */
 
 public class Constants {
-    public static final float PixelToMeters = 0.125f;
     public static final float MeterToPixels = 8;
+    public static final float PixelToMeters = 1f / MeterToPixels;//0.125f;
 }

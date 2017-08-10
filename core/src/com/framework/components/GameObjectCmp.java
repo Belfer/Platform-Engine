@@ -1,7 +1,8 @@
 package com.framework.components;
 
 import com.badlogic.ashley.core.Component;
-import com.framework.core.BaseScript;
+import com.badlogic.ashley.core.ComponentMapper;
+import com.framework.core.IScript;
 
 import java.util.ArrayList;
 
@@ -11,5 +12,8 @@ import java.util.ArrayList;
 public class GameObjectCmp implements Component {
     public String name = "";
     public String tag = "";
-    public ArrayList<BaseScript> scripts = new ArrayList<BaseScript>();
+    public ArrayList<IScript> scripts = new ArrayList<>();
+
+    public static final ComponentMapper<GameObjectCmp>
+            Mapper = ComponentMapper.getFor(GameObjectCmp.class);
 }

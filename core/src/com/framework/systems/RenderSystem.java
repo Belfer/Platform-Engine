@@ -19,40 +19,39 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.framework.components.GameObjectCmp;
 import com.framework.components.TransformCmp;
-import com.framework.core.BaseScript;
-import com.framework.core.Mappers;
+import com.framework.core.IScript;
 import com.framework.tiled.ParallaxMapRenderer;
 
 import java.util.ArrayList;
+
+import static com.framework.core.Constants.PixelToMeters;
 
 /**
  * Created by conor on 16/07/16.
  */
 public class RenderSystem extends EntitySystem {
-    ImmutableArray<Entity> gameObjectEntities;
+    private ImmutableArray<Entity> gameObjectEntities;
 
-    OrthographicCamera camera;
-    World world;
-    SpriteBatch batch;
+    private OrthographicCamera camera;
+    private World world;
+    private SpriteBatch batch;
 
-    TiledMap map;
-    ParallaxMapRenderer mapRenderer;
-    Box2DDebugRenderer box2DRenderer;
-    float pixelsToMeters = 1f;
-    Matrix4 debugMatrix;
+    private TiledMap map;
+    private ParallaxMapRenderer mapRenderer;
+    private Box2DDebugRenderer box2DRenderer;
 
-    boolean debug = true;
+    private boolean debug = true;
 
-    float wWidth, wHeight;
-    float vpWidth, vpHeight;
+    private float wWidth, wHeight;
+    private float vpWidth, vpHeight;
 
-    int[] bgLayers;
-    Vector2[] bgParallax;
+    private int[] bgLayers;
+    private Vector2[] bgParallax;
 
-    int[] fgLayers;
-    Vector2[] fgParallax;
+    private int[] fgLayers;
+    private Vector2[] fgParallax;
 
-    public RenderSystem(OrthographicCamera camera, World world, TiledMap map, float pixelsToMeters) {
+    public RenderSystem(OrthographicCamera camera, World world, TiledMap map) {
         this.camera = camera;
         this.world = world;
         this.map = map;
@@ -66,15 +65,14 @@ public class RenderSystem extends EntitySystem {
 
         mapRenderer = new ParallaxMapRenderer(map, wWidth, wHeight);
         box2DRenderer = new Box2DDebugRenderer(true, true, false, true, true, true);
-        this.pixelsToMeters = pixelsToMeters;
 
         MapLayers layers = map.getLayers();
         int gameIndex = layers.getIndex("gm");
-        ArrayList<Integer> bgIndices = new ArrayList<Integer>();
-        ArrayList<Vector2> bgParallax = new ArrayList<Vector2>();
+        ArrayList<Integer> bgIndices = new ArrayList<>();
+        ArrayList<Vector2> bgParallax = new ArrayList<>();
 
-        ArrayList<Integer> fgIndices = new ArrayList<Integer>();
-        ArrayList<Vector2> fgParallax = new ArrayList<Vector2>();
+        ArrayList<Integer> fgIndices = new ArrayList<>();
+        ArrayList<Vector2> fgParallax = new ArrayList<>();
 
         for (int i = 0; i < layers.getCount(); i++) {
             MapLayer layer = layers.get(i);
@@ -145,9 +143,9 @@ public class RenderSystem extends EntitySystem {
         batch.begin();
 
         for (Entity entity : gameObjectEntities) {
-            GameObjectCmp gameObject = Mappers.GAMEOBJECT.get(entity);
+            GameObjectCmp gameObject = GameObjectCmp.Mapper.get(entity);
 
-            for (BaseScript script : gameObject.scripts) {
+            for (IScript script : gameObject.scripts) {
                 script.draw(batch);
             }
         }
@@ -157,7 +155,7 @@ public class RenderSystem extends EntitySystem {
         mapRenderer.render(fgLayers, fgParallax);
 
         if (debug) {
-            debugMatrix = camera.combined.cpy().scale(1f / pixelsToMeters, 1f / pixelsToMeters, 0);
+            Matrix4 debugMatrix = camera.combined.cpy().scale(1f / PixelToMeters, 1f / PixelToMeters, 0);
             box2DRenderer.render(world, debugMatrix);
         }
     }
