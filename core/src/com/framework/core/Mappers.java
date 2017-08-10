@@ -1,4 +1,4 @@
-package com.framework;
+package com.framework.core;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.framework.components.ButtonCmp;

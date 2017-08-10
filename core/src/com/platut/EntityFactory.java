@@ -5,8 +5,8 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
-import com.framework.BaseEntityFactory;
-import com.framework.SceneManager;
+import com.framework.core.BaseEntityFactory;
+import com.framework.core.SceneManager;
 
 /**
  * Created by conor on 09/08/17.

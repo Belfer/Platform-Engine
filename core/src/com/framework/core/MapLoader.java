@@ -1,4 +1,4 @@
-package com.framework;
+package com.framework.core;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -15,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
-import static com.framework.Constants.PixelToMeters;
+import static com.framework.core.Constants.PixelToMeters;
 
 /**
  * Created by conor on 09/08/17.
@@ -26,7 +26,7 @@ public class MapLoader {
         for (MapLayer mapLayer : map.getLayers()) {
             if (mapLayer instanceof TiledMapTileLayer) {
 
-                // Load tile collider from colliderLoader map
+                // Load tile collider from colliderLoader tiled
                 TiledMapTileLayer tileLayer = (TiledMapTileLayer) mapLayer;
                 for (int i = 0; i < tileLayer.getWidth(); i++) {
                     for (int j = 0; j < tileLayer.getHeight(); j++) {

@@ -1,7 +1,7 @@
 package com.framework.components;
 
 import com.badlogic.ashley.core.Component;
-import com.framework.BaseScript;
+import com.framework.core.BaseScript;
 
 import java.util.ArrayList;
 

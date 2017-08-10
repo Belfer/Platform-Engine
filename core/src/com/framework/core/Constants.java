@@ -1,4 +1,4 @@
-package com.framework;
+package com.framework.core;
 
 /**
  * Created by conor on 09/08/17.

@@ -12,10 +12,10 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
-import com.framework.Mappers;
-import com.framework.BaseScript;
 import com.framework.components.GameObjectCmp;
 import com.framework.components.TransformCmp;
+import com.framework.core.BaseScript;
+import com.framework.core.Mappers;
 
 /**
  * Created by conor on 16/07/16.

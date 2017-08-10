@@ -17,11 +17,11 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.framework.Mappers;
-import com.framework.BaseScript;
 import com.framework.components.GameObjectCmp;
 import com.framework.components.TransformCmp;
-import com.framework.map.ParallaxMapRenderer;
+import com.framework.core.BaseScript;
+import com.framework.core.Mappers;
+import com.framework.tiled.ParallaxMapRenderer;
 
 import java.util.ArrayList;
 

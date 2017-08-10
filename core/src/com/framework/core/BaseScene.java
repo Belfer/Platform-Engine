@@ -1,4 +1,4 @@
-package com.framework;
+package com.framework.core;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -27,11 +27,6 @@ import com.framework.systems.UpdateSystem;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-
-import static com.framework.ColliderLoader.loadColliders;
-import static com.framework.Constants.PixelToMeters;
-import static com.framework.MapLoader.loadMap;
-import static com.framework.UILoader.loadUI;
 
 /**
  * Created by conor on 16/07/16.
@@ -113,9 +108,9 @@ public class BaseScene implements IScene, EntityListener {
 
         MapProperties properties = map.getProperties();
 
-        loadColliders(properties, colliderLoader);
-        loadUI(properties, engine, entityFactory);
-        loadMap(engine, entityFactory, map, world, colliderLoader);
+        ColliderLoader.loadColliders(properties, colliderLoader);
+        UILoader.loadUI(properties, engine, entityFactory);
+        MapLoader.loadMap(engine, entityFactory, map, world, colliderLoader);
         loadSystems();
 
         sceneManager.getAssetManager().finishLoading();
@@ -126,7 +121,7 @@ public class BaseScene implements IScene, EntityListener {
 
     protected void loadSystems() {
         engine.addSystem(new UpdateSystem(world));
-        engine.addSystem(new RenderSystem(gameCamera, world, map, PixelToMeters));
+        engine.addSystem(new RenderSystem(gameCamera, world, map, Constants.PixelToMeters));
         engine.addSystem(new LightSystem());
         engine.addSystem(new GUISystem(guiCamera, stage));
     }

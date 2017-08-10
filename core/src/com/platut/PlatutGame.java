@@ -1,7 +1,7 @@
 package com.platut;
 
-import com.framework.BaseScene;
-import com.framework.SceneManager;
+import com.framework.core.BaseScene;
+import com.framework.core.SceneManager;
 
 public class PlatutGame extends SceneManager {
     @Override

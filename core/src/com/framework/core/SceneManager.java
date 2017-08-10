@@ -1,4 +1,4 @@
-package com.framework;
+package com.framework.core;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;

@@ -1,4 +1,4 @@
-package com.framework.map;
+package com.framework.tiled;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapLayer;

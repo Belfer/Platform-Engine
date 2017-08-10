@@ -4,20 +4,20 @@
   <property name="image" value="oldhero.png"/>
   <property name="script" value="com.platut.scripts.PlayerController"/>
  </properties>
- <tileset firstgid="1" name="oldhero" tilewidth="16" tileheight="16" tilecount="30" columns="6">
+ <tileset firstgid="1" name="oldhero" tilewidth="16" tileheight="16" tilecount="30">
   <image source="../oldhero.png" width="96" height="80"/>
   <tile id="0">
    <objectgroup draworder="index">
     <object id="1" name="sensor" type="collider" x="4" y="10" width="8" height="6">
      <properties>
-      <property name="restitution" type="float" value="0"/>
-      <property name="sensor" type="bool" value="false"/>
+      <property name="restitution" value="0"/>
+      <property name="sensor" value="false"/>
      </properties>
      <ellipse/>
     </object>
     <object id="3" name="body" type="collider" x="4" y="1" width="8" height="12">
      <properties>
-      <property name="restitution" type="float" value="0"/>
+      <property name="restitution" value="0"/>
      </properties>
     </object>
    </objectgroup>
@@ -46,6 +46,7 @@
    </animation>
   </tile>
   <tile id="18">
+   <objectgroup draworder="index"/>
    <animation>
     <frame tileid="18" duration="100"/>
     <frame tileid="19" duration="100"/>
@@ -63,9 +64,29 @@
    </animation>
   </tile>
  </tileset>
- <layer name="avatar" width="1" height="1">
+ <layer name="idle" width="1" height="1">
   <data encoding="base64" compression="zlib">
    eJxjZGBgAAAACAAC
+  </data>
+ </layer>
+ <layer name="run" width="1" height="1" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJxjZ2BgAAAAIAAI
+  </data>
+ </layer>
+ <layer name="jump" width="1" height="1" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJzjZWBgAAAAOAAO
+  </data>
+ </layer>
+ <layer name="swim" width="1" height="1" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJwTZmBgAAAAUAAU
+  </data>
+ </layer>
+ <layer name="punch" width="1" height="1" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJyTZGBgAAAAaAAa
   </data>
  </layer>
 </map>

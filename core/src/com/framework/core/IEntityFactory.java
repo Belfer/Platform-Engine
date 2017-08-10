@@ -1,4 +1,4 @@
-package com.framework;
+package com.framework.core;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.maps.MapObjects;

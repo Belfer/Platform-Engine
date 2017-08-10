@@ -1,4 +1,4 @@
-package com.framework.map;
+package com.framework.tiled;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -29,10 +29,10 @@ import java.io.IOException;
 /**
  * Created by conor on 21/07/16.
  */
-public class SceneMapLoader extends TmxMapLoader {
+public class TmxMapPatchLoader extends TmxMapLoader {
 
     /**
-     * Loads the specified tileset data, adding it to the collection of the specified map, given the XML element, the tmxFile and
+     * Loads the specified tileset data, adding it to the collection of the specified tiled, given the XML element, the tmxFile and
      * an {@link ImageResolver} used to retrieve the tileset Textures.
      * <p>
      * <p>

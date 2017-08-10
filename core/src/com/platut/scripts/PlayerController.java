@@ -11,12 +11,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.WorldManifold;
-import com.framework.SceneManager;
-import com.framework.BaseScript;
 import com.framework.components.ColliderCmp;
 import com.framework.components.SpriteCmp;
+import com.framework.core.BaseScript;
+import com.framework.core.SceneManager;
 
-import static com.framework.Constants.MeterToPixels;
+import static com.framework.core.Constants.MeterToPixels;
 
 /**
  * Created by conor on 18/07/16.

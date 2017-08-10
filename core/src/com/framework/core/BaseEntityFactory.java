@@ -1,4 +1,4 @@
-package com.framework;
+package com.framework.core;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.InputMultiplexer;
@@ -22,12 +22,10 @@ import com.framework.components.GameObjectCmp;
 import com.framework.components.MaterialCmp;
 import com.framework.components.SpriteCmp;
 import com.framework.components.TransformCmp;
-import com.framework.map.SceneMapLoader;
+import com.framework.tiled.TmxMapPatchLoader;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-
-import static com.framework.Constants.PixelToMeters;
 
 /**
  * Created by conor on 09/08/17.
@@ -47,7 +45,7 @@ public class BaseEntityFactory implements IEntityFactory {
     public boolean buildEntity(Entity entity, String name, String type, Rectangle bounds, MapProperties properties) {
         String prefab = (String) properties.get("prefab");
         if (prefab != null) {
-            TiledMap prefabMap = new SceneMapLoader().load(prefab);
+            TiledMap prefabMap = new TmxMapPatchLoader().load(prefab);
             MapProperties prefabProperties = prefabMap.getProperties();
             MapLayer collidersLayer = prefabMap.getLayers().get("colliders");
             MapObjects colliders = collidersLayer.getObjects();
@@ -138,7 +136,7 @@ public class BaseEntityFactory implements IEntityFactory {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
-        bodyDef.position.set(bounds.x * PixelToMeters, bounds.y * PixelToMeters);
+        bodyDef.position.set(bounds.x * Constants.PixelToMeters, bounds.y * Constants.PixelToMeters);
         Body body = world.createBody(bodyDef);
         body.setUserData(entity);
 
