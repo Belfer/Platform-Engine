@@ -4,34 +4,28 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.WorldManifold;
+import com.engine.core.BaseScript;
 import com.engine.core.SceneManager;
 import com.engine.core.components.ColliderCmp;
-import com.engine.core.components.SpriteCmp;
-import com.engine.tiled.TiledScript;
 
 import static com.engine.core.Constants.MeterToPixels;
 
 /**
  * Created by conor on 18/07/16.
  */
-public class PlayerController extends TiledScript {
+public class PlayerController extends BaseScript {
     public PlayerController(SceneManager sceneManager, Entity entity) {
         super(sceneManager, entity);
     }
 
     OrthographicCamera gameCamera;
-    SpriteCmp sprite;
     ColliderCmp collider;
 
-    Sprite idle;
-    Sprite run;
     int direction = 1;
 
     int KEY_LEFT = Input.Keys.LEFT;
@@ -54,11 +48,7 @@ public class PlayerController extends TiledScript {
         gameCamera = getSceneManager().getCurrentScene().getGameCamera();
         gameCamera.position.set(getTransform().position);
 
-        sprite = getComponent(SpriteCmp.class);
         collider = getComponent(ColliderCmp.class);
-
-        idle = new Sprite(new TextureRegion(sprite.getTexture(), 0, 0, 16, 16));
-        run = new Sprite(new TextureRegion(sprite.getTexture(), 0, 16, 16, 16));
 
         for (Fixture fixture : collider.body.getFixtureList()) {
             if (fixture.getUserData().equals("body")) {
@@ -135,7 +125,7 @@ public class PlayerController extends TiledScript {
 
     @Override
     public void draw(SpriteBatch batch) {
-        if (collider.body.getLinearVelocity().isZero(1f)) {
+        /*if (collider.body.getLinearVelocity().isZero(1f)) {
             idle.setX(getTransform().position.x - 8);
             idle.setY(getTransform().position.y - 8);
             idle.setScale(direction, 1);
@@ -145,7 +135,7 @@ public class PlayerController extends TiledScript {
             run.setY(getTransform().position.y - 8);
             run.setScale(direction, 1);
             run.draw(batch);
-        }
+        }*/
     }
 
     @Override

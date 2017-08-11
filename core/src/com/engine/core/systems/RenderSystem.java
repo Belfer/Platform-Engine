@@ -5,7 +5,9 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
@@ -17,8 +19,9 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.engine.core.IScript;
 import com.engine.core.components.GameObjectCmp;
+import com.engine.core.components.MaterialCmp;
+import com.engine.core.components.SpriteCmp;
 import com.engine.core.components.TransformCmp;
 import com.engine.tiled.ParallaxMapRenderer;
 
@@ -32,6 +35,7 @@ import static com.engine.core.Constants.PixelToMeters;
 public class RenderSystem extends EntitySystem {
     private ImmutableArray<Entity> gameObjectEntities;
 
+    private AssetManager assetManager;
     private OrthographicCamera camera;
     private World world;
     private SpriteBatch batch;
@@ -51,7 +55,8 @@ public class RenderSystem extends EntitySystem {
     private int[] fgLayers;
     private Vector2[] fgParallax;
 
-    public RenderSystem(OrthographicCamera camera, World world, TiledMap map) {
+    public RenderSystem(AssetManager assetManager, OrthographicCamera camera, World world, TiledMap map) {
+        this.assetManager = assetManager;
         this.camera = camera;
         this.world = world;
         this.map = map;
@@ -143,11 +148,25 @@ public class RenderSystem extends EntitySystem {
         batch.begin();
 
         for (Entity entity : gameObjectEntities) {
-            GameObjectCmp gameObject = GameObjectCmp.Mapper.get(entity);
+            TransformCmp transformCmp = TransformCmp.Mapper.get(entity);
+            assert (transformCmp != null);
 
-            for (IScript script : gameObject.scripts) {
-                script.draw(batch);
+            MaterialCmp materialCmp = MaterialCmp.Mapper.get(entity);
+            SpriteCmp spriteCmp = SpriteCmp.Mapper.get(entity);
+
+            if (materialCmp != null && spriteCmp != null) {
+                Texture texture = assetManager.get(materialCmp.texture, Texture.class);
+                assert (texture != null);
+
+                batch.draw(texture,
+                        transformCmp.position.x + spriteCmp.origin.x,
+                        transformCmp.position.y + spriteCmp.origin.y,
+                        (int) spriteCmp.region.x, (int) spriteCmp.region.y,
+                        (int) spriteCmp.region.width, (int) spriteCmp.region.height);
             }
+
+            GameObjectCmp gameObjectCmp = GameObjectCmp.Mapper.get(entity);
+            gameObjectCmp.script.draw(batch);
         }
 
         batch.end();

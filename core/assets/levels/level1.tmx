@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="128" height="32" tilewidth="16" tileheight="16" nextobjectid="11">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="128" height="32" tilewidth="16" tileheight="16" nextobjectid="13">
  <properties>
   <property name="collider" value="colliders/tiles.tmx"/>
   <property name="ui" value=""/>
@@ -18,7 +18,7 @@
    eJzlmutuwzAIhf1abZeU93+qdVIjRezYgLk4W39YmbqC4TshsalvrbWbctxf4/Ea9L6i8Xxfv4DdaBx2O/v87Gd23IFvnsM+OR/PjcdvZcLtkT8Pk/O8FMCxN6Rct47dc+DHm/NZc54D0mhGf2rzTJA95xGp/z5pG6H/iNOK+p+dT1P/Fv2tbFfoj+5Ja66aPDPrv5eDV/8RG43+VrYr9Lfq9mPHn/ca/Tdnrt77tpqJhoeXScT7H8Ul5cr1JkX+5MzVq1G2/tpn4JmHl0lG/ZMiV/6dvWPHv5Opv3TfevXn/iUm0tgDmJzjfQblKu1R0L3+BJ+hd0Sm/oh/pP7cv7X+EY9I/R9BuWr0R6ylvS45c/XG7dV/1MvQ1D/i4WWySn+09kL5Zda/Zg3q0V/yLzHh9ojHFeufx4ly1dihd0TW/l8Tt5WJ5N+6J0Y8vExW1b/2+ebVYxQ39x9d/5J/a08M8fAyydBf6lFq7aJ7nVL9R8w3qv9RL1tT/1E9KhTv8a6J0F+K0WJXWf8R843q38pEE1+U/se99kn6Z/f/JP8SE018UfpTy9H/eK5Y9edrX+THm7M17v/IJLv+aTJXUvjJ1H92vr/GJLv+0TkKi93IT6b+Uec/ZpmgXnQGE/4u9Oba63lYz39U66+Ju5IJAT+Z+h/Dm2tvD2/d6/D8kZ9I/TVxVzJBvYgMJtH68xi19d+zq6p/TdyVTJD+f7H+tWcdpV7H7Hm8yLgrmYzOjUYyya7/Y1yh1+GNu5KJlsfV9Nf0KFf1OrxxVzKxnAW6kv58XKnX4Y27kgm6ZzL7P1n6S2ud3pm/T9//VzGJ0H90blPKlQpz9cZdxWSF/p7f/0bvKmmt27OtWP9b465iwsfW8phE9P+ltRs/o67RH9VQ9fn/mfkimPBBiUwi+7/ombe132fUNPpv7H/Ijzdna9xVTPjYWx6TyPUfj+24d0e5UofXYTfyE5WzNu4qJr3fCzKYRK7/6PT3frpa6p/bjfx4c7bGvYoJJTLh8X4DkPKmwA==
   </data>
  </layer>
- <layer name="bg3" width="128" height="32">
+ <layer name="layer" width="128" height="32">
   <properties>
    <property name="px" value="0.40000000000000002"/>
    <property name="py" value="0.40000000000000002"/>
@@ -27,13 +27,13 @@
    eJztmU1vwyAMhrlM22XaLvu4bLfutu7Uqv//l62WhppZBIzxy0fCK6FWkAL2EzsOda5/3VVox2v7DvRvWaPYJ2H348L8tG2qvWrE/WTft0r4Te7jqzR+J/9tScNw8p+KMd/rPbBHeyf/m/Zob6pOGEGP1/bK+p7czQY+tqZR7LXS6PxfnKyO+RTO17u91iJ7l+d8fKx3fbgwb37+lcO/tI10bpqK/95FeZ/8HePxfm0n4Xx0/V7OTVP77XnvXjz/89iTxv1SVtx7998W+K/lfyv+ob7W3C1r3dH5U6xTfj+7cM4+KuaMPQ9b8kfUujX5I3xzYt+5H86KOWP7bMm/Vq3Lxy3kcxbaR2/uv18QivkNaR+i1kXbIc1Zlj7z98CX0XwhteDfqtYtUao+43ZYidbV8JfuIeYjFH90rYuIR5+zct6nLUTrbY0/utZFsMjN/1Z+OzhdPEgVy1sI9iRkrYtiIcn/CP7a579V/NeQRa2LZuHjYy1nIflr5pNcn9p3Lf6k0lo39AxZvkuWivJUbg6Q7hXVUuqJP6mk1tX44pK5zkG4Vmrd1G/4vZtbd47Kv6TWzfHH8oz5OdLHVcq/RsznvIPW5p+6L8m/2lpX6p+L8Lr7v/aw+NTw0OzRqml9xsctJDk3pT5k/FvGmPS/dYu9an+r9RsfK5HmvTl3zdr8S+woncPah9YsuHLPTRH7166P4J+7/xKbJUKyJ2nOTSX1C4JVC/5axdbrib82/6fWpzFk3PbO30XW899/AeVfLHY=
   </data>
  </layer>
- <layer name="bg2" width="128" height="32">
+ <layer name="layer" width="128" height="32">
   <properties>
    <property name="px" value="0.66000000000000003"/>
    <property name="py" value="0.66000000000000003"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztmU1vwyAMhrlM22XaLvu4bLfutu7Uqv//l62WhppZBIzxy0fCK6FWkAL2EzsOda5/3VVox2v7DvRvWaPYJ2H348L8tG2qvWrE/WTft0r4Te7jqzR+J/9tScNw8p+KMd/rPbBHeyf/m/Zob6pOGEGP1/bK+p7czQY+tqZR7LXS6PxfnKyO+RTO17u91iJ7l+d8fKx3fbgwb37+lcO/tI10bpqK/95FeZ/8HePxfm0n4Xx0/V7OTVP77XnvXjz/89iTxv1SVtx7998W+K/lfyv+ob7W3C1r3dH5U6xTfj+7cM4+KuaMPQ9b8kfUujX5I3xzYt+5H86KOWP7bMm/Vq3Lxy3kcxbaR2/uv18QivkNaR+i1kXbIc1Zlj7z98CX0XwhteDfqtYtUao+43ZYidbV8JfuIeYjFH90rYuIR5+zct6nLUTrbY0/utZFsMjN/1Z+OzhdPEgVy1sI9iRkrYtiIcn/CP7a579V/NeQRa2LZuHjYy1nIflr5pNcn9p3Lf6k0lo39AxZvkuWivJUbg6Q7hXVUuqJP6mk1tX44pK5zkG4Vmrd1G/4vZtbd47Kv6TWzfHH8oz5OdLHVcq/RsznvIPW5p+6L8m/2lpX6p+L8Lr7v/aw+NTw0OzRqml9xsctJDk3pT5k/FvGmPS/dYu9an+r9RsfK5HmvTl3zdr8S+woncPah9YsuHLPTRH7166P4J+7/xKbJUKyJ2nOTSX1C4JVC/5axdbrib82/6fWpzFk3PbO30XW899/AeVfLHY=
+   eJztmslOAzEMhn1BcEFwYbnArdwKp1Z9/yejER0RWVm8Z6bNL0WgGSbO+ItT2xQA4C5gfJ/HvnB9SictF8ocid0PlPlp7E7pNYLdZD9ea+A3uY9VJLsax8l/nCzYcefUrGPKVyP937I598BtaPK/bVHyhC3o8Txe0bUn+H8HfG/qT1vn/wK0POZz1AJXruSbvM+H761dH1DmjXsoVP5beGdLcWuNtSmd+4m1pjbG++ZWet69mmML743P/9nzpusa+NfO/2tmb5XrXgP/FOvv53GEctxLPhs8ZcGut35OrhPJ38O/B/Q79sMR2R7F37JOKe1xaa7b42/lj2Xfe/sZ+6V2L5q/ZZ3SWns6Cw/1R0nz4HsaUfe9pe/fLnN9Fe5FvHNJlDqFyi7fO/lnnqTH4c2Ekp/V+g9auyX+UFkDvm4tHAcadprPDupcVn5Y9j2nJrNQskflX7pnrV4ccNi1cl2uvFlwz38r3++g7tMR/Cl1CketXJcjbxaS+txCaZ5W/Ef3vKl1CkdLniONfQB/FouPa/vek39tvl78R8iCXT5Pba/3VDqH8npEq7TXuWcAda1eI0padotauW5LUl+cmHZ2RFs9u71n8N7l5p3R/JOk7HK1ct2WuP7I+5TPjWtYWv4RMe9Rg1IkZZcr+Vf6/Qaqf07Ev7u/jIfsp4SHZI1Ww1K9OTXschue8W8ZY9T/z1qs1eJZjSg9bwk7q3VH89f4XztHJH9Jz4NjM48n6XdVLBhJ8ysLX0iej+LP7XlbsaPkLx6sRvCXKsK2pOdtza41h2fcrp0/BNiWnv9Udr+aITKN
   </data>
  </layer>
  <layer name="gm" width="128" height="32">
@@ -46,7 +46,7 @@
   </data>
  </layer>
  <objectgroup name="obj">
-  <object id="6" name="player" type="entity" x="224" y="272" width="16" height="16">
+  <object id="6" name="Player" type="entity" x="224" y="272" width="16" height="16">
    <properties>
     <property name="prefab" value="prefabs/player.tmx"/>
    </properties>

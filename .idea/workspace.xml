@@ -2,34 +2,34 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="70352cbc-a0f3-48f0-bc1a-7e853fb6a3e7" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/com/platut/ExEntityFactory.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/com/platut/ExScene.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/core/src/com/engine/components/ButtonCmp.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/components/ButtonCmp.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/core/src/com/engine/components/ColliderCmp.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/components/ColliderCmp.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/core/src/com/engine/components/GameObjectCmp.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/components/GameObjectCmp.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/core/src/com/engine/components/MaterialCmp.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/components/MaterialCmp.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/core/src/com/engine/components/SpriteCmp.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/components/SpriteCmp.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/core/src/com/engine/components/TransformCmp.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/components/TransformCmp.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/core/src/com/engine/components/WidgetCmp.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/components/WidgetCmp.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/core/src/com/engine/core/BaseEntityFactory.java" afterPath="$PROJECT_DIR$/core/src/com/engine/tiled/TiledEntityFactory.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/core/src/com/engine/core/BaseScene.java" afterPath="$PROJECT_DIR$/core/src/com/engine/tiled/TiledScene.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/core/src/com/engine/core/BaseScript.java" afterPath="$PROJECT_DIR$/core/src/com/engine/tiled/TiledScript.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/core/src/com/engine/core/ColliderUtil.java" afterPath="$PROJECT_DIR$/core/src/com/engine/tiled/TiledCollider.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/core/src/com/engine/core/UILoader.java" afterPath="$PROJECT_DIR$/core/src/com/engine/tiled/TiledUILoader.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/core/src/com/engine/systems/GUISystem.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/systems/GUISystem.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/core/src/com/engine/systems/LightSystem.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/systems/LightSystem.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/core/src/com/engine/systems/RenderSystem.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/systems/RenderSystem.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/core/src/com/engine/systems/UpdateSystem.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/systems/UpdateSystem.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/core/src/com/platut/PlatutGame.java" afterPath="$PROJECT_DIR$/core/src/com/platut/PlatutDemo.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/com/engine/core/EntityWrapper.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/com/engine/core/components/AnimationCmp.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/com/engine/tiled/TiledEntityWrapper.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/com/engine/tiled/TiledUtil.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/com/platut/scripts/CameraController.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/core/src/com/platut/ExEntityFactory.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/core/src/com/platut/ExScene.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/core/src/com/platut/scripts/HealthGUIController.java" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/core/src/com/engine/tiled/TiledScript.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/BaseScript.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/assets/levels/level1.tmx" afterPath="$PROJECT_DIR$/core/assets/levels/level1.tmx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/assets/prefabs/player.tmx" afterPath="$PROJECT_DIR$/core/assets/prefabs/player.tmx" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/engine/core/BaseGame.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/BaseGame.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/engine/core/IEntityFactory.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/IEntityFactory.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/engine/core/IScene.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/IScene.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/engine/core/IScript.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/IScript.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/engine/core/SceneManager.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/SceneManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/platut/scripts/HealthGUIController.java" afterPath="$PROJECT_DIR$/core/src/com/platut/scripts/HealthGUIController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/engine/core/components/ColliderCmp.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/components/ColliderCmp.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/engine/core/components/GameObjectCmp.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/components/GameObjectCmp.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/engine/core/components/MaterialCmp.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/components/MaterialCmp.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/engine/core/components/SpriteCmp.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/components/SpriteCmp.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/engine/core/systems/GUISystem.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/systems/GUISystem.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/engine/core/systems/RenderSystem.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/systems/RenderSystem.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/engine/core/systems/UpdateSystem.java" afterPath="$PROJECT_DIR$/core/src/com/engine/core/systems/UpdateSystem.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/engine/tiled/TiledCollider.java" afterPath="$PROJECT_DIR$/core/src/com/engine/tiled/TiledCollider.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/engine/tiled/TiledEntityFactory.java" afterPath="$PROJECT_DIR$/core/src/com/engine/tiled/TiledEntityFactory.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/engine/tiled/TiledScene.java" afterPath="$PROJECT_DIR$/core/src/com/engine/tiled/TiledScene.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/engine/tiled/TiledUILoader.java" afterPath="$PROJECT_DIR$/core/src/com/engine/tiled/TiledUILoader.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/platut/PlatutDemo.java" afterPath="$PROJECT_DIR$/core/src/com/platut/PlatutDemo.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/platut/scripts/PlayerController.java" afterPath="$PROJECT_DIR$/core/src/com/platut/scripts/PlayerController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/desktop/src/com/platut/desktop/DesktopLauncher.java" afterPath="$PROJECT_DIR$/desktop/src/com/platut/desktop/DesktopLauncher.java" />
     </list>
     <ignored path="Platut.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -79,11 +79,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="PlatutDemo.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/platut/PlatutDemo.java">
+      <file leaf-file-name="TiledScene.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/engine/tiled/TiledScene.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="100">
-              <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+            <state relative-caret-position="295">
+              <caret line="237" column="0" selection-start-line="237" selection-start-column="0" selection-end-line="237" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UpdateSystem.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/systems/UpdateSystem.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="667">
+              <caret line="63" column="30" selection-start-line="63" selection-start-column="30" selection-end-line="63" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SpriteCmp.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/components/SpriteCmp.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="200">
+              <caret line="10" column="45" selection-start-line="10" selection-start-column="45" selection-end-line="10" selection-end-column="45" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -91,21 +111,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ExScene.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/platut/ExScene.java">
+      <file leaf-file-name="TiledEntityFactory.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/engine/tiled/TiledEntityFactory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="62" column="26" selection-start-line="62" selection-start-column="26" selection-end-line="62" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IScript.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/IScript.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+            <state relative-caret-position="267">
+              <caret line="173" column="0" selection-start-line="173" selection-start-column="0" selection-end-line="173" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -113,12 +123,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ExEntityFactory.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/platut/ExEntityFactory.java">
+      <file leaf-file-name="PlayerController.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/core/src/com/platut/scripts/PlayerController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="67">
-              <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+            <state relative-caret-position="300">
+              <caret line="28" column="22" selection-start-line="28" selection-start-column="22" selection-end-line="28" selection-end-column="22" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RenderSystem.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/systems/RenderSystem.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="326">
+              <caret line="161" column="69" selection-start-line="161" selection-start-column="69" selection-end-line="161" selection-end-column="69" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -860,25 +882,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/core/src/com/framework/map/TmxMapPatchLoader.java" />
-        <option value="$PROJECT_DIR$/core/src/com/framework/loader/MapLoader.java" />
-        <option value="$PROJECT_DIR$/core/src/com/framework/core/UILoader.java" />
-        <option value="$PROJECT_DIR$/core/src/com/framework/core/TileColliderLoader.java" />
-        <option value="$PROJECT_DIR$/core/src/com/framework/core/IScene.java" />
-        <option value="$PROJECT_DIR$/core/src/com/framework/core/Constants.java" />
-        <option value="$PROJECT_DIR$/core/src/com/framework/core/MapLoader.java" />
-        <option value="$PROJECT_DIR$/core/src/com/framework/core/ColliderLoader.java" />
-        <option value="$PROJECT_DIR$/core/src/com/framework/core/ColliderUtil.java" />
-        <option value="$PROJECT_DIR$/core/src/com/framework/core/IGame.java" />
-        <option value="$PROJECT_DIR$/core/src/com/framework/core/BaseGame.java" />
-        <option value="$PROJECT_DIR$/core/src/com/framework/core/IEntityFactory.java" />
-        <option value="$PROJECT_DIR$/core/src/com/framework/components/ButtonCmp.java" />
-        <option value="$PROJECT_DIR$/core/src/com/framework/components/ColliderCmp.java" />
-        <option value="$PROJECT_DIR$/core/src/com/framework/components/GameObjectCmp.java" />
-        <option value="$PROJECT_DIR$/core/src/com/framework/components/MaterialCmp.java" />
-        <option value="$PROJECT_DIR$/core/src/com/framework/components/SpriteCmp.java" />
-        <option value="$PROJECT_DIR$/core/src/com/framework/components/TransformCmp.java" />
-        <option value="$PROJECT_DIR$/core/src/com/framework/components/WidgetCmp.java" />
         <option value="$PROJECT_DIR$/core/src/com/framework/systems/RenderSystem.java" />
         <option value="$PROJECT_DIR$/core/src/com/framework/systems/UpdateSystem.java" />
         <option value="$PROJECT_DIR$/core/src/com/framework/components/BaseComponent.java" />
@@ -890,27 +893,46 @@
         <option value="$PROJECT_DIR$/core/src/com/framework/tiled/TmxMapPatchLoader.java" />
         <option value="$PROJECT_DIR$/core/src/com/platut/EntityFactory.java" />
         <option value="$PROJECT_DIR$/core/src/com/engine/core/BaseScene.java" />
-        <option value="$PROJECT_DIR$/core/src/com/engine/core/IEntityFactory.java" />
         <option value="$PROJECT_DIR$/core/src/com/engine/core/BaseEntityFactory.java" />
-        <option value="$PROJECT_DIR$/core/src/com/engine/core/SceneManager.java" />
         <option value="$PROJECT_DIR$/core/src/com/engine/core/IScene.java" />
-        <option value="$PROJECT_DIR$/core/src/com/engine/tiled/TiledEntityFactory.java" />
-        <option value="$PROJECT_DIR$/core/src/com/engine/tiled/TiledScene.java" />
         <option value="$PROJECT_DIR$/core/src/com/engine/tiled/TiledScript.java" />
         <option value="$PROJECT_DIR$/core/src/com/engine/tiled/TiledGame.java" />
-        <option value="$PROJECT_DIR$/core/src/com/engine/tiled/ColliderUtil.java" />
-        <option value="$PROJECT_DIR$/core/src/com/engine/tiled/TiledCollider.java" />
-        <option value="$PROJECT_DIR$/core/src/com/engine/tiled/TiledUILoader.java" />
         <option value="$PROJECT_DIR$/core/src/com/engine/core/TiledGame.java" />
-        <option value="$PROJECT_DIR$/core/src/com/engine/core/BaseGame.java" />
         <option value="$PROJECT_DIR$/desktop/src/com/platut/desktop/DesktopLauncher.java" />
         <option value="$PROJECT_DIR$/core/src/com/platut/PlatutGame.java" />
-        <option value="$PROJECT_DIR$/core/src/com/platut/PlatutDemo.java" />
         <option value="$PROJECT_DIR$/core/src/com/platut/TestScene.java" />
         <option value="$PROJECT_DIR$/core/src/com/platut/ExScene.java" />
         <option value="$PROJECT_DIR$/core/src/com/platut/TestEntityFactory.java" />
         <option value="$PROJECT_DIR$/core/src/com/platut/ExEntityFactory.java" />
         <option value="$PROJECT_DIR$/core/src/com/engine/core/IScript.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/core/SceneManager.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/core/IEntity.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/tiled/TiledEntity.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/core/IEntityFactory.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/tiled/ColliderWrapper.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/tiled/TiledCollider.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/tiled/ColliderUtil.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/tiled/TiledUtil.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/core/EntityWrapper.java" />
+        <option value="$PROJECT_DIR$/core/src/com/platut/PlatutDemo.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/tiled/TiledUILoader.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/tiled/BaseScript.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/core/BaseScript.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/core/BaseGame.java" />
+        <option value="$PROJECT_DIR$/core/src/com/platut/scripts/CameraController.java" />
+        <option value="$PROJECT_DIR$/core/src/com/platut/scripts/HealthGUIController.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/core/components/ColliderCmp.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/core/components/AnimationCmp.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/core/components/MaterialCmp.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/core/components/ScriptCmp.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/core/components/GameObjectCmp.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/core/systems/GUISystem.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/core/components/SpriteCmp.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/tiled/TiledEntityFactory.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/tiled/TiledScene.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/core/systems/UpdateSystem.java" />
+        <option value="$PROJECT_DIR$/core/src/com/engine/core/systems/RenderSystem.java" />
+        <option value="$PROJECT_DIR$/core/src/com/platut/scripts/PlayerController.java" />
       </list>
     </option>
   </component>
@@ -994,88 +1016,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="com" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="platut" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Platut" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="engine" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Platut" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="engine" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Platut" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="engine" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="components" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1380,7 +1320,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="24" width="1920" height="1032" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32918552" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1396,7 +1336,7 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39932126" sideWeight="0.5021322" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17537314" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17537314" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32918552" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15831557" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1446,7 +1386,9 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="4" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
@@ -1454,17 +1396,18 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1300">
           <caret line="91" column="9" selection-start-line="91" selection-start-column="9" selection-end-line="91" selection-end-column="9" />
-          <folding />
+          <folding>
+            <element signature="e#9197#9198#0" expanded="false" />
+            <element signature="e#9255#9256#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/engine/tiled/TiledCollider.java">
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/tiled/TiledUtil.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1480,9 +1423,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="160">
           <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1520,14 +1461,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/platut/scripts/HealthGUIController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/jre/jre/lib/rt.jar!/java/lang/Class.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -1536,14 +1469,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/framework/Reflect.java" />
-    <entry file="file://$PROJECT_DIR$/core/src/com/platut/scripts/PlayerController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1472">
-          <caret line="54" column="57" selection-start-line="54" selection-start-column="57" selection-end-line="54" selection-end-column="57" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/framework/core/MapLoader.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="406">
@@ -1560,42 +1485,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/components/ColliderCmp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="15" column="18" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/components/MaterialCmp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="14" column="18" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/components/SpriteCmp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="26" column="18" selection-start-line="26" selection-start-column="18" selection-end-line="26" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/components/TransformCmp.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="19" column="18" selection-start-line="19" selection-start-column="18" selection-end-line="19" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/components/WidgetCmp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
           <folding />
         </state>
       </provider>
@@ -1608,111 +1501,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/components/ButtonCmp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="12" column="50" selection-start-line="12" selection-start-column="50" selection-end-line="12" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/systems/GUISystem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="457">
-          <caret line="68" column="51" selection-start-line="68" selection-start-column="51" selection-end-line="68" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/systems/UpdateSystem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="89" column="60" selection-start-line="89" selection-start-column="60" selection-end-line="89" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/systems/RenderSystem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="397">
-          <caret line="145" column="59" selection-start-line="145" selection-start-column="59" selection-end-line="145" selection-end-column="59" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/engine/tiled/TmxMapPatchLoader.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="30" column="3" selection-start-line="30" selection-start-column="3" selection-end-line="30" selection-end-column="3" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/IEntityFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="11" column="3" selection-start-line="11" selection-start-column="3" selection-end-line="11" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/SceneManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="31" column="35" selection-start-line="31" selection-start-column="35" selection-end-line="31" selection-end-column="35" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/IScene.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="8" column="48" selection-start-line="8" selection-start-column="48" selection-end-line="8" selection-end-column="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/engine/tiled/TiledEntityFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="34" column="13" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/engine/tiled/TiledScene.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="53" column="13" selection-start-line="53" selection-start-column="13" selection-end-line="53" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/engine/tiled/TiledScript.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="16" column="22" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/engine/tiled/TiledCollider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="28" column="24" selection-start-line="28" selection-start-column="24" selection-end-line="28" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1724,28 +1517,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/engine/tiled/TiledUILoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/engine/tiled/ParallaxMapRenderer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="880">
           <caret line="54" column="9" selection-start-line="54" selection-start-column="9" selection-end-line="54" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/BaseGame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1760,28 +1535,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/platut/PlatutDemo.java">
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/SceneManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+        <state relative-caret-position="67">
+          <caret line="17" column="11" selection-start-line="17" selection-start-column="11" selection-end-line="17" selection-end-column="11" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/tiled/TiledCollider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="8" column="28" selection-start-line="8" selection-start-column="28" selection-end-line="8" selection-end-column="28" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/platut/ExScene.java">
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/tiled/TiledUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="62" column="26" selection-start-line="62" selection-start-column="26" selection-end-line="62" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/components/GameObjectCmp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        <state relative-caret-position="415">
+          <caret line="25" column="26" selection-start-line="25" selection-start-column="26" selection-end-line="25" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1791,18 +1568,240 @@
     <entry file="file://$PROJECT_DIR$/core/src/com/platut/ExEntityFactory.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="67">
-          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+          <caret line="39" column="27" selection-start-line="39" selection-start-column="27" selection-end-line="39" selection-end-column="27" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/platut/ExScene.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1280">
+          <caret line="152" column="32" selection-start-line="152" selection-start-column="32" selection-end-line="152" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/platut/PlatutDemo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="8" column="42" selection-start-line="8" selection-start-column="42" selection-end-line="8" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/tiled/TiledUILoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/EntityWrapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/BaseGame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/BaseScript.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="25" column="29" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/IEntityFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="12" column="52" selection-start-line="12" selection-start-column="52" selection-end-line="12" selection-end-column="52" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/IScene.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="9" column="29" selection-start-line="9" selection-start-column="29" selection-end-line="9" selection-end-column="29" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/IScript.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+        <state relative-caret-position="307">
+          <caret line="26" column="18" selection-start-line="26" selection-start-column="18" selection-end-line="26" selection-end-column="18" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/platut/scripts/CameraController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="32" selection-start-line="8" selection-start-column="32" selection-end-line="8" selection-end-column="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/platut/scripts/HealthGUIController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="10" column="53" selection-start-line="10" selection-start-column="53" selection-end-line="10" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/components/WidgetCmp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/components/ColliderCmp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/components/ButtonCmp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="12" column="50" selection-start-line="12" selection-start-column="50" selection-end-line="12" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/components/AnimationCmp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/components/MaterialCmp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="3" selection-start-line="8" selection-start-column="3" selection-end-line="8" selection-end-column="3" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/components/ScriptCmp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="11" column="4" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/components/GameObjectCmp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" column="31" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/systems/GUISystem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="62" column="21" selection-start-line="62" selection-start-column="21" selection-end-line="62" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/tiled/TiledEntityWrapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/tiled/TiledScene.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="295">
+          <caret line="237" column="0" selection-start-line="237" selection-start-column="0" selection-end-line="237" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/systems/UpdateSystem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="667">
+          <caret line="63" column="30" selection-start-line="63" selection-start-column="30" selection-end-line="63" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/components/SpriteCmp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="10" column="45" selection-start-line="10" selection-start-column="45" selection-end-line="10" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/core/systems/RenderSystem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="326">
+          <caret line="161" column="69" selection-start-line="161" selection-start-column="69" selection-end-line="161" selection-end-column="69" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/engine/tiled/TiledEntityFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="267">
+          <caret line="173" column="0" selection-start-line="173" selection-start-column="0" selection-end-line="173" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/platut/scripts/PlayerController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="28" column="22" selection-start-line="28" selection-start-column="22" selection-end-line="28" selection-end-column="22" />
+          <folding />
         </state>
       </provider>
     </entry>

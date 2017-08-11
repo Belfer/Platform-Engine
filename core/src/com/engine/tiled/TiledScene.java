@@ -18,7 +18,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -29,24 +28,18 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.engine.core.IEntityFactory;
 import com.engine.core.IScene;
-import com.engine.core.IScript;
 import com.engine.core.SceneManager;
-import com.engine.core.components.ButtonCmp;
 import com.engine.core.components.GameObjectCmp;
 import com.engine.core.components.MaterialCmp;
-import com.engine.core.components.SpriteCmp;
 import com.engine.core.systems.GUISystem;
 import com.engine.core.systems.LightSystem;
 import com.engine.core.systems.RenderSystem;
 import com.engine.core.systems.UpdateSystem;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 import static com.engine.core.Constants.PixelToMeters;
-import static com.engine.tiled.TiledCollider.ColliderWrapper;
-import static com.engine.tiled.TiledCollider.correctShape;
+import static com.engine.tiled.TiledUtil.buildCollider;
 
 /**
  * Created by conor on 16/07/16.
@@ -67,11 +60,20 @@ public class TiledScene implements IScene, EntityListener {
 
     protected boolean sceneLoaded = false;
 
-    private HashMap<Integer, ColliderWrapper> colliders;
+    private HashMap<Integer, TiledCollider> colliders;
 
     @Override
     public void init(String filename, SceneManager sceneManager, Class<?> entityFactoryClass) {
         this.sceneManager = sceneManager;
+        stage = new Stage();
+        colliders = new HashMap<>();
+
+        engine = new Engine();
+        engine.addEntityListener(this);
+
+        inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(stage);
+        Gdx.input.setInputProcessor(inputMultiplexer);
 
         map = new TmxMapLoader().load(filename);
         properties = map.getProperties();
@@ -88,30 +90,16 @@ public class TiledScene implements IScene, EntityListener {
         gameCamera = new OrthographicCamera(viewportX, viewportY);
         guiCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         viewport = new FitViewport(viewportX, viewportY, gameCamera);
-        engine = new Engine();
-        stage = new Stage();
-        inputMultiplexer = new InputMultiplexer();
-        colliders = new HashMap<>();
 
         entityFactory = newEntityFactory(entityFactoryClass);
-        engine.addEntityListener(this);
-
-        inputMultiplexer.addProcessor(stage);
-        Gdx.input.setInputProcessor(inputMultiplexer);
+        entityFactory.init(sceneManager, inputMultiplexer, world);
     }
 
     private IEntityFactory newEntityFactory(Class<?> entityFactoryClass) {
         Object object = null;
-        Constructor constructor = null;
         try {
-            constructor = entityFactoryClass.getDeclaredConstructor(SceneManager.class, InputMultiplexer.class, World.class);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-        try {
-            assert constructor != null;
-            object = constructor.newInstance(sceneManager, inputMultiplexer, world);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            object = entityFactoryClass.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
         assert (object instanceof IEntityFactory);
@@ -125,16 +113,15 @@ public class TiledScene implements IScene, EntityListener {
         loadSystems();
         loadColliders();
         loadMap();
+        loadAssets();
 
         sceneManager.getAssetManager().finishLoading();
         sceneLoaded = true;
-
-        onPostLoad();
     }
 
     private void loadSystems() {
         engine.addSystem(new UpdateSystem(world));
-        engine.addSystem(new RenderSystem(gameCamera, world, map));
+        engine.addSystem(new RenderSystem(sceneManager.getAssetManager(), gameCamera, world, map));
         engine.addSystem(new LightSystem());
         engine.addSystem(new GUISystem(guiCamera, stage));
     }
@@ -156,7 +143,7 @@ public class TiledScene implements IScene, EntityListener {
                 MapProperties layerProp = obj.getProperties();
                 float rotation = layerProp.get("rotation", 0f, Float.class);
 
-                ColliderWrapper wrapper = correctShape(obj, tilewidth, tileheight, rotation);
+                TiledCollider wrapper = buildCollider(obj, tilewidth, tileheight, rotation);
 
                 int tileId = obj.getProperties().get("tileId", 0, Integer.class);
                 colliders.put(tileId, wrapper);
@@ -187,7 +174,7 @@ public class TiledScene implements IScene, EntityListener {
 
                 TiledMapTileLayer.Cell cell = layer.getCell(i, j);
                 if (cell != null) {
-                    ColliderWrapper collider = colliders.get(cell.getTile().getId());
+                    TiledCollider collider = colliders.get(cell.getTile().getId());
 
                     if (collider != null) {
                         if (collider.shape != null) {
@@ -221,36 +208,24 @@ public class TiledScene implements IScene, EntityListener {
 
     private void loadEntities(MapLayer layer) {
         for (MapObject obj : layer.getObjects()) {
-            Entity entity = new Entity();
+            TiledEntityWrapper wrapper = new TiledEntityWrapper();
 
-            Rectangle bounds = ((RectangleMapObject) obj).getRectangle();
-            MapProperties properties = obj.getProperties();
-            String name = obj.getName();
-            String type = (String) properties.get("type");
+            wrapper.bounds = ((RectangleMapObject) obj).getRectangle();
+            wrapper.properties = obj.getProperties();
+            wrapper.name = obj.getName();
+            wrapper.type = (String) wrapper.properties.get("type");
 
-            entityFactory.buildEntity(entity, name, type, bounds, properties);
-            engine.addEntity(entity);
+            entityFactory.buildEntity(wrapper);
+            engine.addEntity(wrapper.entity);
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private void onPostLoad() {
+    private void loadAssets() {
         ImmutableArray<Entity> entities = engine.getEntitiesFor(Family.all(MaterialCmp.class).get());
         for (Entity entity : entities) {
-            MaterialCmp material = MaterialCmp.Mapper.get(entity);
-
-            for (String img : material.images) {
-                Texture texture = sceneManager.getAssetManager().get(img, Texture.class);
-
-                SpriteCmp sprite = entity.getComponent(SpriteCmp.class);
-                if (sprite != null) {
-                    sprite.sprite.setTexture(texture);
-                }
-
-                ButtonCmp button = entity.getComponent(ButtonCmp.class);
-                if (button != null) {
-                    //button.button.setStyle();
-                }
+            MaterialCmp materialCmp = MaterialCmp.Mapper.get(entity);
+            if (materialCmp != null && !materialCmp.texture.isEmpty()) {
+                sceneManager.getAssetManager().load(materialCmp.texture, Texture.class);
             }
         }
     }
@@ -258,8 +233,12 @@ public class TiledScene implements IScene, EntityListener {
     @Override
     public void start() {
         for (Entity entity : engine.getEntities()) {
-            GameObjectCmp gameObject = entity.getComponent(GameObjectCmp.class);
-            gameObject.scripts.forEach(IScript::start);
+            GameObjectCmp gameObjectCmp = entity.getComponent(GameObjectCmp.class);
+            assert (gameObjectCmp != null);
+
+            if (gameObjectCmp.script != null) {
+                gameObjectCmp.script.start();
+            }
         }
     }
 
@@ -274,17 +253,25 @@ public class TiledScene implements IScene, EntityListener {
 
     @Override
     public void entityAdded(Entity entity) {
-        GameObjectCmp gameObject = entity.getComponent(GameObjectCmp.class);
-        gameObject.scripts.forEach(IScript::create);
-        if (sceneLoaded) {
-            gameObject.scripts.forEach(IScript::start);
+        GameObjectCmp gameObjectCmp = entity.getComponent(GameObjectCmp.class);
+        assert (gameObjectCmp != null);
+
+        if (gameObjectCmp.script != null) {
+            gameObjectCmp.script.create();
+            if (sceneLoaded) {
+                gameObjectCmp.script.start();
+            }
         }
     }
 
     @Override
     public void entityRemoved(Entity entity) {
-        GameObjectCmp gameObject = entity.getComponent(GameObjectCmp.class);
-        gameObject.scripts.forEach(IScript::destroy);
+        GameObjectCmp gameObjectCmp = entity.getComponent(GameObjectCmp.class);
+        assert (gameObjectCmp != null);
+
+        if (gameObjectCmp.script != null) {
+            gameObjectCmp.script.destroy();
+        }
     }
 
     @Override

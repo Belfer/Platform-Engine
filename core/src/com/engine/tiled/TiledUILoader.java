@@ -1,15 +1,7 @@
 package com.engine.tiled;
 
 import com.badlogic.ashley.core.Engine;
-import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapLayers;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.math.Rectangle;
 import com.engine.core.IEntityFactory;
 
 /**
@@ -18,7 +10,7 @@ import com.engine.core.IEntityFactory;
 
 public class TiledUILoader {
     public static void loadUI(MapProperties properties, Engine engine, IEntityFactory entityFactory) {
-        String filename = properties.get("ui", "", String.class);
+        /*String filename = properties.get("ui", "", String.class);
 
         if (!filename.isEmpty()) {
             TiledMap uiMap = new TmxMapLoader().load(filename);
@@ -55,6 +47,6 @@ public class TiledUILoader {
                     engine.addEntity(entity);
                 }
             }
-        }
+        }*/
     }
 }

@@ -9,9 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.engine.core.IScript;
 import com.engine.core.components.GameObjectCmp;
-import com.engine.core.components.SpriteCmp;
 import com.engine.core.components.TransformCmp;
 
 /**
@@ -44,7 +42,6 @@ public class GUISystem extends EntitySystem {
 
     @Override
     public void addedToEngine(Engine engine) {
-        spriteEntities = engine.getEntitiesFor(Family.all(TransformCmp.class, SpriteCmp.class).get());
         gameObjectEntities = engine.getEntitiesFor(Family.all(GameObjectCmp.class, TransformCmp.class).get());
     }
 
@@ -71,10 +68,7 @@ public class GUISystem extends EntitySystem {
 
         for (Entity entity : gameObjectEntities) {
             GameObjectCmp gameObject = GameObjectCmp.Mapper.get(entity);
-
-            for (IScript script : gameObject.scripts) {
-                script.drawGUI(batch);
-            }
+            gameObject.script.drawGUI(batch);
         }
 
         batch.end();

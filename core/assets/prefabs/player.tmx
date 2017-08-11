@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-up" width="1" height="1" tilewidth="16" tileheight="16" nextobjectid="13">
  <properties>
-  <property name="image" value="oldhero.png"/>
-  <property name="script" value="com.platut.scripts.PlayerController"/>
+  <property name="gameobject.script" value="com.platut.scripts.PlayerController"/>
+  <property name="material.texture" value="oldhero.png"/>
+  <property name="sprite.origin" value="0, 0"/>
+  <property name="sprite.region" value="0, 0, 16, 16"/>
  </properties>
  <tileset firstgid="1" name="oldhero" tilewidth="16" tileheight="16" tilecount="30">
   <image source="../oldhero.png" width="96" height="80"/>

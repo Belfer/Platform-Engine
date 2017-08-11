@@ -1,8 +1,6 @@
 package com.engine.core;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.engine.tiled.TiledEntityFactory;
-import com.engine.tiled.TiledScene;
 
 /**
  * Created by conor on 17/07/16.
@@ -22,10 +20,6 @@ public class SceneManager {
     public SceneManager() {
         assetManager = new AssetManager();
         currentScene = null;
-    }
-
-    public void setScene(String filename) {
-        setScene(filename, TiledScene.class, TiledEntityFactory.class);
     }
 
     public void setScene(String filename, Class<?> sceneClass, Class<?> entityFactoryClass) {

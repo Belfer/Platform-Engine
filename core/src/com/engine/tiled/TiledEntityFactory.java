@@ -2,7 +2,7 @@ package com.engine.tiled;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
@@ -17,9 +17,10 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.engine.core.Constants;
+import com.engine.core.EntityWrapper;
 import com.engine.core.IEntityFactory;
+import com.engine.core.IScript;
 import com.engine.core.SceneManager;
-import com.engine.core.components.ButtonCmp;
 import com.engine.core.components.ColliderCmp;
 import com.engine.core.components.GameObjectCmp;
 import com.engine.core.components.MaterialCmp;
@@ -45,84 +46,74 @@ public class TiledEntityFactory implements IEntityFactory {
     }
 
     @Override
-    public boolean buildEntity(Entity entity, String name, String type, Rectangle bounds, MapProperties properties) {
-        String prefab = (String) properties.get("prefab");
-        if (prefab != null) {
-            TiledMap prefabMap = new TmxMapPatchLoader().load(prefab);
-            MapProperties prefabProperties = prefabMap.getProperties();
-            MapLayer collidersLayer = prefabMap.getLayers().get("colliders");
-            MapObjects colliders = collidersLayer.getObjects();
+    public Entity buildEntity(EntityWrapper entityWrapper) {
+        TiledEntityWrapper wrapper = (TiledEntityWrapper) entityWrapper;
+        Entity entity = new Entity();
 
-            int tilewidth = prefabProperties.get("tilewidth", 0, Integer.class);
-            int tileheight = prefabProperties.get("tileheight", 0, Integer.class);
+        String prefab = (String) wrapper.properties.get("prefab");
+        assert (prefab != null);
 
-            String image = (String) prefabProperties.get("image");
-            String script = (String) prefabProperties.get("script");
+        TiledMap prefabMap = new TmxMapPatchLoader().load(prefab);
+        MapProperties prefabProperties = prefabMap.getProperties();
+        MapLayer collidersLayer = prefabMap.getLayers().get("colliders");
+        MapObjects colliders = collidersLayer.getObjects();
 
-            addGameObject(entity, name, type, script);
-            addTransform(entity, bounds);
-            addCollider(entity, bounds, colliders, tilewidth, tileheight);
-            addSprite(entity, image);
+        int tilewidth = prefabProperties.get("tilewidth", 0, Integer.class);
+        int tileheight = prefabProperties.get("tileheight", 0, Integer.class);
 
-        } else {
-            String image = (String) properties.get("image");
-            String script = (String) properties.get("script");
+        String script = (String) prefabProperties.get("gameobject.script");
+        String texture = (String) prefabProperties.get("material.texture");
+        String origin = (String) prefabProperties.get("sprite.origin");
+        String region = (String) prefabProperties.get("sprite.region");
 
-            addGameObject(entity, name, type, script);
-            addTransform(entity, bounds);
-            addSprite(entity, image);
-        }
-        return true;
+        addGameObject(wrapper.entity, wrapper.name, wrapper.type, script);
+        addTransform(wrapper.entity, wrapper.bounds);
+        addCollider(wrapper.entity, wrapper.bounds, colliders, tilewidth, tileheight);
+        addMaterial(wrapper.entity, texture, "");
+        addSprite(wrapper.entity, origin, region);
+
+        return entity;
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public void addGameObject(Entity entity, String name, String tag, String scriptSrc) {
+    private void addGameObject(Entity entity, String name, String tag, String script) {
         GameObjectCmp gameObject = new GameObjectCmp();
         gameObject.name = name;
         gameObject.tag = tag;
 
-        if (!scriptSrc.isEmpty()) {
-            String[] scripts = scriptSrc.split("\\s");
-            for (String scr : scripts) {
+        if (script != null) {
+            try {
+                Class scriptClass = ClassReflection.forName(script);
+                Constructor constructor = null;
                 try {
-                    Class scrClass = ClassReflection.forName(scr);
-                    Constructor constructor = null;
-                    try {
-                        constructor = scrClass.getConstructor(SceneManager.class, Entity.class);
-                    } catch (NoSuchMethodException e) {
-                        e.printStackTrace();
-                    }
-
-                    assert (constructor != null);
-
-                    Object object = null;
-                    try {
-                        object = constructor.newInstance(sceneManager, entity);
-                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
-
-                    assert (object != null);
-                    assert (object instanceof TiledScript);
-
-                    TiledScript script = (TiledScript) object;
-                    inputMultiplexer.addProcessor(script);
-                    gameObject.scripts.add(script);
-
-                } catch (ReflectionException e) {
-                    String script = scr.isEmpty() ? "<empty>" : scr;
-                    System.err.println("Failed to load [" + name + "] script: " + script);
+                    constructor = scriptClass.getConstructor(SceneManager.class, Entity.class);
+                } catch (NoSuchMethodException e) {
                     e.printStackTrace();
                 }
+
+                assert (constructor != null);
+                Object object = null;
+                try {
+                    object = constructor.newInstance(sceneManager, entity);
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+
+                assert (object != null);
+                assert (object instanceof IScript);
+
+                gameObject.script = (IScript) object;
+                inputMultiplexer.addProcessor(gameObject.script);
+
+            } catch (ReflectionException e) {
+                System.err.println("Failed to construct script: " + script);
+                e.printStackTrace();
             }
         }
 
         entity.add(gameObject);
     }
 
-    @Override
-    public void addTransform(Entity entity, Rectangle bounds) {
+    private void addTransform(Entity entity, Rectangle bounds) {
         TransformCmp transform = new TransformCmp();
         transform.bounds = bounds;
         transform.position.x = bounds.x;
@@ -131,9 +122,8 @@ public class TiledEntityFactory implements IEntityFactory {
         entity.add(transform);
     }
 
-    @Override
-    public void addCollider(Entity entity, Rectangle bounds, MapObjects colliders, int tilewidth, int tileheight) {
-        ColliderCmp collider = new ColliderCmp();
+    private void addCollider(Entity entity, Rectangle bounds, MapObjects colliders, int tilewidth, int tileheight) {
+        ColliderCmp colliderCmp = new ColliderCmp();
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -147,55 +137,59 @@ public class TiledEntityFactory implements IEntityFactory {
             //int tiled = obj.getProperties().get ("tileId", 0, Integer.class);
             float rotation = properties.get("rotation", 0f, Float.class);
 
-            TiledCollider.ColliderWrapper wrapper = TiledCollider.correctShape(obj, tilewidth, tileheight, rotation);
-            if (wrapper.shape != null) {
+            TiledCollider collider = TiledUtil.buildCollider(obj, tilewidth, tileheight, rotation);
+            if (collider.shape != null) {
                 FixtureDef fixtureDef = new FixtureDef();
                 fixtureDef.density = Float.parseFloat(properties.get("density", "1f", String.class));
                 fixtureDef.friction = Float.parseFloat(properties.get("friction", "0.3f", String.class));
                 fixtureDef.restitution = Float.parseFloat(properties.get("restitution", "0.1f", String.class));
                 fixtureDef.isSensor = Boolean.parseBoolean(properties.get("sensor", "false", String.class));
 
-                fixtureDef.shape = wrapper.shape;
+                fixtureDef.shape = collider.shape;
                 Fixture fixture = body.createFixture(fixtureDef);
                 fixture.setUserData(obj.getName());
-
-                collider.shape = wrapper.shape;
             }
         }
 
-        collider.body = body;
-        entity.add(collider);
+        colliderCmp.body = body;
+        entity.add(colliderCmp);
     }
 
-    @Override
-    public void addSprite(Entity entity, String imageSrc) {
-        MaterialCmp material = new MaterialCmp();
-        SpriteCmp sprite = new SpriteCmp();
+    private void addMaterial(Entity entity, String texture, String color) {
+        MaterialCmp materialCmp = new MaterialCmp();
 
-        String[] images = imageSrc.split("\\s");
-        for (String img : images) {
-            sceneManager.getAssetManager().load(img, Texture.class);
-            material.images.add(img);
+        if (texture != null) {
+            materialCmp.texture = texture;
         }
 
-        entity.add(sprite);
-        entity.add(material);
+        if (color != null) {
+            materialCmp.color = Color.WHITE;
+        }
+
+        entity.add(materialCmp);
     }
 
-    @Override
-    public void addButton(Entity entity, Rectangle bounds, String imageSrc) {
-        MaterialCmp material = new MaterialCmp();
-        ButtonCmp button = new ButtonCmp();
-        button.button.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
+    private void addSprite(Entity entity, String origin, String region) {
+        SpriteCmp spriteCmp = new SpriteCmp();
 
-        String[] images = imageSrc.split("\\s");
-        for (String img : images) {
-            sceneManager.getAssetManager().load(img, Texture.class);
-            material.images.add(img);
+        if (origin != null) {
+            String[] originStrs = region.split("\\s*,\\s*");
+            assert (originStrs.length == 2);
+
+            spriteCmp.origin.x = Float.parseFloat(originStrs[0]);
+            spriteCmp.origin.y = Float.parseFloat(originStrs[1]);
         }
 
-        //stage.addActor (button.button);
-        entity.add(button);
-        entity.add(material);
+        if (region != null) {
+            String[] regionStrs = region.split("\\s*,\\s*");
+            assert (regionStrs.length == 4);
+
+            spriteCmp.region.x = Float.parseFloat(regionStrs[0]);
+            spriteCmp.region.y = Float.parseFloat(regionStrs[1]);
+            spriteCmp.region.width = Float.parseFloat(regionStrs[2]);
+            spriteCmp.region.height = Float.parseFloat(regionStrs[3]);
+        }
+
+        entity.add(spriteCmp);
     }
 }
